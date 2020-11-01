@@ -275,84 +275,6 @@
 
 
   
-    <article id="post-微积分第一讲" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/23/%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%AC%E4%B8%80%E8%AE%B2/">微积分第一讲</a>
-    </h1>
-  
-
-        
-        <a href="/2020/09/23/%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%AC%E4%B8%80%E8%AE%B2/" class="archive-article-date">
-  	<time datetime="2020-09-23T10:06:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>相信很多同学刚上大学学高数时有点不理解：这极限，那么显然的东西，为什么还要证？诸如此类的疑惑。所以在正式讲之前，我想先简单得谈一下我对大学数学与高中数学的理解<br>我们在高中的时候，很多部分都时不连续的，或者说，各大部分不是那么有关联，比如解析几何，导数，立体几何等等，但是当进入大学之后，我们开展了对高等数学和线性代数的研究，而这一研究就是整本书，甚至多本书！简而言之，高中数学是较为宽泛而浅的，而大学数学是窄而深的。很多人说高中数学重技巧，大学数学不重技巧，其实并不是那么回事，有时候大学数学的技巧性也不弱。<br>说了那么多，来谈谈如何去学习它，我个人认为<strong>书本上的定义是十分重要的</strong>其实我们认真看书就会发现，书本上各种定理乃至题目，其根本都是书本上的定义结合逻辑推理而得来的，而这些定理与题目，又去协助我们完成其他的定理与题目的证明，就如同建造大楼一般，根基是非常重要的！说到这就不得不说一下第二次数学危机了，就是微积分的曲折发展过程</p>
-<blockquote>
-<h1 id="危机背景"><a href="#危机背景" class="headerlink" title="危机背景"></a><strong>危机背景</strong></h1><p><br>下面请思考芝诺提出的四个悖论<br><strong>二分法</strong>：向着一个目的地运动的物体，首先必须经过路程的中点，然而要经过这点，又必须先经过路程的1/4点……，如此类推以至无穷。——结论是：无穷是不可穷尽的过程，运动是不可能的<br><strong>阿基里斯追不上乌龟</strong>:阿基里斯总是首先必须到达乌龟的出发点，因而乌龟必定总是跑在前头。这个论点同两分法悖论一样，所不同的是不必把所需通过的路程一再平分。<br><strong>飞矢不动</strong>:意思是箭在运动过程中的任一瞬时间必在一确定位置上，因而是静止的，所以箭就不能处于运动状态。<br><strong>操场或游行队伍</strong>:A、B两件物体以等速向相反方向运动。从静止的c来看，比如说A、B都在1小时内移动了2公里，可是从A看来，则B在1小时内就移动了4公里。运动是矛盾的，所以运动是不可能的<br>芝诺揭示的矛盾是深刻而复杂的。前两个悖论诘难了关于时间和空间无限可分，因而运动是连续的观点，后两个悖论诘难了时间和空间不能无限可分，因而运动是间断的观点。<br><strong>影响</strong>：芝诺悖论的提出可能有更深刻的背景，不一定是专门针对数学的，但是它们在数学王国中却掀起了一场轩然大被。它们说明了希腊人已经看到“无穷小”与“很小很小”的矛盾，但他们无法解决这些矛盾。其后果是，希腊几何证明中从此就排除了无穷小<br>#   <strong>微积分的出现</strong>  #经过许多人多年的努力，终于在17世纪晚期，形成了无穷小演算——微积分这门学科。牛顿和莱布尼兹被公认为微积分的奠基者，他们的功绩主要在于：把各种有关问题的解法统一成微分法和积分法；有明确的计算步骤；微分法和积分法互为逆运算。由于运算的完整性和应用的广泛性，微积分成为当时解决问题的重要工具<br><strong>危机爆发</strong>在微积分大范围应用的同时，关于微积分基础的问题也越来越严重。关键问题就是无穷小量究竞是不是零？无穷小及其分析是否合理？由此而引起了数学界甚至哲学界长达一个半世纪的争论，造成了第二次数学危机。<br>无穷小量究竟是不是零？两种答案都会导致矛盾。牛顿对它曾作过三种不同解释：1669年说它是一种常量；1671年又说它是一个趋于零的变量；1676年它被“两个正在消逝的量的最终比”所代替。但是，他始终无法解决上述矛盾。莱布尼兹曾试图用和无穷小量成比例的有限量的差分来代替无穷小量，但是他也没有找到从有限量过渡到无穷小量的桥梁。<br><br>英国大主教贝克莱于1734年写文章，攻击流数（导数）“是消失了的量的鬼魂……能消化得了二阶、三阶流数的人，是不会因吞食了神学论点就呕吐的。”他说，用忽略高阶无穷小而消除了原有的错误，“是依靠双重的错误得到了虽然不科学却是正确的结果”。贝克莱虽然也抓住了当时微积分、无穷小方法中一些不清楚不合逻辑的问题，不过他是出自对科学的厌恶和对宗教的维护，而不是出自对科学的追求和探索。<br><br>当时一些数学家和其他学者，也批判过微积分的一些问题，指出其缺乏必要的逻辑基础。例如，罗尔曾说：“微积分是巧妙的谬论的汇集。”在那个勇于创造时代的初期，科学中逻辑上存在这样那样的问题，并不是个别现象。<br><br>18世纪的数学思想的确是不严密的、直观的，强调形式的计算而不管基础的可靠。其中特别是：没有清楚的无穷小概念，从而导数、微分、积分等概念不清楚；无穷大概念不清楚；发散级数求和的任意性等等；符号的不严格使用；不考虑连续性就进行微分，不考虑导数及积分的存在性以及函数可否展成幂级数等等</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>作为微积分的第一讲，我们没有介绍知识，而是从历史的角度带大家认识一下微积分的发展过程，希望以此引发大家对于无穷与趋近的思考！<br><img src="https://i.loli.net/2020/09/25/a9PCbOhLxevsJuR.png" alt="1.png"></p>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">微积分</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/23/%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%AC%E4%B8%80%E8%AE%B2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-c语言第一篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -607,10 +529,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">认识c，从hello，world开始</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">微积分</a>
               </li>
             
             <div class="clearfix"></div>
