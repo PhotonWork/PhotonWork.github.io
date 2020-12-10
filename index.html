@@ -148,6 +148,137 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-具体数学" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/08/%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6/">具体数学</a>
+    </h1>
+  
+
+        
+        <a href="/2020/12/08/%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6/" class="archive-article-date">
+  	<time datetime="2020-12-08T11:42:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>引言<br>这个问题来源于一个故事。传说在犹太罗马战争期间，有41名犹太反抗者困在了罗马人包围的洞穴中。这些反抗者宁愿自杀也不愿被活捉，于是决定围成一个圆圈，并沿着圆圈每隔两个人杀死一个人，直到剩下最后两个人为止。但是，约瑟夫和一个未被告发的同谋者不希望无谓地自杀，于是他迅速计算处他和其朋友在这个险恶的圆圈中应该站的位置（的确挺险恶的….)<br>正文<br>本文侧重于从数学而非计算机的角度来分析这个问题。当然，本文是以个人的笔记的形式呈现的，主体内容来自于书中，其中夹杂着我个人的理解</p>
+<p>而今天我们讨论的问题和引言中的问题有所区别，题目是这样的：假设我们有n个人（标号从1到n），每隔一个删去一个人，直到只有一个人幸存下来。比如我们从n=10的特例来分析。</p>
+<p>从1开始，隔一个删一个人，被删的序号依次是：2，4，6，8，10，3（2已被删去），7，1，9。<br>于是我们知道，最后5幸存了下来（欧耶  o(￣▽￣)ｄ）<br>假设我们用一个函数 J(n) 来代表：当有n个人围成一圈时，最后剩下的那个人的编号为 J(n) ,于是我们可以得到 J(10)=5<br>我们讨论过n=10的情况，答案很巧刚好是 \frac{n}{2} ,我们猜想是不是对于所有的 偶数 n ，都有 J(n)=\frac{n}{2} .为了验证这一猜想，我们把几个小情况下 J(n) 的值计算出来<br>n<br>1<br>2<br>3<br>4<br>5<br>6<br>J(n)<br>1<br>1<br>3<br>1<br>3<br>5<br>看上去好像不对，因为n=4和n=6显然不满足猜想。另外我们发现，似乎 J(n) 总为奇数。其实我们稍加思索便可明白，偶数在第一轮已经被删去了。</p>
+<p>而且我们发现，当n是偶数时，我们绕圆走一圈后所得到的新圆，似乎除了大小缩水一圈，序列号有所改变外，没啥区别。换言之，我们完全可以对新圆实施 J(n)  ,然后再将序列号变一下！<br>于是乎，我们有<br>J(2n)=2J(n)-1<br>利用此，我们可以计算稍大一点的n，例如 J(40)=2J(20)-1=2[2J(10)-1]-1=17<br>更进一步的有  J(5*2^{m})=2^{m+1}-1<br>我们得到了偶数情况的递推式，强迫症使我们想考察一下奇数情况的n<br>注意到，1号是在2n号之后消掉的（这里有个疑问，第一轮消除到底要不要消除1，我想了一下应该是要的，消除了之后的那个圈的大小是n，从而方便我们建立递推式）<br>从而我们可以列出这样一个递推式<br>J(2n+1)=2J(n)+1<br>我们稍作休整，看看我们目前所得到的东西<br>J(1)=1<br>J(2n)=2J(n)-1<br>J(2n+1)=2J(n)+1<br>理论上，利用递推式，任给一个n，我们都可以计算出 J(n) ,但这似乎不是我们想要的，我们想要的是 J(n) 的表达式。但是这些递推式子十分有用，我们可以迅速地计算出小情况下 J(n) 的值，这有利于我们发现规律（因为懒就直接贴上书上的表格了）</p>
+<p>我们发现，似乎可以按照2的幂将表中数据分成一组一组的，在每一组的开始 J(n) 总等于1，并且组内的数据每次递增2.<br>所以我们想：给定一个n，我们计算出它所落在哪个组，再计算一下它在这个组的位置，便可以顺利地计算出 J(n) 的值<br>此处做一个简单的计算，假设n是在第m组，即<br>n = 2^{0}+2^{1}+…+2^{m}+l<br>其中 1\leq l\leq2^{m+1}<br>那么 可见， l 就是 n 落在第 m+1  组的序数号，(从0开始）.那么其所对应的数就是 2l-1<br>整理一下，可以得到 J(n)=J(2^{m+1}-1+l)=2l-1<br>当然，这与书中给出的式子不太一样，其实应该是等价的，我们稍作变换就可以得到如下结论<br>n=2^{m}+l  (m\geq0,0\leq l&lt;2^{m}) 那么我们有J(n)=2l+1<br>这个只是猜想的式子，还需给出证明。其实对于递推的命题，用数学归纳法来证明是一个很好的想法。<br>证明：我们对m进行归纳，当m=0时必定有l=0，于是我们找到归纳基础 J(1)=1<br>我们按照 l 的奇偶性进行分别归纳<br>1.若l为偶数<br>则 J(2^{k+1}+l)=2J(2^{k}+l/2)+1=2(2l/2+1)-1=2l+1<br>2若l为奇数<br>则 J(2^{k+1}+l)=J(2^{k+1}+l-1+1)=2J(2^{k}+(l-1)/2)+1<br>=2(2(l-1)/2+1)+1=2l+1<br>所以我们证明完成.</p>
+<p>至此，我们好像对这个问题解答的挺圆满了。但是书中对这个问题的挖掘更进了一步，主要站在两个层面(1.从进制的角度理解2.对该问题的推广）<br>1.首先我们看第一块，从进制的角度理解。<br>我们知道，一个n可以唯一的表示成二进制 n=(b_{m}b_{m-1}…b_{1}b_{0})_{2}<br>也就是 n=\sum_{i=0}^{m}{b_{i}2^{i}}(b_{i}\in\left\{ 0,1 \right\})<br>且 b_m=1<br>那么我们可以依次计算出 l , 2l , 2l+1 ,以及 J(n)<br>l=n-2^m=b_{m-1}2^{m-1}+…+b_0=(0b_{m-1}b_{m-2}…b_{0})_{2}<br>2l=2(b_{m-1}2^{m-1}+…+b_12^1+b_02^0)=b_{m-1}2^m+…+b_12^2+b_02^1+02^0)<br>=(b_{m-1}b_{m-2}…b_1b_00)_{2}<br>2l+1=(b_{m-1}b_{m-2}…b_{1}b_01)_{2}<br>所以 J(n)=(b_{m-1}b_{m_2}…b_1b_0b_m)<br>也就是 J((b_mb_{m-1}…b_1b_0)_{2})=(b_{m-1}…b_1b_0b_m)_2<br>也就是对于对于一个数 n 实施 J 后，相当于 n 的二进制位的第一位（也就是1）移到了最后<br>Σ(っ °Д °;)っ简直偶摩西罗一！<br>对于这个性质我们可以推出一些有趣的结果，比方说我们考虑 J(J(n)) ,这个的意义根据我们刚刚所推导出的结果，就是 n 转化成二进制之后第一位移到最后一位，然后再将所得的数的第一位移到最后。这地方有个问题，如果移之后的第一位（即 b_{m-1} )为0会如果？显然这一项会消失，然后我们继续往后寻找，直到第一个1<br>估我们可以得到一个结论：对一个数n施加充分大的 J 之后，它将会停在某个值不再改变，通俗来讲，就是到达一个不动点在这一点有 J(m)=m ，并且由于 m 的二进制表示全为1，所以 m=2^{v(n)-1} 其中 v(n) 为m的二进制表示中1的个数<br>2.对该问题的推广<br>我们试图求解如下递推式的封闭形式<br>f(1)=\alpha<br>f(2n)=2f(n)+\beta<br>f(2n+1)=2f(n)+\gamma<br>类似于前面求解的过程，我们先写出前面几项，可以找到如下的形式<br>f(n)=A(n)\alpha+B(n)\beta+C(n)\gamma<br>当然我们可以先猜然后利用归纳法证明<br>但是这里有一个新的方法，我们可以取一些特殊的值，然后组合起来求解<br>1.取 \alpha=1,\beta=\gamma=0 此时 f(n)=A(n)<br>则递推式转化成 A(1)=1,A(2n)=2A(n),A(2n+1)=2A(n)<br>设 n=2^{m}+l,0\leq l&lt;2^{m}<br>可以知道A(n)=2^{m} （ l =0时显然，当 l 不为0时，我们作以下操作<br>1.若 l 为偶数则 A(n)=2A(2^{m-1}+\frac{l}{2})<br>2.若l l 为奇数，则 A(n)=2A(2^{m-1}+\frac{l-1}{2})<br>由于 l&lt;2^{m} 而且在此过程中 l 是递减的，所以在有限步之后 l 可变为 0 此时 m 还没有变为 0 ，设操作了 k 步，则 A(n)=2^{k}A(2^{m-k})=2^{m} )<br>PS:书中是利用数学归纳法，也是个不错的办法<br>2.取 f(n)=1 可得 \alpha=1,\beta=\gamma=-1<br>此时 1=A(n)-B(n)-C(n)<br>3.取 f(n)=n 可得 \alpha=1,\beta=0,\gamma=1<br>此时 n=A(n)+C(n)<br>联立1.2.3所得到的关系式则有 A(n)=2^{m},C(n)=l,B(n)=2^{m}-l-1<br>所以，我们可以求得一般情况下的 f(n) 的封闭形式</p>
+<p>这种方法叫做 成套方法（repertoire method） 我们通过建立一系列特解，然后根据特解组合起来得到一般的情形<br>我们看一个例题来熟悉一下这个方法<br>例题：试解下列递归式的封闭形式：<br>g(1)=\alpha<br>g(2n+j)=3g(n)+\gamma n+\beta_{j},j=0,1,n\geq1 </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/12/08/%E5%85%B7%E4%BD%93%E6%95%B0%E5%AD%A6/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-微积分第一章总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/01/%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%AC%E4%B8%80%E7%AB%A0%E6%80%BB%E7%BB%93/">微积分第一章总结</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/01/%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%AC%E4%B8%80%E7%AB%A0%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2020-11-01T05:55:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第一章-函数-极限-与连续"><a href="#第一章-函数-极限-与连续" class="headerlink" title="第一章 函数 极限 与连续"></a>第一章 函数 极限 与连续</h1><h2 id="1-1映射与函数"><a href="#1-1映射与函数" class="headerlink" title="1.1映射与函数"></a>1.1映射与函数</h2>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/01/%E5%BE%AE%E7%A7%AF%E5%88%86%E7%AC%AC%E4%B8%80%E7%AB%A0%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-记一六八生活" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
