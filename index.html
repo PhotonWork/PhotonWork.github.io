@@ -172,32 +172,20 @@
 <p>下一部分讲一下应用(可能要过很长时间，感觉对我而言消化并掌握它有挺大难度，而且最近要忙着期末考试了….）</p>
 <p>预备知识</p>
 <p>1.艾弗森约定<br></p>
-<script type="math/tex; mode=display">\sum_{P(k)}a_k$$记为所有$$a_k$$之和，其中$$k$$是满足性质$$P(k)$$的一个整数，那么该和式可以改写为<br>
-$$\sum_ka_k[P(k)]$$,<br>
-其中若$$P(k)$$为假，则$$[P(k)]=0$$， $$P[K]$$为真，则$$[P(k)]$$<br>
-
-2. $$\sum_{m|n}a_m=\sum_{m|n}a_{\frac{n}{m}}$$<br>
-
-这里简要地证明一下，若 $$mm'=n$$,其中  $$m,m',n$$均为整数，那么我们可以建立$$m\leftrightarrow m'$$的一一对应关系，那么易知 $$\sum_{m|n}a_m=\sum_{m|n}a_{\frac{n}{m}}$$<br>
-
-3 $$\sum_{m|n}a_m=\sum_j\sum_{m>0}a_m[n=jm]$$<br>
-
-显然，这就是把左边用艾弗森约定进行的改写
-
-4.$$\sum_{m|n}\sum_{k|m}a_{k,m}=\sum_{k|m}\sum_{l|\frac{n}{m}}a_{k,kl}$$<br>
-
-证明：根据艾弗森约定$$\sum_{m|n}\sum_{k|m}a_{k,m}=\sum_{j,l}\sum_{k,m>0}a_{k,m}[n=jm][m=kl]=\sum_j\sum_{k,l>0}a_{k,kl}[n=jkl]$$<br>
-<br>$$\sum_{k|n}\sum_{l|\frac{n}{k}}a_{k,kl}=\sum_{j,m}\sum_{k,l>0}a_{k,kl}[n=jk][\frac{n}{k}=ml]=\sum_m\sum_{k,l>0}a_{k,kl}[n=kml]$$<br>
-
-
-显然除了改变了标记的名字外没有任何区别，故原式得证
-
-5.莫比乌斯函数 $$\mu (m)$$ 满足 $$\sum_{d|m}\mu(d)=[m=1]$$<br>
-
-根据这个我们可以简单地写出莫比乌斯函数的前几项，例如 $$\mu(1)=1$$ , $$\mu(2)=0-\mu(1)=-1$$, $$\mu(3)=0-\mu(1)=-1$$<br>
-
-下面证明莫比乌斯反演的命题(即戴德金-刘维尔准则)<br>
-$$g(m)=\sum_{d|m}f(d)\Leftrightarrow f(m)=\sum_{d|m}\mu(d)g(\frac{m}{d})$$<br>
+<p>\sum_{P(k)}a_k 记为所有a_k之和，其中k是满足性质P(k)的一个整数，那么该和式可以改写为<br><br>\sum_ka_k[P(k)]<br><br>其中若<script type="math/tex">P(k)</script>为假，则<script type="math/tex">[P(k)]=0</script>， <script type="math/tex">P[K]</script>为真，则<script type="math/tex">[P(k)]</script><br></p>
+<ol>
+<li><script type="math/tex">\sum_{m|n}a_m=\sum_{m|n}a_{\frac{n}{m}}</script><br></li>
+</ol>
+<p>这里简要地证明一下，若 <script type="math/tex">mm'=n</script>,其中  <script type="math/tex">m,m',n</script>均为整数，那么我们可以建立<script type="math/tex">m\leftrightarrow m'</script>的一一对应关系，那么易知 <script type="math/tex">\sum_{m|n}a_m=\sum_{m|n}a_{\frac{n}{m}}</script><br></p>
+<p>3 <script type="math/tex">\sum_{m|n}a_m=\sum_j\sum_{m>0}a_m[n=jm]</script><br></p>
+<p>显然，这就是把左边用艾弗森约定进行的改写</p>
+<p>4.<script type="math/tex">\sum_{m|n}\sum_{k|m}a_{k,m}=\sum_{k|m}\sum_{l|\frac{n}{m}}a_{k,kl}</script><br></p>
+<p>证明：根据艾弗森约定<script type="math/tex">\sum_{m|n}\sum_{k|m}a_{k,m}=\sum_{j,l}\sum_{k,m>0}a_{k,m}[n=jm][m=kl]=\sum_j\sum_{k,l>0}a_{k,kl}[n=jkl]</script><br><br><br><script type="math/tex">\sum_{k|n}\sum_{l|\frac{n}{k}}a_{k,kl}=\sum_{j,m}\sum_{k,l>0}a_{k,kl}[n=jk][\frac{n}{k}=ml]=\sum_m\sum_{k,l>0}a_{k,kl}[n=kml]</script><br></p>
+<p>显然除了改变了标记的名字外没有任何区别，故原式得证</p>
+<p>5.莫比乌斯函数 <script type="math/tex">\mu (m)</script> 满足 <script type="math/tex">\sum_{d|m}\mu(d)=[m=1]</script><br></p>
+<p>根据这个我们可以简单地写出莫比乌斯函数的前几项，例如 <script type="math/tex">\mu(1)=1</script> , <script type="math/tex">\mu(2)=0-\mu(1)=-1</script>, <script type="math/tex">\mu(3)=0-\mu(1)=-1</script><br></p>
+<p>下面证明莫比乌斯反演的命题(即戴德金-刘维尔准则)<br></p>
+<script type="math/tex; mode=display">g(m)=\sum_{d|m}f(d)\Leftrightarrow f(m)=\sum_{d|m}\mu(d)g(\frac{m}{d})$$<br>
 
 
 证明如下,首先证明 $$\sum_{d|m}\mu(d)g(\frac{m}{d})=\sum_{d|m}\mu(\frac{m}{d})g(d)$$<br>
