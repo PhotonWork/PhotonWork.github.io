@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>fastbin reverse into tcache | Photon’s Blog</title><meta name="keywords" content="pwn,heap"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="源码分析上次祥云杯中遇到了fastbin reverse into tcache的利用手法，这里简单分析一下它的原理。需要注意的是，在glibc2.27以下和以上的利用方式有点区别。高版本的glibc在利用的时候必须保证相应大小的tcache bin为空(也就是count为0)，而低版本(glibc2.27及以下，当然需要有tcachebin)只要保证相应entry指针为NULL即可，不用保证co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fastbin reverse into tcache">
+<meta property="og:url" content="http://phot0n.com/2022/11/14/fastbin-reverse-into-tcache/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="源码分析上次祥云杯中遇到了fastbin reverse into tcache的利用手法，这里简单分析一下它的原理。需要注意的是，在glibc2.27以下和以上的利用方式有点区别。高版本的glibc在利用的时候必须保证相应大小的tcache bin为空(也就是count为0)，而低版本(glibc2.27及以下，当然需要有tcachebin)只要保证相应entry指针为NULL即可，不用保证co">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2022-11-14T06:36:55.000Z">
+<meta property="article:modified_time" content="2022-11-14T09:53:02.068Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="heap">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2022/11/14/fastbin-reverse-into-tcache/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'fastbin reverse into tcache',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-14 17:53:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">fastbin reverse into tcache</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-11-14T06:36:55.000Z" title="Created 2022-11-14 14:36:55">2022-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-11-14T09:53:02.068Z" title="Updated 2022-11-14 17:53:02">2022-11-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>7min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>上次祥云杯中遇到了<code>fastbin reverse into tcache</code>的利用手法，这里简单分析一下它的原理。需要注意的是，在glibc2.27以下和以上的利用方式有点区别。高版本的<code>glibc</code>在利用的时候必须保证相应大小的<code>tcache bin</code>为空(也就是<code>count</code>为0)，而低版本(<code>glibc2.27</code>及以下，当然需要有<code>tcachebin</code>)只要保证相应<code>entry</code>指针为<code>NULL</code>即可，不用保证<code>count</code>为0</p>
+<p>先首先说一下利用条件以及达到效果。</p>
+<ul>
+<li>利用条件:存在UAF,可以修改<code>fd</code></li>
+<li>达到效果:在任意地址写上一个堆地址,以及申请相应<code>chunk</code>，进行任意地址写</li>
+</ul>
+<p>主要的源码如下所示，我们先看<code>glibc2.27</code>的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">void</span> *</span><br><span class="line">__libc_malloc (<span class="keyword">size_t</span> bytes)</span><br><span class="line">&#123;</span><br><span class="line">  mstate ar_ptr;</span><br><span class="line">  <span class="keyword">void</span> *victim;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> *(*hook) (<span class="keyword">size_t</span>, <span class="keyword">const</span> <span class="keyword">void</span> *)</span><br><span class="line">    = atomic_forced_read (__malloc_hook);</span><br><span class="line">  <span class="keyword">if</span> (__builtin_expect (hook != <span class="literal">NULL</span>, <span class="number">0</span>))</span><br><span class="line">    <span class="keyword">return</span> (*hook)(bytes, RETURN_ADDRESS (<span class="number">0</span>));</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> USE_TCACHE</span></span><br><span class="line">  <span class="comment">/* int_free also calls request2size, be careful to not pad twice.  */</span></span><br><span class="line">  <span class="keyword">size_t</span> tbytes;</span><br><span class="line">  checked_request2size (bytes, tbytes);</span><br><span class="line">  <span class="keyword">size_t</span> tc_idx = csize2tidx (tbytes);</span><br><span class="line"></span><br><span class="line">  MAYBE_INIT_TCACHE ();</span><br><span class="line"></span><br><span class="line">  DIAG_PUSH_NEEDS_COMMENT;</span><br><span class="line">  <span class="keyword">if</span> (tc_idx &lt; mp_.tcache_bins</span><br><span class="line">      <span class="comment">/*&amp;&amp; tc_idx &lt; TCACHE_MAX_BINS*/</span> <span class="comment">/* to appease gcc */</span></span><br><span class="line">      &amp;&amp; tcache</span><br><span class="line">      &amp;&amp; tcache-&gt;entries[tc_idx] != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span> tcache_get (tc_idx);</span><br><span class="line">    &#125;</span><br><span class="line">  DIAG_POP_NEEDS_COMMENT;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (SINGLE_THREAD_P)</span><br><span class="line">    &#123;</span><br><span class="line">      victim = _int_malloc (&amp;main_arena, bytes);</span><br><span class="line">      assert (!victim || chunk_is_mmapped (mem2chunk (victim)) ||</span><br><span class="line">	      &amp;main_arena == arena_for_chunk (mem2chunk (victim)));</span><br><span class="line">      <span class="keyword">return</span> victim;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  arena_get (ar_ptr, bytes);</span><br><span class="line"></span><br><span class="line">  victim = _int_malloc (ar_ptr, bytes);</span><br><span class="line">  <span class="comment">/* Retry with another arena only if we were able to find a usable arena</span></span><br><span class="line"><span class="comment">     before.  */</span></span><br><span class="line">  <span class="keyword">if</span> (!victim &amp;&amp; ar_ptr != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      LIBC_PROBE (memory_malloc_retry, <span class="number">1</span>, bytes);</span><br><span class="line">      ar_ptr = arena_get_retry (ar_ptr, bytes);</span><br><span class="line">      victim = _int_malloc (ar_ptr, bytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (ar_ptr != <span class="literal">NULL</span>)</span><br><span class="line">    __libc_lock_unlock (ar_ptr-&gt;mutex);</span><br><span class="line"></span><br><span class="line">  assert (!victim || chunk_is_mmapped (mem2chunk (victim)) ||</span><br><span class="line">          ar_ptr == arena_for_chunk (mem2chunk (victim)));</span><br><span class="line">  <span class="keyword">return</span> victim;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当调用<code>malloc</code>的时候，会对<code>__libc_malloc</code>进行调用。如果<code>tcache bin</code>中有相应大小的<code>chunk</code>,就直接利用<code>tcache_get(tc_idx)</code>取出即可。也就是对应如下代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (tc_idx &lt; mp_.tcache_bins</span><br><span class="line">    <span class="comment">/*&amp;&amp; tc_idx &lt; TCACHE_MAX_BINS*/</span> <span class="comment">/* to appease gcc */</span></span><br><span class="line">    &amp;&amp; tcache</span><br><span class="line">    &amp;&amp; tcache-&gt;entries[tc_idx] != <span class="literal">NULL</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span> tcache_get (tc_idx);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>多说一句，这里的判定条件是<code>tc_idx &lt; mp_.tcache_bins &amp;&amp;tcache &amp;&amp;tcache-&gt;entries[tc_idx] != NULL</code> 。并没有涉及到<code>tcache-&gt;count[tc_idx]</code>的判断。也就是说我们可以让<code>tcache-&gt;entries[tc_idx] == NULL</code> ,即使<code>tcache-&gt;count[tc_idx] !=0</code>，也能绕过从<code>tcache bin</code>中取<code>chunk</code>的操作。也就是让其<code>double free</code>即可。需要注意的是在高版本的<code>libc</code>中增加了对<code>double free</code> 的检测。具体的做法是加入了<code>key</code>字段以及遍历看<code>fd</code>。这个以后再总结一下。</p>
+<p>我们回到刚刚的分析，如果这个判定条件不成立的话，后面我们会调用<code>_int_malloc</code> </p>
+<p>这里涉及的代码如下所示</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">if</span> ((<span class="keyword">unsigned</span> <span class="keyword">long</span>) (nb) &lt;= (<span class="keyword">unsigned</span> <span class="keyword">long</span>) (get_max_fast ()))</span><br><span class="line">    &#123;</span><br><span class="line">      idx = fastbin_index (nb);</span><br><span class="line">      mfastbinptr *fb = &amp;fastbin (av, idx);</span><br><span class="line">      mchunkptr pp;</span><br><span class="line">      victim = *fb;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (victim != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  <span class="keyword">if</span> (SINGLE_THREAD_P)</span><br><span class="line">	    *fb = victim-&gt;fd;</span><br><span class="line">	  <span class="keyword">else</span></span><br><span class="line">	    REMOVE_FB (fb, pp, victim);</span><br><span class="line">	  <span class="keyword">if</span> (__glibc_likely (victim != <span class="literal">NULL</span>))</span><br><span class="line">	    &#123;</span><br><span class="line">	      <span class="keyword">size_t</span> victim_idx = fastbin_index (chunksize (victim));</span><br><span class="line">	      <span class="keyword">if</span> (__builtin_expect (victim_idx != idx, <span class="number">0</span>))</span><br><span class="line">		malloc_printerr (<span class="string">&quot;malloc(): memory corruption (fast)&quot;</span>);</span><br><span class="line">	      check_remalloced_chunk (av, victim, nb);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> USE_TCACHE</span></span><br><span class="line">	      <span class="comment">/* While we&#x27;re here, if we see other chunks of the same size,</span></span><br><span class="line"><span class="comment">		 stash them in the tcache.  */</span></span><br><span class="line">	      <span class="keyword">size_t</span> tc_idx = csize2tidx (nb);</span><br><span class="line">	      <span class="keyword">if</span> (tcache &amp;&amp; tc_idx &lt; mp_.tcache_bins)</span><br><span class="line">		&#123;</span><br><span class="line">		  mchunkptr tc_victim;</span><br><span class="line"></span><br><span class="line">		  <span class="comment">/* While bin not empty and tcache not full, copy chunks.  */</span></span><br><span class="line">		  <span class="keyword">while</span> (tcache-&gt;counts[tc_idx] &lt; mp_.tcache_count</span><br><span class="line">			 &amp;&amp; (tc_victim = *fb) != <span class="literal">NULL</span>)</span><br><span class="line">		    &#123;</span><br><span class="line">		      <span class="keyword">if</span> (SINGLE_THREAD_P)</span><br><span class="line">			*fb = tc_victim-&gt;fd;</span><br><span class="line">		      <span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">			  REMOVE_FB (fb, pp, tc_victim);</span><br><span class="line">			  <span class="keyword">if</span> (__glibc_unlikely (tc_victim == <span class="literal">NULL</span>))</span><br><span class="line">			    <span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		      tcache_put (tc_victim, tc_idx);</span><br><span class="line">		    &#125;</span><br><span class="line">		&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	      <span class="keyword">void</span> *p = chunk2mem (victim);</span><br><span class="line">	      alloc_perturb (p, bytes);</span><br><span class="line">	      <span class="keyword">return</span> p;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>当我们<code>malloc</code>的堆块属于<code>fastbin</code>大小的时候，就会进入这个分支。当相应的<code>fastbin</code>中有<code>chunk</code>,并且有两个及以上的时候，就把需要的取出给用户，剩余的放入空闲的<code>tcache bin</code>,具体实施的函数就是<code>tcache_put (tc_victim, tc_idx)</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">     <span class="keyword">size_t</span> tc_idx = csize2tidx (nb);</span><br><span class="line">     <span class="keyword">if</span> (tcache &amp;&amp; tc_idx &lt; mp_.tcache_bins)</span><br><span class="line">&#123;</span><br><span class="line">  mchunkptr tc_victim;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* While bin not empty and tcache not full, copy chunks.  */</span></span><br><span class="line">  <span class="keyword">while</span> (tcache-&gt;counts[tc_idx] &lt; mp_.tcache_count</span><br><span class="line">	 &amp;&amp; (tc_victim = *fb) != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (SINGLE_THREAD_P)</span><br><span class="line">	*fb = tc_victim-&gt;fd;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">	  REMOVE_FB (fb, pp, tc_victim);</span><br><span class="line">	  <span class="keyword">if</span> (__glibc_unlikely (tc_victim == <span class="literal">NULL</span>))</span><br><span class="line">	    <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">      tcache_put (tc_victim, tc_idx);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而<code>tcache_put</code>的实现如下所示</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tcache_put (mchunkptr chunk, <span class="keyword">size_t</span> tc_idx)</span><br><span class="line">&#123;</span><br><span class="line">  tcache_entry *e = (tcache_entry *) chunk2mem (chunk);</span><br><span class="line">  assert (tc_idx &lt; TCACHE_MAX_BINS);</span><br><span class="line">  e-&gt;next = tcache-&gt;entries[tc_idx];</span><br><span class="line">  tcache-&gt;entries[tc_idx] = e;</span><br><span class="line">  ++(tcache-&gt;counts[tc_idx]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们只要构造两个在<code>fastbin</code>中的<code>chunk</code>,然后修改后面一个<code>chunk</code>(前面<code>chunk</code>的<code>fd</code>指向后面的<code>chunk</code>)的<code>fd</code>为<code>target-0x10</code>,然后再绕过往<code>tcachebin</code>中取<code>chunk</code>的判定(绕过的条件前面以说明)。然后再<code>malloc</code>这个大小的<code>chunk</code>。当检测到<code>fastbin</code>中还有数据，并且<code>tcachebin</code>数据不满的时候，会将<code>fastbin</code>剩下的<code>chunk</code>逆序链入<code>tcachebin</code>。由于修改了后一个<code>chunk</code>的<code>fd</code>为<code>target-0x10</code> ，那么最后会执行<code>tcache_put (target-0x10, tc_idx)</code>,而后执行<code>e-&gt;next = tcache-&gt;entries[tc_idx]</code>的时候，就会将前一个<code>chunk</code>的地址写入<code>(target-0x10)-&gt;next</code>（在这之前有个强制转换成<code>(tcache_entry *)</code>以及<code>chunk2mem</code>的过程,具体的结构体声明以及这个宏的作用就不赘述了)也就是<code>target</code>处。同时由于<code>target</code>这个附近的<code>chunk</code>被放入了<code>tcache bin</code>中(<code>tcache-&gt;entries[tc_idx] = e</code>)所以我们可以申请它</p>
+<p>而<code>glibc2.31</code>及以上就稍有不同，对于<code>target</code>取得偏移也不是<code>0x10</code>了而是<code>0x18</code>，因为存在了对<code>fd</code>指针的加密操作，所以写上的也不是一个堆地址。同时也不能直接让<code>tcache-&gt;entries[tc_idx] == NULL</code> 来绕过取<code>tchache bin</code> 的判断，因为判断条件更改了。而<code>0x18</code>这个偏移对应的是<code>tcache_entry *</code>的<code>key</code>字段。这个在不同版本似乎也有区别。在<code>glibc2.29</code>（应该是<code>glibc2.27 1.4</code>版本朝上)的时候，这个<code>key</code>字段是<code>&amp;tcache</code>，而我在看<code>glibc2.35</code>源码的时候，这个<code>key</code>已经变成了一个完全的随机数了。所以写堆地址这块算是没戏了，不过还是有办法进行申请<code>chunk</code></p>
+<p>这里贴一下不同，首先是对于是从<code>tcache bin</code>中取出还是调用<code>_int_malloc</code>从其他<code>bin</code>中取出,判定条件变成了<code>tc_idx &lt; mp_.tcache_bins&amp;&amp; tcache&amp;&amp; tcache-&gt;counts[tc_idx] &gt; 0</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (tc_idx &lt; mp_.tcache_bins</span><br><span class="line">    &amp;&amp; tcache</span><br><span class="line">    &amp;&amp; tcache-&gt;counts[tc_idx] &gt; <span class="number">0</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    victim = tcache_get (tc_idx);</span><br><span class="line">    <span class="keyword">return</span> tag_new_usable (victim);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>加入了指针加密操作(<code>fastbin</code>的<code>fd</code>指针也做了相同的加密)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROTECT_PTR(pos, ptr) \</span></span><br><span class="line">  ((__typeof (ptr)) ((((<span class="keyword">size_t</span>) pos) &gt;&gt; <span class="number">12</span>) ^ ((<span class="keyword">size_t</span>) ptr)))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> REVEAL_PTR(ptr)  PROTECT_PTR (&amp;ptr, ptr)</span></span><br></pre></td></tr></table></figure>
+<p>还有<code>key</code>字段</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tcache_put (mchunkptr chunk, <span class="keyword">size_t</span> tc_idx)</span><br><span class="line">&#123;</span><br><span class="line">  tcache_entry *e = (tcache_entry *) chunk2mem (chunk);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Mark this chunk as &quot;in the tcache&quot; so the test in _int_free will</span></span><br><span class="line"><span class="comment">     detect a double free.  */</span></span><br><span class="line">  e-&gt;key = tcache_key;</span><br><span class="line"></span><br><span class="line">  e-&gt;next = PROTECT_PTR (&amp;e-&gt;next, tcache-&gt;entries[tc_idx]);</span><br><span class="line">  tcache-&gt;entries[tc_idx] = e;</span><br><span class="line">  ++(tcache-&gt;counts[tc_idx]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其初始化如下，为一个随机数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">tcache_key_initialize (<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (__getrandom (&amp;tcache_key, <span class="keyword">sizeof</span>(tcache_key), GRND_NONBLOCK)</span><br><span class="line">      != <span class="keyword">sizeof</span> (tcache_key))</span><br><span class="line">    &#123;</span><br><span class="line">      tcache_key = random_bits ();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __WORDSIZE == 64</span></span><br><span class="line">      tcache_key = (tcache_key &lt;&lt; <span class="number">32</span>) | random_bits ();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这些摘自<code>glibc2.35</code>的源码，事实上打补丁有循序渐进的过程，不同版本的具体实施不太一样</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2022/11/14/fastbin-reverse-into-tcache/">http://phot0n.com/2022/11/14/fastbin-reverse-into-tcache/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/pwn/">pwn</a><a class="post-meta__tags" href="/tags/heap/">heap</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">KernelPwn入门</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/11/large-bin-attack/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">large_bin_attack</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-31</div><div class="title">libc的源码调试与分析</div></div></a></div><div><a href="/2022/09/06/%E9%AB%98%E7%89%88%E6%9C%AC%E7%9A%84%E5%A0%86%E5%88%A9%E7%94%A8%E4%B8%8EFSOP/" title="高版本的堆利用与FSOP"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-06</div><div class="title">高版本的堆利用与FSOP</div></div></a></div><div><a href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-19</div><div class="title">CVE-2016-9793分析</div></div></a></div><div><a href="/2023/01/02/CatCTF2022/" title="CatCTF2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-02</div><div class="title">CatCTF2022</div></div></a></div><div><a href="/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/" title="KernelPwn入门"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-17</div><div class="title">KernelPwn入门</div></div></a></div><div><a href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-08</div><div class="title">QEMU逃逸入门</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">源码分析</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

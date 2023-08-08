@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LFSR整理 | Photon’s Blog</title><meta name="keywords" content="crypto,LFSR"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最近遇到许多LFSR题目，密码学课上也正好学到了LFSR,顺便整理一下。 LFSR 的定义以及矩阵形式线性反馈移位寄存器(LFSR)，是一种流密码。通过生成器内特定位之间的异或生成新移位，然后将高位移去，新一位补在后面。其反馈函数如下(运算为模二加，也就是异或)  a_{i+n} &#x3D; \sum_{j&#x3D;1}^{n} c_{j}a_{i+n-j}其中的$c_{j}$决定了需要异或的位，通常我们用一个m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LFSR整理">
+<meta property="og:url" content="http://phot0n.com/2022/03/16/LFSR%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="最近遇到许多LFSR题目，密码学课上也正好学到了LFSR,顺便整理一下。 LFSR 的定义以及矩阵形式线性反馈移位寄存器(LFSR)，是一种流密码。通过生成器内特定位之间的异或生成新移位，然后将高位移去，新一位补在后面。其反馈函数如下(运算为模二加，也就是异或)  a_{i+n} &#x3D; \sum_{j&#x3D;1}^{n} c_{j}a_{i+n-j}其中的$c_{j}$决定了需要异或的位，通常我们用一个m">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2022-03-16T12:04:28.000Z">
+<meta property="article:modified_time" content="2022-03-22T08:25:01.814Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="LFSR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2022/03/16/LFSR%E6%95%B4%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LFSR整理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-22 16:25:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">LFSR整理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-03-16T12:04:28.000Z" title="Created 2022-03-16 20:04:28">2022-03-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-03-22T08:25:01.814Z" title="Updated 2022-03-22 16:25:01">2022-03-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>14min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近遇到许多LFSR题目，密码学课上也正好学到了LFSR,顺便整理一下。</p>
+<h2 id="LFSR-的定义以及矩阵形式"><a href="#LFSR-的定义以及矩阵形式" class="headerlink" title="LFSR 的定义以及矩阵形式"></a>LFSR 的定义以及矩阵形式</h2><p>线性反馈移位寄存器(LFSR)，是一种流密码。通过生成器内特定位之间的异或生成新移位，然后将高位移去，新一位补在后面。其反馈函数如下(运算为模二加，也就是异或)</p>
+<script type="math/tex; mode=display">
+a_{i+n} = \sum_{j=1}^{n} c_{j}a_{i+n-j}</script><p>其中的$c_{j}$决定了需要异或的位，通常我们用一个<code>mask</code>来表示，用代码表示如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class lfsr():</span><br><span class="line">    def __init__(self, seed, mask, length):</span><br><span class="line">        self.length_mask &#x3D; 2 ** length - 1</span><br><span class="line">        self.mask &#x3D; mask &amp; self.length_mask</span><br><span class="line">        self.state &#x3D; seed &amp; self.length_mask</span><br><span class="line"></span><br><span class="line">    def next(self):</span><br><span class="line">        next_state &#x3D; (self.state &lt;&lt; 1) &amp; self.length_mask</span><br><span class="line">        i &#x3D; self.state &amp; self.mask &amp; self.length_mask</span><br><span class="line">        output &#x3D; 0</span><br><span class="line">        while i !&#x3D; 0:</span><br><span class="line">            output ^&#x3D; (i &amp; 1)</span><br><span class="line">            i &#x3D; i &gt;&gt; 1</span><br><span class="line">        next_state ^&#x3D; output</span><br><span class="line">        self.state &#x3D; next_state</span><br><span class="line">        return output</span><br><span class="line"></span><br><span class="line">    def getrandbit(self, nbit):</span><br><span class="line">        output &#x3D; 0</span><br><span class="line">        for _ in range(nbit):</span><br><span class="line">            output &#x3D; (output &lt;&lt; 1) ^ self.next()</span><br><span class="line">        return output</span><br></pre></td></tr></table></figure><br>代码还是比较通俗易懂，跟着算一下就能明白</p>
+<p>假设我们的LFSR为n位，如果我们用矩阵运算来表示的话可以表示成如下形式</p>
+<script type="math/tex; mode=display">
+[a_0,a_1,\dots,a_{n-1}]\begin{bmatrix}
+0&0&\dots&0&c_n\\
+1&0&\dots&0&c_{n-1}\\
+0&1&\dots&0&c_{n-2}\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\dots&1&c_1
+\end{bmatrix} =[a_1,a_2,\dots,a_{n}]</script><p>当然，我们通过多次乘这个矩阵，就可以得到任意多位。同时我们注意到这个生成器至多只有$2^n$中状态，因为每次的下一位完全由当前的状态以及mask决定，当当前的状态定了，下一位肯定是确定得。但是如果生成器全为0实际后续产生的序列是全0，无意义，所以我们通常不考虑。</p>
+<h2 id="恢复初始状态"><a href="#恢复初始状态" class="headerlink" title="恢复初始状态"></a>恢复初始状态</h2><p>设想一下，假如我们有一段由n位LFSR产生的密钥流，我们如何推导其初始种子？</p>
+<p>根据我们之前写下的方程我们可以知道，假如我们得到了mask，以及连续n位的密钥流，那么我们完全可以通过右乘逆矩阵还原前一位(如果矩阵不可逆的话可能要麻烦一点，但是还是可解的，因为第n位是由它之前的n位决定的，但是前n-1位我们都是已知的，所以列一个方程我们完全可以解出第n位，依次类推即可还原前面任意位)</p>
+<p>这一切建立在我们知道了mask的情况下，但是假如我们不知道mask，我们需要推导出它。我们可以设想一下我们至少通过多少位可以得到mask。mask为n位，也就是说我们有n个未知数，所以我们至少需要n个线性无关的方程才能解出这n个未知数。而每一位都是由它之前的n位决定的，由此我们可以列出一个方程。所以我们至少需要n+n=2n位的(连续)序列才能得到mask，进而恢复原先的状态。</p>
+<p>写成数学表达式就是如下</p>
+<script type="math/tex; mode=display">
+(a_{n+1},a_{n+2},\dots,a_{2n}) = (c_{n},c_{n-1},\dots,c_{1})\begin{bmatrix}
+a_1&a_2&\dots&a_{n-1}&a_n\\
+a_2&a_3&\dots&a_{n}&a_{n+1}\\
+a_3&a_4&\dots&a_{n+1}&a_{n+2}\\
+\vdots&\vdots&\ddots&\vdots\\
+a_n&a_{n+1}&\dots&a_{2n-2}&a_{2n-1}
+\end{bmatrix}</script><p>直接右乘逆矩阵即可恢复各个c，具体代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">def BMN(output,n):</span><br><span class="line">    F&#x3D;GF(2)</span><br><span class="line">    r&#x3D;[]</span><br><span class="line">    for i in output:</span><br><span class="line">        r.append(int(i))</span><br><span class="line">    x&#x3D;[F(i) for i in r]</span><br><span class="line">    X&#x3D;[]</span><br><span class="line">    for i in range(n):</span><br><span class="line">        s&#x3D;[]</span><br><span class="line">        for j in range(n):</span><br><span class="line">            s.append(x[i+j])</span><br><span class="line">        X.append(s)</span><br><span class="line">    X&#x3D;matrix(X)</span><br><span class="line">    S&#x3D;[F(i) for i in r[-n:]]</span><br><span class="line">    S&#x3D;matrix(S)</span><br><span class="line">    if(X.rank() !&#x3D; n):</span><br><span class="line">        return 0</span><br><span class="line">    c&#x3D;S*X**-1</span><br><span class="line">    mask&#x3D;&#39;&#39;</span><br><span class="line">    for i in c[0]:</span><br><span class="line">        mask+&#x3D;str(i)</span><br><span class="line">    mask&#x3D;(int(mask,2))</span><br><span class="line">    return mask</span><br></pre></td></tr></table></figure><br>output为输出流，n为LFSR位数</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>我们通过几个例子来说明LFSR的基本破解方法以及思路</p>
+<h3 id="SUSCTF-ez-paper-tiper"><a href="#SUSCTF-ez-paper-tiper" class="headerlink" title="SUSCTF ez_paper_tiper"></a>SUSCTF ez_paper_tiper</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">#magic_box.py</span><br><span class="line">class lfsr():</span><br><span class="line">    def __init__(self, seed, mask, length):</span><br><span class="line">        self.length_mask &#x3D; 2 ** length - 1</span><br><span class="line">        self.mask &#x3D; mask &amp; self.length_mask</span><br><span class="line">        self.state &#x3D; seed &amp; self.length_mask</span><br><span class="line"></span><br><span class="line">    def next(self):</span><br><span class="line">        next_state &#x3D; (self.state &lt;&lt; 1) &amp; self.length_mask</span><br><span class="line">        i &#x3D; self.state &amp; self.mask &amp; self.length_mask</span><br><span class="line">        output &#x3D; 0</span><br><span class="line">        while i !&#x3D; 0:</span><br><span class="line">            output ^&#x3D; (i &amp; 1)</span><br><span class="line">            i &#x3D; i &gt;&gt; 1</span><br><span class="line">        next_state ^&#x3D; output</span><br><span class="line">        self.state &#x3D; next_state</span><br><span class="line">        return output</span><br><span class="line"></span><br><span class="line">    def getrandbit(self, nbit):</span><br><span class="line">        output &#x3D; 0</span><br><span class="line">        for _ in range(nbit):</span><br><span class="line">            output &#x3D; (output &lt;&lt; 1) ^ self.next()</span><br><span class="line">        return output</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class generator():</span><br><span class="line">    def __init__(self, lfsr1, lfsr2, magic):</span><br><span class="line">        self.lfsr1 &#x3D; lfsr1</span><br><span class="line">        self.lfsr2 &#x3D; lfsr2</span><br><span class="line">        self.magic &#x3D; magic</span><br><span class="line"></span><br><span class="line">    def infinit_power(self, magic):</span><br><span class="line">        return int(magic)</span><br><span class="line"></span><br><span class="line">    def malicious_magic(self, magic):</span><br><span class="line">        now &#x3D; (-magic &amp; magic)</span><br><span class="line">        magic ^&#x3D; now</span><br><span class="line">        return int(now), int(magic)</span><br><span class="line"></span><br><span class="line">    def confusion(self, c1, c2):</span><br><span class="line">        magic &#x3D; self.magic</span><br><span class="line">        output, cnt &#x3D; magic, 0</span><br><span class="line">        output ^&#x3D; c1 ^ c2</span><br><span class="line">        while magic:</span><br><span class="line">            now, magic &#x3D; self.malicious_magic(magic)</span><br><span class="line">            cnt ^&#x3D; now &gt;&gt; (now.bit_length() - 1)</span><br><span class="line">            output ^&#x3D; now</span><br><span class="line">        output ^&#x3D; cnt * c1</span><br><span class="line">        return int(output)</span><br><span class="line"></span><br><span class="line">    def getrandbit(self, nbit):</span><br><span class="line">        output1 &#x3D; self.lfsr1.getrandbit(nbit)</span><br><span class="line">        output2 &#x3D; self.lfsr2.getrandbit(nbit)</span><br><span class="line">        return self.confusion(output1, output2)</span><br></pre></td></tr></table></figure>
+<p>这个py文件就是一个简单的lfsr的实现以及一个generator。我们重点分析一下这个generator，主要是这个<code>malicious_magic</code>函数。<code>now</code>输出的是magic所含的2的幂次，换句话说就是二进制下的magic所含的最长的100…0序列。举个例子0b1010100输出的就是0b100，0b1010010输出的就是0b10，0b1111输出的就是0b1,同时magic异或now之后会把后面那一串100…0置为000…0。</p>
+<p>这样我们再去看这个confusion函数，一开始output和cnt置为magic,0。在循环的过程中<code>now &gt;&gt; (now.bit_length() - 1)</code>永远是1。通过刚刚对<code>malicious_magic</code>的分析我们可以知道，while循环的长度取决于magic中1的数量(因为每次执行的时候都将末尾的100..0清0，最后一次的时候magic就为100…0，now也为100..0这时候一异或就没了。这样逐步将最后的1置0，所以循环长度就完全取决于magic中1的数量)。如果magic中1为偶数，此时cnt输出的是0，反之为1。同时循环每次异或now后，output(一开始被异或了一个为magic)就也将最后一个1置为0，循环结束时output就为c1^c2。综上我们可以得出，如果magic中1的数量为偶数，输出的为c1^c2，如果为奇数，输出的就是c2(c1异或掉了)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#problem.py</span><br><span class="line">from Crypto.Util.number import *</span><br><span class="line">from magic_box import *</span><br><span class="line">from secret import mask1, mask2, seed1, seed2, seed3</span><br><span class="line">n1, n2 &#x3D; 64, 12</span><br><span class="line"></span><br><span class="line">flag &#x3D; &#39;SUSCTF&#123;***&#125;&#39;</span><br><span class="line"></span><br><span class="line">def encrypt(cipher, ipath, opath):</span><br><span class="line">    ifile&#x3D;open(ipath,&#39;rb&#39;)</span><br><span class="line">    ofile&#x3D;open(opath,&#39;wb&#39;)</span><br><span class="line">    plaintext&#x3D;ifile.read()</span><br><span class="line">    for ch in plaintext:</span><br><span class="line">        c&#x3D;ch^cipher.getrandbit(8)</span><br><span class="line">        ofile.write(long_to_bytes(c))</span><br><span class="line">    ifile.close()</span><br><span class="line">    ofile.close()</span><br><span class="line"></span><br><span class="line">def problem1():</span><br><span class="line">    r &#x3D; getRandomInteger(6)</span><br><span class="line">    magic &#x3D; 1&lt;&lt;r</span><br><span class="line">    lfsr1 &#x3D; lfsr(seed1, mask1, n1)</span><br><span class="line">    lfsr2 &#x3D; lfsr(seed2, mask2, n2)</span><br><span class="line">    cipher &#x3D; generator(lfsr1, lfsr2, magic)</span><br><span class="line">    encrypt(cipher, &quot;MTk4NC0wNC0wMQ&#x3D;&#x3D;_6d30.txt&quot;, &quot;MTk4NC0wNC0wMQ&#x3D;&#x3D;_6d30.enc&quot;)</span><br><span class="line"></span><br><span class="line">def problem2():</span><br><span class="line">    magic &#x3D; getPrime(64)</span><br><span class="line">    lfsr1&#x3D;lfsr(seed1, mask1, n1)</span><br><span class="line">    lfsr2&#x3D;lfsr(seed3, mask2, n2)</span><br><span class="line">    cipher &#x3D; generator(lfsr1, lfsr2, magic)</span><br><span class="line">    encrypt(cipher, &quot;MTk4NC0xMi0yNQ&#x3D;&#x3D;_76ff.txt&quot;, &quot;MTk4NC0xMi0yNQ&#x3D;&#x3D;_76ff.enc&quot;)</span><br><span class="line">    # flag in it?</span><br><span class="line">    print(f&#39;hint&#x3D;&#123;magic&#125;&#39;)</span><br><span class="line">    # hint &#x3D; 15193544052573546419</span><br><span class="line"></span><br><span class="line">problem1()</span><br><span class="line">problem2()</span><br></pre></td></tr></table></figure>
+<p>接下来我们看这个problem，问题分成两个problem1以及problem2。这个encrypt函数就是利用generator生成的密钥流对文本进行异或加密</p>
+<p>先看problem1，problem1中magic中1的数量为奇数，通过刚刚的分析我们可以得知，generator生成的密钥流就是lfsr2产生的密钥流。通过分析(文件名的base64以及给的data的提示)我们可以得到前面几个明文是`Date: 1984-04-01\r\n’，异或密文之后我们得到了密钥流，通过枚举mask2，以开始的12位为种子(注意我们之前说的，lfsr每次生成的完全由当前的状态以及mask决定，所以我们不必枚举seed，而完全可以以一开始的密钥流作为种子)，生成一个lfsr，与之后的密钥进行比较，如果符合就输出，这样我们可以得到mask2。当然我们也能通过之前说的矩阵的方式得到mask，但是这里数据量比较少(2^12)，直接枚举也算快</p>
+<p>再看problem2,这次magic中1的个数为偶数，输出流为lfsr2^lfsr1之后的结果，通过刚刚的计算我们可以得出了mask2。我们可以通过枚举seed3来得到lfsr2的密钥流，然后与输出流异或得到lfsr1的结果，然后对于lfsr1，我们事实上有len(‘Date: 1984-04-01\r\n’)*8 = 144位的数据，我们通过前128位恢复mask1，然后以前64位作为seed，生成80位数据与后面的进行比对，如果相等就可以输出seed3,mask1。进而完全恢复密文</p>
+<p>以下分别给出problem1以及problem2的sage代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">#problem1</span><br><span class="line">from Crypto.Util.number import *</span><br><span class="line">from base64 import b64decode</span><br><span class="line">from magic_box import *</span><br><span class="line">n1 ,n2 &#x3D; 64,12</span><br><span class="line">def BMN(output,n):</span><br><span class="line">    F&#x3D;GF(2)</span><br><span class="line">    r&#x3D;[]</span><br><span class="line">    for i in output:</span><br><span class="line">        r.append(int(i))</span><br><span class="line">    x&#x3D;[F(i) for i in r]</span><br><span class="line">    X&#x3D;[]</span><br><span class="line">    for i in range(n):</span><br><span class="line">        s&#x3D;[]</span><br><span class="line">        for j in range(n):</span><br><span class="line">            s.append(x[i+j])</span><br><span class="line">        X.append(s)</span><br><span class="line">    X&#x3D;matrix(X)</span><br><span class="line">    S&#x3D;[F(i) for i in r[-n:]]</span><br><span class="line">    S&#x3D;matrix(S)</span><br><span class="line">    if(X.rank() !&#x3D; n):</span><br><span class="line">        return 0</span><br><span class="line">    c&#x3D;S*X**-1</span><br><span class="line">    mask&#x3D;&#39;&#39;</span><br><span class="line">    for i in c[0]:</span><br><span class="line">        mask+&#x3D;str(i)</span><br><span class="line">    mask&#x3D;(int(mask,2))</span><br><span class="line">    return mask</span><br><span class="line">passage &#x3D; b&#39;Dat&#39;</span><br><span class="line">bitstream &#x3D; &#39;&#39;</span><br><span class="line">ifile &#x3D; open(&quot;MTk4NC0wNC0wMQ&#x3D;&#x3D;_6d30.enc&quot;, &quot;rb&quot;)</span><br><span class="line">cipher1 &#x3D; ifile.read()</span><br><span class="line">for i in range(3):</span><br><span class="line">    num &#x3D; cipher1[i]^^passage[i]</span><br><span class="line">    bitstream +&#x3D; bin(num)[2:].zfill(8)</span><br><span class="line">print(f&quot;bitstream &#x3D; &#123;bitstream&#125; ?????&quot;)</span><br><span class="line">print(BMN(bitstream,12)) #通过矩阵求mask2</span><br><span class="line"></span><br><span class="line">for mask2 in range(1&lt;&lt;12): #通过枚举求mask2</span><br><span class="line">    lfsr2 &#x3D; lfsr(int(bitstream,2),mask2,n2)</span><br><span class="line">    plain &#x3D; b&#39;&#39;</span><br><span class="line">    for i in range(3,16):</span><br><span class="line">        num &#x3D; cipher1[i]^^lfsr2.getrandbit(8)</span><br><span class="line">        plain+&#x3D;long_to_bytes(num)</span><br><span class="line">    try:</span><br><span class="line">        if plain.decode().isprintable(): #如果可打印，那么基本就是所要求的</span><br><span class="line">            print(plain,mask2)</span><br><span class="line">    except:</span><br><span class="line">        continue</span><br><span class="line"></span><br><span class="line">#bitstream &#x3D; 111110010101100011110010 ?????</span><br><span class="line">#2053</span><br><span class="line">#b&quot;&#39;u@yL%U)8Mdvk&quot; 1756</span><br><span class="line">#b&#39;e: 1984-04-01&#39; 2053</span><br><span class="line">#b&quot;&#39;u@yL%U)8Mdvk&quot; 2917</span><br></pre></td></tr></table></figure><br>这样我们可以知道mask2位2053<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#problem2</span><br><span class="line"></span><br><span class="line">ifile &#x3D; open(&quot;MTk4NC0xMi0yNQ&#x3D;&#x3D;_76ff.enc&quot;, &quot;rb&quot;)</span><br><span class="line">cipher2 &#x3D; ifile.read()[:18]</span><br><span class="line">print(cipher2)</span><br><span class="line">passage2 &#x3D; b&#39;Date: 1984-12-25\r\n&#39;</span><br><span class="line">mask2 &#x3D; 2053</span><br><span class="line">for seed3 in range(1&lt;&lt;12):</span><br><span class="line">    lfsr2 &#x3D; lfsr(seed3,mask2,12)</span><br><span class="line">    bitstream2 &#x3D; &#39;&#39;</span><br><span class="line">    for i in range(18):</span><br><span class="line">        bitstream2+&#x3D;bin(passage2[i]^^lfsr2.getrandbit(8)^^cipher2[i])[2:].zfill(8)</span><br><span class="line">    mask1 &#x3D; BMN(bitstream2[:128],64)</span><br><span class="line">    if(mask1&#x3D;&#x3D;0):</span><br><span class="line">        continue</span><br><span class="line">    lfsr1 &#x3D; lfsr(int(bitstream2[:64],2),mask1,64)</span><br><span class="line">    if(lfsr1.getrandbit(80)&#x3D;&#x3D;int(bitstream2[-80:],2)):</span><br><span class="line">        print(f&#39;mask1 &#x3D; &#123;mask1&#125;&#39;)</span><br><span class="line">        print(f&#39;seed3 &#x3D; &#123;seed3&#125;&#39;)</span><br><span class="line">        break</span><br></pre></td></tr></table></figure><br>得到所有参数之后，恢复即可,可以在上面的代码基础上作适当修改，具体就是改个if后面的，改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if(lfsr1.getrandbit(80)&#x3D;&#x3D;int(bitstream2[-80:],2)):</span><br><span class="line">    print(f&#39;mask1 &#x3D; &#123;mask1&#125;&#39;)</span><br><span class="line">    print(f&#39;seed3 &#x3D; &#123;seed3&#125;&#39;)</span><br><span class="line">    plain &#x3D; b&#39;&#39;</span><br><span class="line">    for i in range(18,len(cipher2)):</span><br><span class="line">        plain+&#x3D;long_to_bytes(cipher2[i]^^lfsr2.getrandbit(8)^^lfsr1.getrandbit(8))</span><br><span class="line">    print(plain)</span><br></pre></td></tr></table></figure><br>可以得到明文<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b&quot;Though the hunger pangs were no longer so exquisite, he realized that he was weak.  He was compelled to pause for frequent rests, when he attacked the muskeg berries and rush-grass patches.  His tongue felt dry and large, as though covered with a fine hairy growth, and it tasted bitter in his mouth.  His heart gave him a great deal of trouble.  When he had travelled a few minutes it would begin a remorseless thump, thump, thump, and then leap up and away in a painful flutter of beats that choked him and made him go faint and dizzy.\r\nIn the middle of the day he found two minnows in a large pool.  It was impossible to bale it, but he was calmer now and managed to catch them in his tin bucket.  They were no longer than his little finger, but he was not particularly hungry.  The dull ache in his stomach had been growing duller and fainter.  It seemed almost that his stomach was dozing.  He ate the fish raw, masticating with painstaking care, for the eating was an act of pure reason.  While he had no desire to eat, he knew that he must eat to live.\r\nIn the evening he caught three more minnows, eating two and saving the third for breakfast.  The sun had dried stray shreds of moss, and he was able to warm himself with hot water.  He had not covered more than ten miles that day; and the next day, travelling whenever his heart permitted him, he covered no more than five miles.  But his stomach did not give him the slightest uneasiness.  It had gone to sleep.  He was in a strange country, too, and the caribou were growing more plentiful, also the wolves.  Often their yelps drifted across the desolation, and once he saw three of them slinking away before his path.\r\nThe content is an excerpt from Love of Life, by Jack London. The problem is mainly about LFSR and I&#39;ve tried not to make it hard (with the cost of some running time, actually). Your flag is SUSCTF&#123;Thx_f0r_y0uR_P4ti3nce_:)_GoodLuck!_1bc9b80142c24fef610b8d770b500009&#125; and I hope you will enjoy our game. You&#39;ll find this problem so ez while solving other problems, which is created by --.&quot;</span><br></pre></td></tr></table></figure></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2022/03/16/LFSR%E6%95%B4%E7%90%86/">http://phot0n.com/2022/03/16/LFSR%E6%95%B4%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/crypto/">crypto</a><a class="post-meta__tags" href="/tags/LFSR/">LFSR</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/22/%E8%99%8E%E7%AC%A6ctf2022/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">虎符ctf2022</div></div></a></div><div class="next-post pull-right"><a href="/2022/03/01/SUSCTF2022crypto/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">SUSCTF2022crypto</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/03/29/DASCTF-2022/" title="DASCTF 2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-29</div><div class="title">DASCTF 2022</div></div></a></div><div><a href="/2023/01/02/CatCTF2022/" title="CatCTF2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-02</div><div class="title">CatCTF2022</div></div></a></div><div><a href="/2021/10/22/GKCTF2021Crypto/" title="GKCTF2021Crypto"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-22</div><div class="title">GKCTF2021Crypto</div></div></a></div><div><a href="/2021/11/15/L3HCTF-CRYPTO/" title="L3HCTF_CRYPTO"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-15</div><div class="title">L3HCTF_CRYPTO</div></div></a></div><div><a href="/2022/04/30/MRCTF2022/" title="MRCTF2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-30</div><div class="title">MRCTF2022</div></div></a></div><div><a href="/2021/10/10/RSA%E6%94%BB%E5%87%BB%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86-%E5%88%9D%E7%BA%A7/" title="RSA攻击方法整理_初级"><img class="cover" src="https://i.loli.net/2021/10/10/1OsDCLuAlp6VkW4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-10</div><div class="title">RSA攻击方法整理_初级</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LFSR-%E7%9A%84%E5%AE%9A%E4%B9%89%E4%BB%A5%E5%8F%8A%E7%9F%A9%E9%98%B5%E5%BD%A2%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">LFSR 的定义以及矩阵形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81"><span class="toc-number">2.</span> <span class="toc-text">恢复初始状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">例题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SUSCTF-ez-paper-tiper"><span class="toc-number">3.1.</span> <span class="toc-text">SUSCTF ez_paper_tiper</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

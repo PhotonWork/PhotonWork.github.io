@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>汇编实验 | Photon’s Blog</title><meta name="keywords" content="汇编"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="8086汇编实验,贴原码记录一下  实验一做这个实验的时候还完全看不懂汇编….这一份是抄的，不过看起来比较简单就不复现了1234567891011121314151617181920212223DATA SEGMENT      VARX DB 5       ;VARX,VARY赋值     VARY DB 4      VARZ DB ?       ;不分配常量，用于存放结果  DATA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编实验">
+<meta property="og:url" content="http://phot0n.com/2021/12/09/%E6%B1%87%E7%BC%96%E5%AE%9E%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="8086汇编实验,贴原码记录一下  实验一做这个实验的时候还完全看不懂汇编….这一份是抄的，不过看起来比较简单就不复现了1234567891011121314151617181920212223DATA SEGMENT      VARX DB 5       ;VARX,VARY赋值     VARY DB 4      VARZ DB ?       ;不分配常量，用于存放结果  DATA">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2021-12-09T14:46:40.000Z">
+<meta property="article:modified_time" content="2021-12-19T15:00:46.257Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2021/12/09/%E6%B1%87%E7%BC%96%E5%AE%9E%E9%AA%8C/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '汇编实验',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-19 23:00:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">汇编实验</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-12-09T14:46:40.000Z" title="Created 2021-12-09 22:46:40">2021-12-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-12-19T15:00:46.257Z" title="Updated 2021-12-19 23:00:46">2021-12-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>6min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>8086汇编实验,贴原码记录一下</p>
+</blockquote>
+<h2 id="实验一"><a href="#实验一" class="headerlink" title="实验一"></a>实验一</h2><p>做这个实验的时候还完全看不懂汇编….这一份是抄的，不过看起来比较简单就不复现了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">DATA SEGMENT  </span><br><span class="line">    VARX DB 5       ;VARX,VARY赋值 </span><br><span class="line">    VARY DB 4  </span><br><span class="line">    VARZ DB ?       ;不分配常量，用于存放结果  </span><br><span class="line">DATA ENDS  </span><br><span class="line">CODE SEGMENT  </span><br><span class="line">    ASSUME CS:CODE,DS:DATA  </span><br><span class="line">START:  </span><br><span class="line">    MOV AX,DATA</span><br><span class="line">    MOV DS,AX</span><br><span class="line">    MOV AL,VARX</span><br><span class="line">    MOV AH,VARY</span><br><span class="line">    SAL AL,1</span><br><span class="line">    SAL AL,1</span><br><span class="line">    ADD AL,VARX</span><br><span class="line">    SAL AH,1</span><br><span class="line">    ADD AL,AH</span><br><span class="line">    SUB AL,7</span><br><span class="line">    SAR AL,1</span><br><span class="line">    MOV VARZ,AL</span><br><span class="line">    MOV AH,4CH</span><br><span class="line">    INT 21H</span><br><span class="line">END START</span><br></pre></td></tr></table></figure></p>
+<h2 id="实验二"><a href="#实验二" class="headerlink" title="实验二"></a>实验二</h2><p>这个是自己写的,当时写出来之后还挺开心的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">DATA SEGMENT</span><br><span class="line">    BUF DB -1, 20, 3, 30, -5, 15, 100, -54, 0, 4, 78, 99, -12, 32, 3, 23, -7, 24, 60,-51</span><br><span class="line">    RES1 DB 0</span><br><span class="line">    RES2 DB 0</span><br><span class="line">    RES3 DB 0</span><br><span class="line">DATA ENDS</span><br><span class="line">CODE SEGMENT</span><br><span class="line">    ASSUME CS:CODE,DS:DATA</span><br><span class="line">START:</span><br><span class="line">    MOV AX,DATA</span><br><span class="line">    MOV DS,AX</span><br><span class="line">    MOV CX,20</span><br><span class="line">    MOV BX,0</span><br><span class="line">LET0:</span><br><span class="line">    CMP BYTE PTR[BX],0</span><br><span class="line">    JL LET1</span><br><span class="line">    CMP BYTE PTR[BX],5</span><br><span class="line">    JLE LET2</span><br><span class="line">    JMP LET3</span><br><span class="line">LET1:</span><br><span class="line">    INC RES1</span><br><span class="line">    INC BX</span><br><span class="line">    JMP OUT0</span><br><span class="line">LET2:</span><br><span class="line">    INC RES2</span><br><span class="line">    INC BX</span><br><span class="line">    JMP OUT0</span><br><span class="line">LET3:</span><br><span class="line">    INC RES3</span><br><span class="line">    INC BX</span><br><span class="line">    JMP OUT0</span><br><span class="line">OUT0:</span><br><span class="line">    DEC CX</span><br><span class="line">    CMP CX,0</span><br><span class="line">    JNZ LET0</span><br><span class="line"></span><br><span class="line"> CMP RES1,10</span><br><span class="line">JL OUTPUT1</span><br><span class="line">JMP BIGGER1</span><br><span class="line"></span><br><span class="line">BIGGER1:</span><br><span class="line">SUB RES1,10</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,49</span><br><span class="line">INT 21H</span><br><span class="line">JMP OUTPUT1</span><br><span class="line"></span><br><span class="line">OUTPUT1:</span><br><span class="line">ADD RES1,48</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,RES1</span><br><span class="line">INT 21H</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,20H</span><br><span class="line">INT 21H</span><br><span class="line"></span><br><span class="line">CMP RES2,10</span><br><span class="line">JL OUTPUT2</span><br><span class="line">JMP BIGGER2</span><br><span class="line"></span><br><span class="line">BIGGER2:</span><br><span class="line">SUB RES2,10</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,49</span><br><span class="line">INT 21H</span><br><span class="line">JMP OUTPUT2</span><br><span class="line"></span><br><span class="line">OUTPUT2:</span><br><span class="line">ADD RES2,48</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,RES2</span><br><span class="line">INT 21H</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,20H</span><br><span class="line">INT 21H</span><br><span class="line"></span><br><span class="line">CMP RES3,10</span><br><span class="line">JL OUTPUT3</span><br><span class="line">JMP BIGGER3</span><br><span class="line"></span><br><span class="line">BIGGER3:</span><br><span class="line">SUB RES3,10</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,49</span><br><span class="line">INT 21H</span><br><span class="line">JMP OUTPUT3</span><br><span class="line"></span><br><span class="line">OUTPUT3:</span><br><span class="line">ADD RES3,48</span><br><span class="line">MOV AH,2</span><br><span class="line">MOV DL,RES3</span><br><span class="line">INT 21H</span><br><span class="line"></span><br><span class="line">MOV AH,4CH</span><br><span class="line">INT 21H</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CODE ENDS</span><br><span class="line">END START</span><br></pre></td></tr></table></figure><br>(后面半部分是抄群友的</p>
+<h2 id="实验三"><a href="#实验三" class="headerlink" title="实验三"></a>实验三</h2><p>这个实验好像要求调用函数，但是不调用函数应该也能做，只不过不太简洁<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">DATA SEGMENT</span><br><span class="line">    VARX1 DW ?</span><br><span class="line">    NUM1 DW ?</span><br><span class="line">    TMP DB 10</span><br><span class="line">DATA ENDS</span><br><span class="line">STATCK SEGMENT</span><br><span class="line">    DB 16 DUP(0)</span><br><span class="line">STATCK ENDS</span><br><span class="line">CODE SEGMENT</span><br><span class="line">    ASSUME CS:CODE,DS:DATA,SS:STATCK</span><br><span class="line">START:</span><br><span class="line">    MOV AX,DATA</span><br><span class="line">    MOV DS,AX</span><br><span class="line">    CALL FUN1</span><br><span class="line">    MOV NUM1,AX ;从FUN1回来时，得到的结果放在AX中，为了备份我们将其放在NUM1中</span><br><span class="line">    MOV VARX1,0 ;VARX1清零，否则会影响第二次接收数据</span><br><span class="line">    CALL FUN1 ;接收第二次数据，放在AX中</span><br><span class="line">    ADD AX,NUM1 ;与第一次得到的数据相加，放在AX中(但其实就是AL，因为两个2位十进制数相加肯定小于256)</span><br><span class="line">    MOV BL,AL ;为了同时获取AL的高4位和低4位的16进制表示，我们备份AL</span><br><span class="line"></span><br><span class="line">    AND AL,240 ;截取高4位</span><br><span class="line">    MOV CL,4</span><br><span class="line">    SHR AL,CL;高四位移位到低4位</span><br><span class="line">    CALL FUN2;输出高四位的十六进制表示</span><br><span class="line">    MOV AL,BL;将之前备份的返回AL</span><br><span class="line">    AND AL,15;高4位清零</span><br><span class="line">    CALL FUN2;输出低四位的十六进制表示</span><br><span class="line">    MOV AH,4CH</span><br><span class="line">    INT 21H</span><br><span class="line">FUN1: ;FUN1作用:接收用户输入二位10进制字符,然后转换成数字存到内存中</span><br><span class="line">    MOV AH,1</span><br><span class="line">    INT 21H     ;接收输入的十位上字符，存到AL中</span><br><span class="line">    SUB AL,&#39;0&#39;   ;ASIC码转换成数字</span><br><span class="line">    MUL TMP   ;由于是十位上字符，乘以10，结果存在AX中</span><br><span class="line">    MOV VARX1,AX    ;结果转存到VARX1中</span><br><span class="line">    MOV AH,1</span><br><span class="line">    INT 21H  ;接收个位上字符</span><br><span class="line">    SUB AL,&#39;0&#39;</span><br><span class="line">    XOR AH,AH ;高位清零</span><br><span class="line">    ADD AX,VARX1;和之前存的十位相加，放在AX中</span><br><span class="line">    RET</span><br><span class="line">FUN2:;FUN2作用:将AL中的数字转化成ASIC码再输出</span><br><span class="line">    CMP AL,9 ;由于十六进制，所以要和9比较，如果大于9则是输出的字母abcdef中一个</span><br><span class="line">    JG S;大于跳转到S，输出字母</span><br><span class="line">    ADD AL,&#39;0&#39;;否则输出数字</span><br><span class="line">    MOV AH,2</span><br><span class="line">    MOV DL,AL</span><br><span class="line">    INT 21H</span><br><span class="line">    RET</span><br><span class="line">S:</span><br><span class="line">    SUB AL,10</span><br><span class="line">    ADD AL,&#39;a&#39;</span><br><span class="line">    MOV AH,2</span><br><span class="line">    MOV DL,AL</span><br><span class="line">    INT 21H</span><br><span class="line">    RET</span><br><span class="line"></span><br><span class="line">CODE ENDS</span><br><span class="line">END START</span><br></pre></td></tr></table></figure></p>
+<h2 id="实验四"><a href="#实验四" class="headerlink" title="实验四"></a>实验四</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">DATA SEGMENT ;建立一个缓冲区</span><br><span class="line">	BUF DB 25  ; 缓冲区长度（含回车）</span><br><span class="line">        	ACTHAR DB ?  ; 保留单元, 存放输入的实际字符个数（不含回车）   </span><br><span class="line"> 	CHAR DB 25 DUP (?) ; 定义25个字节存储空间</span><br><span class="line">		 DB &#39;$&#39;</span><br><span class="line"></span><br><span class="line">	TOTALLENGTH DB 25;缓冲区的总长度</span><br><span class="line">	ACTUALLENGTH DB ?;实际输入的字符串长度</span><br><span class="line">	MOVELENGTH DB ?;对齐时要移动的长度</span><br><span class="line">DATA ENDS</span><br><span class="line"></span><br><span class="line">STACK1 SEGMENT PARA STACK</span><br><span class="line">	DW 20H DUP(0)</span><br><span class="line">STACK1 ENDS</span><br><span class="line"></span><br><span class="line">CODE SEGMENT</span><br><span class="line">ASSUME CS:CODE, DS:DATA, SS:STACK1,ES:DATA</span><br><span class="line">START:</span><br><span class="line">	MOV AX, DATA</span><br><span class="line">	MOV DS, AX</span><br><span class="line"></span><br><span class="line">	MOV ES,AX;设置ES段</span><br><span class="line"></span><br><span class="line">	MOV DX,OFFSET BUF;把DX与建立的缓冲区绑定</span><br><span class="line"></span><br><span class="line">	CALL READNEWSTR;接下来的四行代码调用了输入字符和输出字符子程序各两次。</span><br><span class="line">	CALL OUTPUTSTR</span><br><span class="line"></span><br><span class="line">	CALL READNEWSTR</span><br><span class="line">	CALL OUTPUTSTR	</span><br><span class="line"></span><br><span class="line">	MOV AH,4CH</span><br><span class="line">	INT 21H</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">READNEWSTR PROC ;读入一个新的字符串到缓冲区的子程序</span><br><span class="line">	MOV CX,25;循环25次，我们要清空旧的缓冲区</span><br><span class="line">	MOV SI,OFFSET CHAR;让SI指向缓冲区中字符串的首地址</span><br><span class="line">	</span><br><span class="line">	CLEAROLDBUF:</span><br><span class="line">		MOV BYTE PTR [SI],0;清空旧的缓冲区，置0</span><br><span class="line">		INC SI</span><br><span class="line">	LOOP CLEAROLDBUF</span><br><span class="line"></span><br><span class="line">	MOV AH,10</span><br><span class="line">	INT 21H ;从键盘读取字符串输入</span><br><span class="line">	</span><br><span class="line">	RET</span><br><span class="line">READNEWSTR ENDP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">OUTPUTSTR PROC;完成向右对齐的移位并输出到屏幕的子程序</span><br><span class="line">	XOR AH,AH</span><br><span class="line">	MOV AL,BUF;缓冲区的长度</span><br><span class="line">	MOV TOTALLENGTH,AL</span><br><span class="line"></span><br><span class="line">	MOV AL,ACTHAR;记录下本次输入的字符串长</span><br><span class="line">	MOV ACTUALLENGTH,AL</span><br><span class="line"></span><br><span class="line">	MOV AL,TOTALLENGTH</span><br><span class="line">	SUB AL,ACTUALLENGTH</span><br><span class="line">	MOV MOVELENGTH,AL;缓冲区的长度减去实际输入的字符串长度&#x3D;要向右位移的位数</span><br><span class="line"></span><br><span class="line">	MOV SI,OFFSET CHAR;源位置指针</span><br><span class="line"></span><br><span class="line">	MOV DI,OFFSET CHAR;目的位置指针&#x3D;源位置指针+字符串长度</span><br><span class="line">	MOV AL,MOVELENGTH</span><br><span class="line">	MOV AH,0</span><br><span class="line">	ADD DI,AX;设置目的位置指针，上面这四行代码干的就是这件事</span><br><span class="line"></span><br><span class="line">	MOV CL,ACTUALLENGTH;设置计数器，有几个字符自然就要移动几个字符</span><br><span class="line">	</span><br><span class="line">	CLD;意为当DF&#x3D;0时，字符串的传送从低位到高位进行。</span><br><span class="line">	MOVELOOP:</span><br><span class="line">		MOVSB;字符串传送指令，从DS:SI传送到ES:DI，B指字节型传送，传送次数由CX指定。也就是说这三行代码可以直接写成 REP MOVSB。</span><br><span class="line">	LOOP MOVELOOP</span><br><span class="line"></span><br><span class="line">	MOV CL,MOVELENGTH;移动了几位就挪出来了几个空格</span><br><span class="line">	MOV SI,0;位置指针</span><br><span class="line"></span><br><span class="line">	SPACELOOP:</span><br><span class="line">		MOV [CHAR+SI],20H;空格的ASCII码是20H，填充空格</span><br><span class="line">		INC SI</span><br><span class="line">	LOOP SPACELOOP</span><br><span class="line">		</span><br><span class="line">	MOV DX,OFFSET CHAR</span><br><span class="line">	MOV AH,09H</span><br><span class="line">	INT 21H</span><br><span class="line">	RET</span><br><span class="line">OUTPUTSTR ENDP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CODE ENDS</span><br><span class="line">END START</span><br></pre></td></tr></table></figure>
+<p>嫖的</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2021/12/09/%E6%B1%87%E7%BC%96%E5%AE%9E%E9%AA%8C/">http://phot0n.com/2021/12/09/%E6%B1%87%E7%BC%96%E5%AE%9E%E9%AA%8C/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%87%E7%BC%96/">汇编</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/12/19/%E7%BE%A4%E7%8E%AF%E5%9F%9F/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">群环域</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/01/raspberrypi-init/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">raspberrypi_init</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80"><span class="toc-number">1.</span> <span class="toc-text">实验一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C"><span class="toc-number">2.</span> <span class="toc-text">实验二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89"><span class="toc-number">3.</span> <span class="toc-text">实验三</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B"><span class="toc-number">4.</span> <span class="toc-text">实验四</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>概率论-1 | Photon’s Blog</title><meta name="keywords" content="数学,概率论'"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="自开学以来概率论课上都在摸鱼🦑,乘此机会把知识脉络整理一下,可能不会那么详细，主要是提纲  一维随机变量首先阐明一下随机变量的概念，简而言之就是实验结果的函数随机变量主要分两种  离散型随机变量 连续性随机变量  后面讨论的时候我们有时会把二者区分开讨论 离散型随机变量的分布及其例子 定义1.1设$X$为离散型随机变量,其全部可能值为$ \{ a_1,a_2,\dots \} $,则$p_i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率论-1">
+<meta property="og:url" content="http://phot0n.com/2021/10/10/%E6%A6%82%E7%8E%87%E8%AE%BA-1/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="自开学以来概率论课上都在摸鱼🦑,乘此机会把知识脉络整理一下,可能不会那么详细，主要是提纲  一维随机变量首先阐明一下随机变量的概念，简而言之就是实验结果的函数随机变量主要分两种  离散型随机变量 连续性随机变量  后面讨论的时候我们有时会把二者区分开讨论 离散型随机变量的分布及其例子 定义1.1设$X$为离散型随机变量,其全部可能值为$ \{ a_1,a_2,\dots \} $,则$p_i">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2021-10-10T13:01:14.000Z">
+<meta property="article:modified_time" content="2021-10-12T13:30:20.679Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="概率论&#39;">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2021/10/10/%E6%A6%82%E7%8E%87%E8%AE%BA-1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '概率论-1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-10-12 21:30:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">概率论-1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-10-10T13:01:14.000Z" title="Created 2021-10-10 21:01:14">2021-10-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-10-12T13:30:20.679Z" title="Updated 2021-10-12 21:30:20">2021-10-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>4min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>自开学以来概率论课上都在摸鱼🦑,乘此机会把知识脉络整理一下,可能不会那么详细，主要是提纲</p>
+</blockquote>
+<h1 id="一维随机变量"><a href="#一维随机变量" class="headerlink" title="一维随机变量"></a>一维随机变量</h1><p>首先阐明一下随机变量的概念，简而言之就是实验结果的函数<br>随机变量主要分两种</p>
+<ul>
+<li>离散型随机变量</li>
+<li>连续性随机变量</li>
+</ul>
+<p>后面讨论的时候我们有时会把二者区分开讨论</p>
+<h2 id="离散型随机变量的分布及其例子"><a href="#离散型随机变量的分布及其例子" class="headerlink" title="离散型随机变量的分布及其例子"></a>离散型随机变量的分布及其例子</h2><blockquote>
+<p>定义1.1设$X$为离散型随机变量,其全部可能值为$ \{ a_1,a_2,\dots \} $,则$p_i = P(X = a_i) \quad (i=1,2,\dots )$ 称为$X$的概率函数</p>
+<p>定义1.2 设$X$为一维随机变量,则函数$P(X \leq x) = F(x) \quad ( -\infty &lt; x &lt;\infty)$被称为$X$的分布函数</p>
+</blockquote>
+<p>注意一下这里并未限定$X$是离散型还是连续型，事实上这并不重要，倘若$X$是离散型就相当于$P(X \leq x) = F(x) = \sum_{\{ i|a_i\leq x \} } p_i$<br><br>显然分布函数有这么几个性质</p>
+<ul>
+<li>$F(x)$是单调非降的</li>
+<li>当$x \rightarrow \infty $时,$F(x) \rightarrow 1 $ ，当$x \rightarrow -\infty $时,$F(x) \rightarrow 0 $</li>
+</ul>
+<p>有时候我们会利用这个性质来判断一个函数是否是分布函数</p>
+<p>下面介绍几个常见的分布</p>
+<h3 id="二项分布"><a href="#二项分布" class="headerlink" title="二项分布"></a>二项分布</h3><p>这种分布的典例就是连续地进行多次试验，考察发生次数的概率，事件要么发生要么不发生，设事件发生的概率是$p$,那么进行$n$次实验，事件发生$i$次的概率函数<script type="math/tex">p_i = P(X=i) = \binom{n}{i}p^i(1-p)^{n-i}</script><br>记为$X~B(n,p)$</p>
+<h3 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h3><p>我们首先指出它的概率分布函数，而后指出它的现实意义</p>
+<script type="math/tex; mode=display">P(X=i) = e ^{-\lambda} \frac{\lambda ^i}{i!}</script><p>其中$i$取0和所有正整数 右式的求和结果为$1$<br><br>事实上，泊松分布可以看成是一种特殊的二项分布,条件是$X~B(n,p)$中$n$很大，$p$很小，具体可以通过对二项分布的概率函数求极限得出泊松分布的概率函数，这里不赘述了<br><code>PS:在有些题目中，我们可以通过近似地把二项分布看成泊松分布来简化计算</code><br>例如下列问题:</p>
+<blockquote>
+<p>购买$100+a$个零件，对于每个零件购得次品的概率是$0.001$，那么$a$至少多大，在这$100+a$个零件中至少有$100$件正品的概率不小于$0.95$</p>
+</blockquote>
+<p>可以通过将二项分布简化为泊松分布，然后查表得到</p>
+<h3 id="超几何分布"><a href="#超几何分布" class="headerlink" title="超几何分布"></a>超几何分布</h3><p>这个的典例是如下问题</p>
+<blockquote>
+<p>一批产品共$N$个，其中废品有$M$个，现从中随机取$n$个，问”其中恰好有$m$个废品”这个事件$E$的概率有多少</p>
+</blockquote>
+<p>显然<script type="math/tex">P(E) = \frac { \binom{M}{m} \binom{N-M}{n-m} }{ \binom{N}{n}}</script><br>而且可以知道的是,右式求和结果是$1$，其实就是范德蒙德卷积,利用生成函数推一下就行了</p>
+<p>我们可以直观感受到，假如说$N$非常大，$n$非常小，那么放回和不放回其实差别不大，那么此时超几何分布可以近似看成二项分布。<br>确切来说，当$n$固定，$\frac{M}{N} = p$固定，$N \rightarrow \infty$ 时，$X$近似服从二项分布$X ~ B(n,p) $</p>
+<h2 id="连续型随机变量的分布及其例子"><a href="#连续型随机变量的分布及其例子" class="headerlink" title="连续型随机变量的分布及其例子"></a>连续型随机变量的分布及其例子</h2><blockquote>
+<p>定义1.3 设连续型随机变量$X$ 有概率分布函数$F(x)$,则$F(x)$的导数$f(x) = F’(x)$称为$X$的概率密度函数</p>
+</blockquote>
+<p>概率密度函数有如下性质</p>
+<ul>
+<li>$f(x) \geq 0$</li>
+<li>$\int_{-\infty} ^{\infty} f(x) dx =1 $</li>
+<li>对任意常数$a &lt; b$有<script type="math/tex">P(a\leq X \leq b) = F(b)-F(a) = \int_{b}^{a}f(x) d x</script></li>
+</ul>
+<p>这三条性质是比较显然的<br><br>连续型随机变量主要有这么几个常见的例子</p>
+<ul>
+<li>正态分布</li>
+<li>指数分布</li>
+<li>威布尔分布</li>
+<li>均匀分布</li>
+</ul>
+<p>其中正态分布很常见，威布尔分布主要刻画产品寿命，而指数分布是一种特殊的威布尔分布，因为指数分布是一种理想状态，即:产品的损坏率不会随着时间的流逝而变化(当然这在现实中是不存在的，所以是一种理想状态),而刻画这一理想状态可这样</p>
+<script type="math/tex; mode=display">P(x\leq X\leq x+h|X>x)/h = \lambda \quad (h \rightarrow 0)</script><p>这个式子的含义不难想,解个微分方程就可得到指数分布的概率函数和概率密度函数</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2021/10/10/%E6%A6%82%E7%8E%87%E8%AE%BA-1/">http://phot0n.com/2021/10/10/%E6%A6%82%E7%8E%87%E8%AE%BA-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%A6/">数学</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/">概率论'</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/13/%E6%A6%82%E7%8E%87%E8%AE%BA-2/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">概率论-2</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/10/RSA%E6%94%BB%E5%87%BB%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86-%E5%88%9D%E7%BA%A7/"><img class="next-cover" src="https://i.loli.net/2021/10/10/1OsDCLuAlp6VkW4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">RSA攻击方法整理_初级</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/10/13/%E6%A6%82%E7%8E%87%E8%AE%BA-2/" title="概率论-2"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">概率论-2</div></div></a></div><div><a href="/2021/10/20/%E6%A6%82%E7%8E%87%E8%AE%BA-3/" title="概率论-3"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-20</div><div class="title">概率论-3</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">一维随机变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%86%E5%B8%83%E5%8F%8A%E5%85%B6%E4%BE%8B%E5%AD%90"><span class="toc-number">1.1.</span> <span class="toc-text">离散型随机变量的分布及其例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E9%A1%B9%E5%88%86%E5%B8%83"><span class="toc-number">1.1.1.</span> <span class="toc-text">二项分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83"><span class="toc-number">1.1.2.</span> <span class="toc-text">泊松分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="toc-number">1.1.3.</span> <span class="toc-text">超几何分布</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%86%E5%B8%83%E5%8F%8A%E5%85%B6%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">连续型随机变量的分布及其例子</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

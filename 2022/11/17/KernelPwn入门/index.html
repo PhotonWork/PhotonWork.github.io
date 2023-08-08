@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KernelPwn入门 | Photon’s Blog</title><meta name="keywords" content="kernel,pwn"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这里记录一下做得第一个kernel pwn题，非常经典的强网杯2018的core，网上很多相关的wp。由于笔者的知识比较匮乏，所以有些可能会写的比较啰嗦(应该比较适合像我一样的新生) 最近在学kernel相关知识(在啃a guide to kernel exploitation,读英文有点难受)，还打算学一下沙盒原理之类的(比如CSAW那个shellcode题就打算稍微总结一下)，不过时间有点紧，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KernelPwn入门">
+<meta property="og:url" content="http://phot0n.com/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="这里记录一下做得第一个kernel pwn题，非常经典的强网杯2018的core，网上很多相关的wp。由于笔者的知识比较匮乏，所以有些可能会写的比较啰嗦(应该比较适合像我一样的新生) 最近在学kernel相关知识(在啃a guide to kernel exploitation,读英文有点难受)，还打算学一下沙盒原理之类的(比如CSAW那个shellcode题就打算稍微总结一下)，不过时间有点紧，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2022-11-17T05:04:12.000Z">
+<meta property="article:modified_time" content="2022-11-18T09:20:31.576Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="kernel">
+<meta property="article:tag" content="pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'KernelPwn入门',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-18 17:20:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">KernelPwn入门</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-11-17T05:04:12.000Z" title="Created 2022-11-17 13:04:12">2022-11-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-11-18T09:20:31.576Z" title="Updated 2022-11-18 17:20:31">2022-11-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>7min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>这里记录一下做得第一个kernel pwn题，非常经典的强网杯2018的core，网上很多相关的wp。由于笔者的知识比较匮乏，所以有些可能会写的比较啰嗦(应该比较适合像我一样的新生)</p>
+<p>最近在学kernel相关知识(在啃<code>a guide to kernel exploitation</code>,读英文有点难受)，还打算学一下沙盒原理之类的(比如CSAW那个shellcode题就打算稍微总结一下)，不过时间有点紧，自己也比较懒…能学一点是一点吧</p>
+<h2 id="强网杯2018-core"><a href="#强网杯2018-core" class="headerlink" title="强网杯2018 core"></a>强网杯2018 core</h2><p>这是一道kernel ROP题,和我们在用户态下的ROP很像.kernel pwn的目的是提权,即让我们从一个普通用户晋升为一个<code>root</code>.而用户态和kernel下的ROP主要的区别是我们在用户态下执行的是<code>system(&quot;/bin/sh&quot;)</code>,而在内核态下执行的是<code>commit_creds(prepare_kernel_cred(NULL))</code> .我们执行这个命令来改变当前进程的<code>cred</code>结构体.这个结构体是内核中用以控制一个进程的权限的结构体.</p>
+<p>而执行的这两个函数分别为<code>struct cred* prepare_kernel_cred(struct task_struct* daemon)</code>以及<code>int commit_creds(struct cred *new)</code> </p>
+<p>前者的作用是复制一个进程的<code>cred</code>结构体,然后返回一个新的<code>cred</code>结构体,而后者的作用是将一个新的<code>cred</code>结构体置于一个新进程.</p>
+<p>详细的函数定义我们可以查阅linux的源码,具体路径在kernel/cred.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct cred *<span class="title">prepare_creds</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">task</span> = <span class="title">current</span>;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">cred</span> *<span class="title">old</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">cred</span> *<span class="title">new</span>;</span></span><br><span class="line"></span><br><span class="line">	validate_process_creds();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">new</span> = kmem_cache_alloc(cred_jar, GFP_KERNEL);</span><br><span class="line">	<span class="keyword">if</span> (!<span class="keyword">new</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	kdebug(<span class="string">&quot;prepare_creds() alloc %p&quot;</span>, <span class="keyword">new</span>);</span><br><span class="line"></span><br><span class="line">	old = task-&gt;cred;</span><br><span class="line">	<span class="built_in">memcpy</span>(<span class="keyword">new</span>, old, <span class="keyword">sizeof</span>(struct cred));</span><br><span class="line"></span><br><span class="line">	<span class="keyword">new</span>-&gt;non_rcu = <span class="number">0</span>;</span><br><span class="line">	atomic_set(&amp;<span class="keyword">new</span>-&gt;usage, <span class="number">1</span>);</span><br><span class="line">	set_cred_subscribers(<span class="keyword">new</span>, <span class="number">0</span>);</span><br><span class="line">	get_group_info(<span class="keyword">new</span>-&gt;group_info);</span><br><span class="line">	get_uid(<span class="keyword">new</span>-&gt;user);</span><br><span class="line">	get_user_ns(<span class="keyword">new</span>-&gt;user_ns);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_KEYS</span></span><br><span class="line">	key_get(<span class="keyword">new</span>-&gt;session_keyring);</span><br><span class="line">	key_get(<span class="keyword">new</span>-&gt;process_keyring);</span><br><span class="line">	key_get(<span class="keyword">new</span>-&gt;thread_keyring);</span><br><span class="line">	key_get(<span class="keyword">new</span>-&gt;request_key_auth);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_SECURITY</span></span><br><span class="line">	<span class="keyword">new</span>-&gt;security = <span class="literal">NULL</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (security_prepare_creds(<span class="keyword">new</span>, old, GFP_KERNEL_ACCOUNT) &lt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">goto</span> error;</span><br><span class="line">	validate_creds(<span class="keyword">new</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span>;</span><br><span class="line"></span><br><span class="line">error:</span><br><span class="line">	abort_creds(<span class="keyword">new</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个是我在5.11找的的源码,但是似乎我找的有部分源码长这样</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct cred *<span class="title">prepare_kernel_cred</span><span class="params">(struct task_struct *daemon)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">cred</span> *<span class="title">old</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">cred</span> *<span class="title">new</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> = kmem_cache_alloc(cred_jar, GFP_KERNEL);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">new</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    kdebug(<span class="string">&quot;prepare_kernel_cred() alloc %p&quot;</span>, <span class="keyword">new</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (daemon)</span><br><span class="line">        old = get_task_cred(daemon);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        old = get_cred(&amp;init_cred);</span><br></pre></td></tr></table></figure>
+<p>好像主要区别是前者只能复制当前进程的<code>cred</code>?但是后者能复制<code>init_cred</code>也就是<code>init</code>进程的<code>cred</code>,可以直接获取一个<code>root</code>权限的<code>cred</code>结构体</p>
+<p>(这里不是很懂,如果以后搞明白了再进行修改.貌似是高版本做了点修改使得利用变困难了)</p>
+<p>总的来说,我们的目标是调用<code>commit_creds(prepare_kernel_cred(NULL))</code> </p>
+<p>但是我们还有其他需要注意的地方.当exp进入到内核态完成提权的时候,最终还是要回到用户态执行<code>system(&quot;/bin/sh&quot;)</code>命令然后开启一个具有<code>root</code>权限的<code>shell</code>.所以进入内核态之前需要进行<strong>状态保存</strong>,也就是模拟一下用户态进入内核态的准备,包括保存各种寄存器之类的</p>
+<p>在返回用户态的时候,我们需要<code>swapgs</code>指令来恢复用户态的GS寄存器,还需要<code>sysretq</code>或者<code>iretq</code>来恢复到用户空间.</p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>具体的打包解包问题就不在这整理了,很多blog上面都有介绍,这里主要记录一下原理和利用相关</p>
+<p>通过查看<code>start.sh</code>,我们可以看到开启的保护(这里开启了<code>kaslr</code>)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">-m 128M \</span><br><span class="line">-kernel ./bzImage \</span><br><span class="line">-initrd  ./core.cpio \</span><br><span class="line">-append &quot;root=/dev/ram rw console=ttyS0 oops=panic panic=1 quiet kaslr&quot; \</span><br><span class="line">-s  \</span><br><span class="line">-netdev user,id=t0, -device e1000,netdev=t0,id=nic0 \</span><br><span class="line">-nographic  \</span><br></pre></td></tr></table></figure>
+<p>这里需要注意最好把内存改大一点,不然可能运行的时候会报错(我改成了512M)</p>
+<p>把文件系统解包之后可以看到<code>init</code>文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">mount -t proc proc &#x2F;proc</span><br><span class="line">mount -t sysfs sysfs &#x2F;sys</span><br><span class="line">mount -t devtmpfs none &#x2F;dev</span><br><span class="line">&#x2F;sbin&#x2F;mdev -s</span><br><span class="line">mkdir -p &#x2F;dev&#x2F;pts</span><br><span class="line">mount -vt devpts -o gid&#x3D;4,mode&#x3D;620 none &#x2F;dev&#x2F;pts</span><br><span class="line">chmod 666 &#x2F;dev&#x2F;ptmx</span><br><span class="line">cat &#x2F;proc&#x2F;kallsyms &gt; &#x2F;tmp&#x2F;kallsyms</span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;kptr_restrict</span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;dmesg_restrict</span><br><span class="line">ifconfig eth0 up</span><br><span class="line">udhcpc -i eth0</span><br><span class="line">ifconfig eth0 10.0.2.15 netmask 255.255.255.0</span><br><span class="line">route add default gw 10.0.2.2 </span><br><span class="line">insmod &#x2F;core.ko</span><br><span class="line"></span><br><span class="line">poweroff -d 120 -f &amp;</span><br><span class="line">setsid &#x2F;bin&#x2F;cttyhack setuidgid 1000 &#x2F;bin&#x2F;sh</span><br><span class="line">echo &#39;sh end!\n&#39;</span><br><span class="line">umount &#x2F;proc</span><br><span class="line">umount &#x2F;sys</span><br><span class="line"></span><br><span class="line">poweroff -d 0  -f</span><br></pre></td></tr></table></figure>
+<p><code>/proc/sys/kernel/kptr_restrict</code>决定了我们能否通过<code>/proc/kallsyms</code>来查看函数地址,<code>init</code>将其设置为1,所以无法查看,但是在设置之前被复制了一份到<code>/tmp/kallsyms</code>中</p>
+<p><code>/proc/sys/kernel/dmesg_restrict</code>决定了我们能否访问内核打印的消息,设置为1时将无法访问</p>
+<p>我们先分析一下这个<code>core.ko</code></p>
+<p><img src="https://s2.loli.net/2022/11/18/3Ox4JKLNVMpBT6H.png" alt=""></p>
+<p>开启了<code>canary</code></p>
+<p><code>insmod</code>将<code>core.ko</code>模块载入,这就是有漏洞的模块,我们将其拖入IDA进行分析</p>
+<p><img src="https://s2.loli.net/2022/11/18/9UNj8znsOKV54g2.png" alt=""></p>
+<p><code>proc_create</code>创建了一个<code>proc</code>虚拟文件,引用出通过读写这个文件就可以实现与内核的交互</p>
+<p>而<code>core_fops</code>是一个<code>file_operations</code>结构体,其内容大多是函数指针.那么我们可以通过修改其中的函数指针来达到重写函数的目的.</p>
+<p>通过查看结构体可以发现这里其实重写了三个,分别是<code>core_write</code>,<code>core_ioctl</code>以及<code>core_release</code></p>
+<p><code>core_toctl</code>具体由三个功能,分别是<code>core_read</code>,设置<code>off</code>,以及<code>core_copy_func</code></p>
+<p><img src="https://s2.loli.net/2022/11/18/34aMmqAw8BExFb2.png" alt=""></p>
+<p>我们先看看这个<code>core_read</code></p>
+<p><img src="https://s2.loli.net/2022/11/18/Fln7UvmfNQXK4dO.png" alt=""></p>
+<p>这里将内核栈上的64个字节内容复制到了用户区(<code>copy_to_user</code>),由于我们可以设置<code>off</code>,所以我们可以把内核栈的<code>canary</code>给复制到用户态的栈上然后泄露出来</p>
+<p>再看看这个<code>core_copy_func</code></p>
+<p><img src="https://s2.loli.net/2022/11/18/df4uUOhkxINVJC6.png" alt=""></p>
+<p>这里我们可以将bss段(也就是这个<code>name</code>)上的内容复制<code>a1</code>个字节到内核栈上,注意到这里虽然检测设置了<code>a1&lt;=63</code>,但是最后调用的时候是将<code>__int64</code>类型的<code>a1</code>强制转换成了<code>unsigned _int16</code>,所以如果我们设置<code>a1</code>为负数的话强制转化之后它会变成一个很大的数,所以存在栈溢出的漏洞</p>
+<p>同时,<code>core_write</code>函数可以实现对这个bss段内容的设置</p>
+<p><img src="https://s2.loli.net/2022/11/18/6rIv5JNGgdMwZnC.png" alt=""></p>
+<p>所以我们的思路就很明显了</p>
+<ul>
+<li>通过<code>core_read</code>泄露内核栈上的<code>canary</code></li>
+<li>通过<code>core_write</code>对<code>bss</code>段填充好ROP链</li>
+<li>执行<code>core_copy_func</code>函数,进行栈溢出执行ROP链</li>
+<li>返回用户态,新起一个<code>root shell</code></li>
+</ul>
+<p>还有就是关于函数地址的问题,这个类似用户态下的<code>libc</code>基址的泄露,由于符号表被复制了一份到<code>/tmp/kallsyms</code>中,所以我们可以从中获取地址然后计算基址从而得到运行时的地址</p>
+<p>还有就是关于<code>gdb</code>与<code>qemu</code>调试的相关内容.首先是如何用<code>gdb</code>进行调试,当运行脚本<code>/start.sh</code>的时候已经通过<code>-s</code>开启了调试端口,默认的为<code>1234</code>,所以我们另起一个终端,运行<code>gdb vmlinux</code>,然后直接通过<code>target remote localhost:1234</code>进行连接</p>
+<p><img src="https://s2.loli.net/2022/11/18/lRJYAwmPQogDn5N.png" alt=""></p>
+<p>还有就是vmlinux里面有<code>kernel</code>的符号表,但是没有驱动<code>core.ko</code>的符号表,这个需要我们自己添加,主要的命令是<code>add-symbol-file</code>,就把<code>core.ko</code>载入即可.再此之前我们需要获取<code>core.ko</code>的<code>text</code>段地址,通过<code>/sys/modules/core/section/.text</code>来查看,但是查看它需要root权限,所以我们修改一下<code>init</code>重新打包就好了</p>
+<p><img src="https://s2.loli.net/2022/11/18/YmGECX3eQuUlb4S.png" alt=""></p>
+<p>然后就就可以开始调试了,调试的区别好像和用户态下的区别不是很大,多动手自己尝试几遍就行了(<code>make your hand dirty XD</code>)</p>
+<p>exp就不贴了，第一次接触都是调试的别的大佬的exp(x)，也就运行了一下然后下断点单步调试看看思路之类的</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/">http://phot0n.com/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/kernel/">kernel</a><a class="post-meta__tags" href="/tags/pwn/">pwn</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/19/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%812022/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">强网拟态2022</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/14/fastbin-reverse-into-tcache/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">fastbin reverse into tcache</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-19</div><div class="title">CVE-2016-9793分析</div></div></a></div><div><a href="/2023/01/19/%E5%86%85%E6%A0%B8%E5%A0%86%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3/" title="内核堆利用相关"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-19</div><div class="title">内核堆利用相关</div></div></a></div><div><a href="/2023/04/17/ucore-lab/" title="ucore-lab"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-17</div><div class="title">ucore-lab</div></div></a></div><div><a href="/2023/01/02/CatCTF2022/" title="CatCTF2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-02</div><div class="title">CatCTF2022</div></div></a></div><div><a href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-08</div><div class="title">QEMU逃逸入门</div></div></a></div><div><a href="/2022/11/14/fastbin-reverse-into-tcache/" title="fastbin reverse into tcache"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-14</div><div class="title">fastbin reverse into tcache</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF2018-core"><span class="toc-number">1.</span> <span class="toc-text">强网杯2018 core</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">问题分析</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

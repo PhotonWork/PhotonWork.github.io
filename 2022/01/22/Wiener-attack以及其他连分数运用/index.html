@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wiener attack以及其他连分数运用 | Photon’s Blog</title><meta name="keywords" content="crypto,math"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="通过上一节我们整理了连分数的部分内容，这里我们整理一下相关应用 Wiener Attack连分数的一个比较著名的应用就是维纳攻击，就是用到了我们上一节的最后一个比较重要的定理:如果$\alpha$为一个有理数，并且$\frac{r}{s}$为既约分数，如果有 |\alpha- \frac{r}{s}|">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wiener attack以及其他连分数运用">
+<meta property="og:url" content="http://phot0n.com/2022/01/22/Wiener-attack%E4%BB%A5%E5%8F%8A%E5%85%B6%E4%BB%96%E8%BF%9E%E5%88%86%E6%95%B0%E8%BF%90%E7%94%A8/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="通过上一节我们整理了连分数的部分内容，这里我们整理一下相关应用 Wiener Attack连分数的一个比较著名的应用就是维纳攻击，就是用到了我们上一节的最后一个比较重要的定理:如果$\alpha$为一个有理数，并且$\frac{r}{s}$为既约分数，如果有 |\alpha- \frac{r}{s}|">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2022-01-22T03:19:43.000Z">
+<meta property="article:modified_time" content="2022-01-22T15:54:22.070Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2022/01/22/Wiener-attack%E4%BB%A5%E5%8F%8A%E5%85%B6%E4%BB%96%E8%BF%9E%E5%88%86%E6%95%B0%E8%BF%90%E7%94%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Wiener attack以及其他连分数运用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-22 23:54:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Wiener attack以及其他连分数运用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-01-22T03:19:43.000Z" title="Created 2022-01-22 11:19:43">2022-01-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-01-22T15:54:22.070Z" title="Updated 2022-01-22 23:54:22">2022-01-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">99</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>1min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>通过上一节我们整理了连分数的部分内容，这里我们整理一下相关应用</p>
+<h2 id="Wiener-Attack"><a href="#Wiener-Attack" class="headerlink" title="Wiener Attack"></a>Wiener Attack</h2><p>连分数的一个比较著名的应用就是维纳攻击，就是用到了我们上一节的最后一个比较重要的定理:如果$\alpha$为一个有理数，并且$\frac{r}{s}$为既约分数，如果有</p>
+<script type="math/tex; mode=display">|\alpha- \frac{r}{s}|<\frac{1}{2s^2}</script><p>那么$\frac{r}{s}$就是$\alpha$的一个收敛子</p>
+<p>换句话说，如果我们能找到两个足够接近的分数，其中一个已知，那么另外一个就可以用连分数展开，枚举收敛子来估计。以下我们就简要介绍一下Winener Attack</p>
+<blockquote>
+<p>设$n=pq$,其中$p$和$q$为奇素数，并且$q&lt;p&lt;2q,d&lt;\frac{1}{3}n^\frac{1}{4}$,那么给定一个RSA加密密钥$(e,n)$,解密密钥就可以用$O((log)^3)$次位运算找到</p>
+</blockquote>
+<p>我们进行证明</p>
+<p>由于<script type="math/tex">de\equiv 1 \mod \varphi(n)</script>,即存在$k$,使得<script type="math/tex">ed-1=k\varphi (n)</script><br>等式两边同时除以$d\varphi(n)$我们得到</p>
+<script type="math/tex; mode=display">\frac{e}{\varphi(n)}-\frac{k}{d}=\frac{1}{d\varphi(n)}</script><p>这说明$\frac{k}{d}$是对$\frac{e}{\varphi(n)}$的很好估计，但是两者我们都不清楚，所以对于前者我们用$\frac{e}{n}$来代替</p>
+<p>同时由题干我们可以得出$q&lt;\sqrt{n}$,那么我们可以得到$p+q-1&lt;3q&lt;3\sqrt{n}$</p>
+<p>最后我们进行逼近</p>
+<script type="math/tex; mode=display">\begin{aligned}
+|\frac{e}{n}-\frac{k}{d}|&=|\frac{ed-kn}{nd}|\\
+&=|\frac{k(n-\varphi(n)-1)}{nd}|
+\\&<\frac{3k}{d\sqrt{n}}
+\end{aligned}</script><p>由于$e&lt;\varphi(n)$,继而$ke&lt;k\varphi(n)=de-1&lt;de$,则有$k&lt;d&lt;\frac{1}{3}n^\frac{1}{4}$，我们得到</p>
+<script type="math/tex; mode=display">
+|\frac{e}{n}-\frac{k}{d}|<\frac{3k}{d\sqrt{n}}<\frac{1}{n^\frac{1}{4}}<\frac{1}{2d^2}</script><p>那么我们就可以对$\frac{e}{n}$进行连分数展开，进而枚举$k,d$，由于$\varphi(n)=\frac{ed-1}{k}$,我们可以利用$\varphi(n)，n$来分解$n$</p>
+<p>网上找的一道题，主要是熟悉sage里面的连分数处理方式以及相关函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">from sage.all import*</span><br><span class="line">import gmpy2</span><br><span class="line">e &#x3D; 14058695417015334071588010346586749790539913287499707802938898719199384604316115908373997739604466972535533733290829894940306314501336291780396644520926473</span><br><span class="line">n &#x3D; 33608051123287760315508423639768587307044110783252538766412788814888567164438282747809126528707329215122915093543085008547092423658991866313471837522758159</span><br><span class="line">c &#x3D; continued_fraction(e&#x2F;n)</span><br><span class="line">def get_pq(a,b,c):     </span><br><span class="line">    par&#x3D;gmpy2.isqrt(b*b-4*a*c)   </span><br><span class="line">    x1,x2&#x3D;(-b+par)&#x2F;&#x2F;(2*a),(-b-par)&#x2F;&#x2F;(2*a)</span><br><span class="line">    return x1,x2</span><br><span class="line"></span><br><span class="line">for i in range(2,len(c)+1):</span><br><span class="line">    temp &#x3D; c[:i].value()</span><br><span class="line">    print(temp)</span><br><span class="line">    k &#x3D; temp.numerator()</span><br><span class="line">    d &#x3D; temp.denominator()</span><br><span class="line">    if(k&#x3D;&#x3D;0):</span><br><span class="line">        continue</span><br><span class="line">    if((e*d-1)%k !&#x3D;0):</span><br><span class="line">        continue</span><br><span class="line">    phi &#x3D; (e*d-1)&#x2F;&#x2F;k</span><br><span class="line">    px,py&#x3D;get_pq(1,n-phi+1,n)</span><br><span class="line">    if(px*py&#x3D;&#x3D;n):</span><br><span class="line">        print(px,py)</span><br><span class="line">#px&#x3D;-151637396708964979495118340071184737449149866923436687246749072102396174273709 取绝对值即可</span><br></pre></td></tr></table></figure><br>sage里面通过<code>continued_fraction(e/n)</code>构造连分数形式，其返回为数组,而<code>value()</code>函数则将数组形式的连分数转变成分数形式，而后通过<code>numerator()</code>取分子,<code>denominator()</code>取分母即可<br>PS:之后发现并不用<code>value()</code>函数进行转换成分数形式，直接对于连分数形式的数组也能取分子分母，例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">c &#x3D; continued_fraction(e&#x2F;n)</span><br><span class="line">for i in range(2,len(c)):</span><br><span class="line">    k &#x3D; c.numerator(i)</span><br><span class="line">    d &#x3D; c.denominator(i)</span><br></pre></td></tr></table></figure><br>可以直接返回低$i$阶收敛子形成的分数<br>这种wiener攻击比较初级，还有扩展wiener攻击，回头再整理</p>
+<h2 id="连分数的其他相关题目"><a href="#连分数的其他相关题目" class="headerlink" title="连分数的其他相关题目"></a>连分数的其他相关题目</h2><h3 id="湖湘杯-2021"><a href="#湖湘杯-2021" class="headerlink" title="湖湘杯 2021"></a>湖湘杯 2021</h3><p>在网上找到的这道题似乎也是利用连分数进行攻击<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Util.number import *</span><br><span class="line">import random</span><br><span class="line">from math import *</span><br><span class="line">from gmpy2 import *</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">m1 &#x3D; bytes_to_long(flag[:len(flag) &#x2F;&#x2F; 2])</span><br><span class="line">m2 &#x3D; bytes_to_long(flag[len(flag) &#x2F;&#x2F; 2:])</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">def gen(pbits, qbits):</span><br><span class="line">    p1, q1 &#x3D; getPrime(pbits), getPrime(qbits)</span><br><span class="line">    n1 &#x3D; p1**4*q1</span><br><span class="line">    q2 &#x3D; getPrime(qbits)</span><br><span class="line">    bound &#x3D; p1 &#x2F;&#x2F; (8*q1*q2) + 1#360-3-q-q&#x3D;101</span><br><span class="line">    p2 &#x3D; random.randrange(p1, p1 + bound)</span><br><span class="line">    while not isPrime(p2):</span><br><span class="line">        p2 &#x3D; random.randrange(p1, p1 + bound)</span><br><span class="line">    n2 &#x3D; p2**4*q2</span><br><span class="line">    return (n1, n2), (p1, q1), (p2, q2)</span><br><span class="line"></span><br><span class="line">e &#x3D; 0x10001</span><br><span class="line">pbits &#x3D; int(360)</span><br><span class="line">qbits &#x3D; int(128)</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">pk, sk1, sk2 &#x3D; gen(pbits, qbits)</span><br><span class="line">c1 &#x3D; pow(m1, e, pk[0])</span><br><span class="line">c2 &#x3D; pow(m2, e, pk[1])</span><br><span class="line">print(f&#39;pk &#x3D; &#123;pk&#125;&#39;)</span><br><span class="line">print(f&#39;c1, c2 &#x3D; &#123;c1, c2&#125;&#39;)</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line"></span><br><span class="line">pk &#x3D; (1150398070565459492080597718626032792435556703413923483458704675295997646493249759818468321328556510074044954676615760446708253531839417036997811506222349194302791943489195718713797322878586379546657275419261647635859989280700191441312691274285176619391539387875252135478424580680264554294179123254566796890998243909286508189826458854346825493157697201495100628216832191035903848391447704849808577310612723700318670466035077202673373956324725108350230357879374234418393233, 1242678737076048096780023147702514112272319497423818488193557934695583793070332178723043194823444815153743889740338870676093799728875725651036060313223096288606947708155579060628807516053981975820338028456770109640111153719903207363617099371353910243497871090334898522942934052035102902892149792570965804205461900841595290667647854346905445201396273291648968142608158533514391348407631818144116768794595226974831093526512117505486679153727123796834305088741279455621586989)</span><br><span class="line">n1,n2 &#x3D; pk</span><br><span class="line">c1, c2 &#x3D; (361624030197288323178211941746074961985876772079713896964822566468795093475887773853629454653096485450671233584616088768705417987527877166166213574572987732852155320225332020636386698169212072312758052524652761304795529199864805108000796457423822443871436659548626629448170698048984709740274043050729249408577243328282313593461300703078854044587993248807613713896590402657788194264718603549894361488507629356532718775278399264279359256975688280723740017979438505001819438, 33322989148902718763644384246610630825314206644879155585369541624158380990667828419255828083639294898100922608833810585530801931417726134558845725168047585271855248605561256531342703212030641555260907310067120102069499927711242804407691706542428236208695153618955781372741765233319988193384708525251620506966304554054884590718068210659709406626033891748214407992041364462525367373648910810036622684929049996166651416565651803952838857960054689875755131784246099270581394)</span><br></pre></td></tr></table></figure><br>从生成素数的方式我们可以看出$p1\approx p2$，因为那个<code>bound</code>只有101位，相较于$p1$的位数来说不足挂齿，于是我们找到了两个相近的数，可以利用连分数进行攻击</p>
+<p>我们知道</p>
+<script type="math/tex; mode=display">\begin{aligned}
+    n_1 &= p_1^4q_1\\
+    n_2 &= p_2^4q_2
+\end{aligned}</script><p>继而得到<script type="math/tex">\frac{n_1}{n_2}=\frac{p_1^4}{p_2^4}*\frac{q_1}{q_2}</script><br>由于$\frac{p1}{p2}\approx 1$，我们可以直观感受到$\frac{n_1}{n_2}\approx\frac{q_1}{q_2}$,可以认为后者是前者的近似(当然套那个定理来严格说明也是行得通的，用位数估计就行了)，<br>那么我们通过对前者进行连分数展开，直接嗯造就完事了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">n1,n2 &#x3D; </span><br><span class="line">c &#x3D; continued_fraction(n1&#x2F;n2)</span><br><span class="line">print(n1&#x2F;n2)</span><br><span class="line">print(n1)</span><br><span class="line">print(n2)</span><br><span class="line">print(c)</span><br><span class="line"></span><br><span class="line">for i in range(3,len(c)+1):</span><br><span class="line">    temp &#x3D; c[:i].value()</span><br><span class="line">    print(temp)</span><br><span class="line">    q1 &#x3D; temp.numerator()</span><br><span class="line">    q2 &#x3D; temp.denominator()</span><br><span class="line">    if(n1%q1&#x3D;&#x3D;0):</span><br><span class="line">        print(&quot;q1&#x3D;&quot;)</span><br><span class="line">        print(q1)</span><br></pre></td></tr></table></figure><br>搞出了$q1,q2$剩下的就比较显然</p>
+<hr>
+<p>其实做的过程中发现了一个问题，就是精度常常不够。经过排查发现是因为，我编写的是py脚本然后import sage的，当把n1/n2传进去的时候，它已经变成了一个小数（但是在sage里面他是以分数形式存在的），就造成了精度不够的问题</p>
+<p>我目前的解决办法是直接把编写py脚本改为编写sage脚本。突然觉得直接编写sage脚本而不是py脚本里面import sage也挺好的，毕竟sage脚本里面也能import pwn之类的，而且sage的功能十分强大，常常囊括了常用的py库比如gmpy2的一些功能，况且sage脚本也能import gmpy2</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2022/01/22/Wiener-attack%E4%BB%A5%E5%8F%8A%E5%85%B6%E4%BB%96%E8%BF%9E%E5%88%86%E6%95%B0%E8%BF%90%E7%94%A8/">http://phot0n.com/2022/01/22/Wiener-attack%E4%BB%A5%E5%8F%8A%E5%85%B6%E4%BB%96%E8%BF%9E%E5%88%86%E6%95%B0%E8%BF%90%E7%94%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/crypto/">crypto</a><a class="post-meta__tags" href="/tags/math/">math</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/02/01/%E5%AF%92%E5%81%87%E6%BC%AB%E8%AF%84/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">寒假漫评</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/18/%E8%BF%9E%E5%88%86%E6%95%B0%E5%88%9D%E6%AD%A5/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">连分数初步</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/01/18/%E8%BF%9E%E5%88%86%E6%95%B0%E5%88%9D%E6%AD%A5/" title="连分数初步"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-18</div><div class="title">连分数初步</div></div></a></div><div><a href="/2022/03/29/DASCTF-2022/" title="DASCTF 2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-29</div><div class="title">DASCTF 2022</div></div></a></div><div><a href="/2023/01/02/CatCTF2022/" title="CatCTF2022"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-02</div><div class="title">CatCTF2022</div></div></a></div><div><a href="/2021/10/22/GKCTF2021Crypto/" title="GKCTF2021Crypto"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-22</div><div class="title">GKCTF2021Crypto</div></div></a></div><div><a href="/2021/11/15/L3HCTF-CRYPTO/" title="L3HCTF_CRYPTO"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-15</div><div class="title">L3HCTF_CRYPTO</div></div></a></div><div><a href="/2022/03/16/LFSR%E6%95%B4%E7%90%86/" title="LFSR整理"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-16</div><div class="title">LFSR整理</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Wiener-Attack"><span class="toc-number">1.</span> <span class="toc-text">Wiener Attack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0%E7%9A%84%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3%E9%A2%98%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">连分数的其他相关题目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B9%96%E6%B9%98%E6%9D%AF-2021"><span class="toc-number">2.1.</span> <span class="toc-text">湖湘杯 2021</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

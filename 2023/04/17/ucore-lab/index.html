@@ -1,0 +1,373 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ucore-lab | Photon’s Blog</title><meta name="keywords" content="kernel,dev"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="感觉自己开发经验很少，多以写脚本为主，没怎么接触过较为大型的项目，所以想搞点开发相关的经验。打算借ucore再回顾一下OS相关的知识。这个项目啃完之后打算看看南大的那个模拟的lab，然后学点C++逆向。 BASIC-KNOWLEDGE记得比较杂(因为感觉知识点很多都关联)，把LAB里面相关的知识点还有一些代码分析都写进去了，可以挑着看… 需要注意的是该OS针对的是x86下的,有些概念是x86独有的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ucore-lab">
+<meta property="og:url" content="http://phot0n.com/2023/04/17/ucore-lab/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="感觉自己开发经验很少，多以写脚本为主，没怎么接触过较为大型的项目，所以想搞点开发相关的经验。打算借ucore再回顾一下OS相关的知识。这个项目啃完之后打算看看南大的那个模拟的lab，然后学点C++逆向。 BASIC-KNOWLEDGE记得比较杂(因为感觉知识点很多都关联)，把LAB里面相关的知识点还有一些代码分析都写进去了，可以挑着看… 需要注意的是该OS针对的是x86下的,有些概念是x86独有的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2023-04-17T07:04:17.000Z">
+<meta property="article:modified_time" content="2023-04-30T10:09:13.213Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="kernel">
+<meta property="article:tag" content="dev">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2023/04/17/ucore-lab/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ucore-lab',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-30 18:09:13'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ucore-lab</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-04-30T10:09:13.213Z" title="Updated 2023-04-30 18:09:13">2023-04-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">408</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>1min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>感觉自己开发经验很少，多以写脚本为主，没怎么接触过较为大型的项目，所以想搞点开发相关的经验。打算借ucore再回顾一下OS相关的知识。这个项目啃完之后打算看看南大的那个模拟的lab，然后学点C++逆向。</p>
+<p>BASIC-KNOWLEDGE记得比较杂(因为感觉知识点很多都关联)，把LAB里面相关的知识点还有一些代码分析都写进去了，可以挑着看…</p>
+<p>需要注意的是该OS针对的是x86下的,有些概念是x86独有的，64位下已不适用。</p>
+<h1 id="BASIC-KNOWLEDGE"><a href="#BASIC-KNOWLEDGE" class="headerlink" title="BASIC-KNOWLEDGE"></a>BASIC-KNOWLEDGE</h1><h2 id="关于实模式和保护模式"><a href="#关于实模式和保护模式" class="headerlink" title="关于实模式和保护模式"></a>关于实模式和保护模式</h2><p>实模式和保护模式为CPU的工作模式，简单来说就是规定CPU寻址与工作的方式</p>
+<h3 id="实模式及其工作原理"><a href="#实模式及其工作原理" class="headerlink" title="实模式及其工作原理"></a>实模式及其工作原理</h3><p>实模式出现于早期8088CPU。其产生的主要原因是为了更好地寻址。当时地CPU有20位地地址线，但是寄存器只有16位(8个通用寄存器，4个段寄存器)。为了能够完整地去访问20位的主存地址，人们构想出这样一个方案:当某条指令想要访存时，必须通过<strong>段基址:段偏移量</strong>的形式进行访问。</p>
+<p>段基址由段寄存器提供，而段偏移量由通用寄存器来提供。我们之前说过，当时CPU的寄存器只有16位，我们通过段寄存器和通用寄存器的组合方式来达到20位，这种方式很容易想到，就是</p>
+<script type="math/tex; mode=display">
+物理地址=段基址<<4+段偏移量</script><p>比如我们段寄存器中的值位0x1230,而段偏移量为0x0011，则对应的物理地址则为0x1230&lt;&lt;4+0x0011=0x12311</p>
+<p>但是我们很容易发现这种寻址方式很不安全，随便一个程序就能修改别人的内存。</p>
+<h2 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h2><p>随着CPU的发展，其地址线从原来的20根变为了32根，同时寄存器的位数也变为了32位。此时实模式下的内存地址计算方式已经不适合了，所以就引入了保护模式。</p>
+<p>在保护模式下，CPU的32位地址线全部都有效(也就是说可以寻址4GB的物理地址空间)，但是我们内存寻址的方式还需要兼容老办法，也就是实模式下的寻址方法(段基址:段偏移量的形式)。</p>
+<p>我们的偏移量其实和实模式下是一样的，除了位数有变化。主要大的变化在于段寄存器。此时段寄存器存放的不是段基址了，而是一个叫<strong>段选择子</strong>的东西，通过这个选择子，我们可以从<strong>描述符表(GDT或LDT)</strong>中获取对应的<strong>段描述符</strong></p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\ucore-lab\o_2109200226344-2.png" alt=""></p>
+<p>其结构如下</p>
+<ul>
+<li><code>0-1</code>位为请求特权级</li>
+<li><code>2</code>位为表指示位，代表了应该访问哪个描述符表</li>
+<li><code>3-15</code>位代表索引。类似从数组中根据下标取元素一样，我们也可以通过索引在描述符表中获取描述符</li>
+</ul>
+<p>下面我们来说说描述符表，这里主要针对全局描述符表。<strong>全局描述符表(GDT)</strong> 是一个保存段描述符的数组，其起始地址保存在<strong>全局描述表寄存器(GDTR)</strong>中。GDTR长48位，其中高32位为基地址，低16位是段界限。</p>
+<p>全局描述符表里面存的是段描述符</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\ucore-lab\o_2109191244474-1.png" alt=""></p>
+<p>一共有64位(这张图上下两个代表的不是两种结构，而是一个结构的前半段和后半段) 从类型上来说，主要分为3个部分:<code>段基址</code> ，<code>段界限</code>，<code>属性</code> 。但是观察这张图我们可以发现其实每个部分并不一定是连续的(比如段基址以及段界限就被拆成了两段)</p>
+<p>简单来说，它就是一个64位的约定俗成的结构体，其结构如下</p>
+<ul>
+<li>低32位的<code>0-15</code>位，高32位的<code>16-19</code>位为段界限长</li>
+<li>低32位的<code>16-31</code>位以及高32位的<code>0-7</code>、<code>24-31</code>位为段基址</li>
+<li>高32位的<code>8-15</code>、<code>20-23</code>位代表着各种属性</li>
+</ul>
+<p>其用代码表示就是这样的,对应上面的图就能明白</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">gdt_entry</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint16_t</span> limit_low;       </span><br><span class="line">    <span class="keyword">uint16_t</span> base_low;</span><br><span class="line">    <span class="keyword">uint8_t</span> base_middle;</span><br><span class="line">    <span class="keyword">uint8_t</span> access;</span><br><span class="line">    <span class="keyword">unsigned</span> limit_high: <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> flags: <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">uint8_t</span> base_high;</span><br><span class="line">&#125; __attribute__((packed));</span><br></pre></td></tr></table></figure>
+<p>我们可以通过这样一个函数来设置一个段描述符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gdt_install</span><span class="params">(<span class="keyword">uint8_t</span> num, <span class="keyword">uint32_t</span> base, <span class="keyword">uint32_t</span> limit, <span class="keyword">uint8_t</span> access, <span class="keyword">uint8_t</span> flags)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Setup the descriptor base address */</span></span><br><span class="line">    gdt[num].base_low = (base &amp; <span class="number">0xffff</span>);</span><br><span class="line">    gdt[num].base_middle = (base &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">    gdt[num].base_high = (base &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Setup the descriptor limits */</span></span><br><span class="line">    gdt[num].limit_low = (limit &amp; <span class="number">0xffff</span>);</span><br><span class="line">    gdt[num].limit_high = ((limit &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0x0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Finally, set up the granularity and access flags */</span></span><br><span class="line">    gdt[num].flags = flags;</span><br><span class="line"></span><br><span class="line">    access |= AC_RE; <span class="comment">// 设置保留位为1</span></span><br><span class="line">    gdt[num].access = access;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结一下就是，我们在保护模式下从逻辑地址到线性地址地过程是:</p>
+<ul>
+<li>先通过段寄存器中的段选择子获取索引，与段描述符表地基址相结合，获取段描述符</li>
+<li>根据段描述符得到了段基址</li>
+<li>通过段基址+偏移地址，得到了线性地址</li>
+</ul>
+<p>(这里补充一下地址的分类，地址分为<strong>逻辑地址</strong>，<strong>线性地址</strong>以及<strong>物理地址</strong> 。逻辑地址经过分段机制之后形成了线性地址，如果不启用分页的话，此时线性地址就是物理地址，而采用分页的话，线性地址经分页转换之后形成物理地址)</p>
+<h2 id="关于启动"><a href="#关于启动" class="headerlink" title="关于启动"></a>关于启动</h2><p>电脑是如何启动一步步把控制权交给用户的，这是一个很多人都想过的问题。这里面我们需要注意的概念有这么几个:<code>BIOS</code>、<code>MBR/Bootloader</code>、<code>OS</code></p>
+<h3 id="BIOS"><a href="#BIOS" class="headerlink" title="BIOS"></a>BIOS</h3><p><code>BIOS</code>是ROM中的一段代码，其被映射到地址<code>0xF0000~0xFFFFF</code>。其入口地址为<code>0xFFFF0</code>。它主要提供这么几个功能:</p>
+<ul>
+<li>提供和硬件交互的接口(比如基本的输入输出功能)</li>
+<li>硬件检测，读取硬件信息</li>
+<li>查找并加载可启动设备</li>
+</ul>
+<h3 id="MBR"><a href="#MBR" class="headerlink" title="MBR"></a>MBR</h3><p>MBR全称为Master Boot Record（主引导记录)</p>
+<p>当加电的一瞬间，CPU的CS:IP寄存器被强制初始化成了<code>0xF000:0xFFF0</code> </p>
+<p><img src="C:\Users\YPJ\AppData\Roaming\Typora\typora-user-images\image-20230428145341002.png" alt="image-20230428145341002"></p>
+<p>这里其实是一个跳转指令，来跳转到BIOS真正的代码</p>
+<p>进入BIOS进行一系列初始化之后，检查启动盘中位于0盘0道1扇区的内容，即检查扇区末尾是否是magic number <code>0x55</code>和<code>0xaa</code>，如果是的话则加载这一扇区的512字节到<code>0x7c00</code>然后跳转到此处执行</p>
+<p><img src="C:\Users\YPJ\AppData\Roaming\Typora\typora-user-images\image-20230428145757799.png" alt="image-20230428145757799"></p>
+<p>这里便是我们Bootloader的开始。在目录boot/下查看bootasm.S文件可以发现，此时运行的代码便是我们bootasm.S中的代码</p>
+<p><img src="C:\Users\YPJ\AppData\Roaming\Typora\typora-user-images\image-20230428145843753.png" alt="image-20230428145843753"></p>
+<p>那么启动到bootasm之后怎么跳转到我们的内核呢，注意到在bootasm.c中会有如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">protcseg:</span><br><span class="line">    # Set up the protected-mode data segment registers</span><br><span class="line">    movw $PROT_MODE_DSEG, %ax                       # Our data segment selector</span><br><span class="line">    movw %ax, %ds                                   # -&gt; DS: Data Segment</span><br><span class="line">    movw %ax, %es                                   # -&gt; ES: Extra Segment</span><br><span class="line">    movw %ax, %fs                                   # -&gt; FS</span><br><span class="line">    movw %ax, %gs                                   # -&gt; GS</span><br><span class="line">    movw %ax, %ss                                   # -&gt; SS: Stack Segment</span><br><span class="line"></span><br><span class="line">    # Set up the stack pointer and call into C. The stack region is from 0--start(0x7c00)</span><br><span class="line">    movl $0x0, %ebp</span><br><span class="line">    movl $start, %esp</span><br><span class="line">    call bootmain</span><br></pre></td></tr></table></figure>
+<p>调用了<code>bootmain</code>函数，而这个函数是我们在<code>bootmain.c</code>当中定义的，其定义如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* bootmain - the entry of bootloader */</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">bootmain(<span class="keyword">void</span>) &#123;</span><br><span class="line">    <span class="comment">// read the 1st page off disk</span></span><br><span class="line">    readseg((<span class="keyword">uintptr_t</span>)ELFHDR, SECTSIZE * <span class="number">8</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// is this a valid ELF?</span></span><br><span class="line">    <span class="keyword">if</span> (ELFHDR-&gt;e_magic != ELF_MAGIC) &#123;</span><br><span class="line">        <span class="keyword">goto</span> bad;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">proghdr</span> *<span class="title">ph</span>, *<span class="title">eph</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// load each program segment (ignores ph flags)</span></span><br><span class="line">    ph = (struct proghdr *)((<span class="keyword">uintptr_t</span>)ELFHDR + ELFHDR-&gt;e_phoff);</span><br><span class="line">    eph = ph + ELFHDR-&gt;e_phnum;</span><br><span class="line">    <span class="keyword">for</span> (; ph &lt; eph; ph ++) &#123;</span><br><span class="line">        readseg(ph-&gt;p_va &amp; <span class="number">0xFFFFFF</span>, ph-&gt;p_memsz, ph-&gt;p_offset);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// call the entry point from the ELF header</span></span><br><span class="line">    <span class="comment">// note: does not return</span></span><br><span class="line">    ((<span class="keyword">void</span> (*)(<span class="keyword">void</span>))(ELFHDR-&gt;e_entry &amp; <span class="number">0xFFFFFF</span>))();</span><br><span class="line"></span><br><span class="line">bad:</span><br><span class="line">    outw(<span class="number">0x8A00</span>, <span class="number">0x8A00</span>);</span><br><span class="line">    outw(<span class="number">0x8A00</span>, <span class="number">0x8E00</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* do nothing */</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以着重关注一下这个<code>readseg</code>函数的实现。这个函数的作用是从某个扇区读取数据加载到内存当中。那么也当然可以加载我们的内核</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* *</span></span><br><span class="line"><span class="comment"> * readseg - read @count bytes at @offset from kernel into virtual address @va,</span></span><br><span class="line"><span class="comment"> * might copy more than asked.</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">readseg(<span class="keyword">uintptr_t</span> va, <span class="keyword">uint32_t</span> count, <span class="keyword">uint32_t</span> offset) &#123;</span><br><span class="line">    <span class="keyword">uintptr_t</span> end_va = va + count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// round down to sector boundary</span></span><br><span class="line">    va -= offset % SECTSIZE;</span><br><span class="line">	<span class="comment">//因为我们要一个扇区一个扇区的读，所以需要让va减至和SECTSIZE对齐</span></span><br><span class="line">    <span class="comment">// translate from bytes to sectors; kernel starts at sector 1</span></span><br><span class="line">    <span class="keyword">uint32_t</span> secno = (offset / SECTSIZE) + <span class="number">1</span>;</span><br><span class="line">	<span class="comment">//计算扇区的编号，需要注意的是从0开始</span></span><br><span class="line">    <span class="comment">// If this is too slow, we could read lots of sectors at a time.</span></span><br><span class="line">    <span class="comment">// We&#x27;d write more to memory than asked, but it doesn&#x27;t matter --</span></span><br><span class="line">    <span class="comment">// we load in increasing order.</span></span><br><span class="line">    <span class="keyword">for</span> (; va &lt; end_va; va += SECTSIZE, secno ++) &#123;</span><br><span class="line">        readsect((<span class="keyword">void</span> *)va, secno); <span class="comment">//调用readsect函数，每次读一个扇区</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>va</code>是我们存放数据的虚拟内存地址，<code>count</code>是数据大小，而<code>offset</code>则是所要读取的数据相对于磁盘开始的位置其中进行简单的数据处理之后调用<code>readsect</code>函数，每次一个扇区地读</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">readsect(<span class="keyword">void</span> *dst, <span class="keyword">uint32_t</span> secno) &#123;</span><br><span class="line">    <span class="comment">// wait for disk to be ready</span></span><br><span class="line">    waitdisk();</span><br><span class="line"></span><br><span class="line">    outb(<span class="number">0x1F2</span>, <span class="number">1</span>);<span class="comment">//0x1F2:所要读的扇区数                    // count = 1</span></span><br><span class="line">    outb(<span class="number">0x1F3</span>, secno &amp; <span class="number">0xFF</span>); <span class="comment">//LBA参数0-7位</span></span><br><span class="line">    outb(<span class="number">0x1F4</span>, (secno &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xFF</span>);<span class="comment">//LBA参数8-15位</span></span><br><span class="line">    outb(<span class="number">0x1F5</span>, (secno &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xFF</span>);<span class="comment">//LBA参数16-23位</span></span><br><span class="line">    outb(<span class="number">0x1F6</span>, ((secno &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xF</span>) | <span class="number">0xE0</span>);<span class="comment">//0-3:LBA参数24-27位，第4位:0为主盘、1为从盘</span></span><br><span class="line">    outb(<span class="number">0x1F7</span>, <span class="number">0x20</span>);<span class="comment">//状态和命令寄存器。操作时先给命令，再读取，如果不是忙状态就从0x1f0端口读数据              // cmd 0x20 - read sectors</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// wait for disk to be ready</span></span><br><span class="line">    waitdisk();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// read a sector</span></span><br><span class="line">    insl(<span class="number">0x1F0</span>, dst, SECTSIZE / <span class="number">4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>readsect</code>代码与外设(磁盘)交互，读取数据到相应地址。这里用到的是LBA模式的PIO方式，进行IO操作主要是CPU填相应的IO地址寄存器完成(这里是0x1f0-0x1f7)</p>
+<h2 id="关于内存访问"><a href="#关于内存访问" class="headerlink" title="关于内存访问"></a>关于内存访问</h2><p>需要注意的是逻辑地址、线性地址以及物理地址三个概念。(还有一个经常提到的概念是虚拟地址，但是经查阅资料似乎这个概念的说法众说纷纭，有的说是线性地址的别名，有的说是逻辑地址的别名，这里就当成逻辑地址的别名来处理了)</p>
+<p>在保护模式一节中我们介绍了分段的概念，而这里我们主要讲的是分页的概念。在段页式的管理中，通常OS都会弱化分段的概念，而把分页作为主要的地址转换手段。段式管理只是一个过滤的作用，他将一个虚拟地址直接映射成线性地址，然后通过页表转换变成相应的物理地址。</p>
+<p>在通常的分段中，我们会通过段选择子，在段描述符表(GDT)中索引到段描述符，然后加上段描述符中的段基址。但是弱化之后GDT中所有段基址都为0，所以虚拟地址和线性地址等价。那么从虚拟地址到物理地址的过程就是一个页表转换了。</p>
+<p>下面详细说一下在页基址下，线性地址到物理地址的过程。并结合ucore中代码看一下启用页基址的过程</p>
+<p>首先介绍一下x86下和页表有关的寄存器</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CR0</td>
+<td>主要是有关分段与分页的启动</td>
+</tr>
+<tr>
+<td>CR2</td>
+<td>保存发生缺页故障时的虚拟地址</td>
+</tr>
+<tr>
+<td>CR3</td>
+<td>保存当前进程的页目录表的<strong>物理内存</strong>基地址</td>
+</tr>
+<tr>
+<td>CR4</td>
+<td>PRE是否开启物理地址扩展</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这里比较重要的就是CR3寄存器，需要注意的是它保存的是当前进程的页目录表的<strong>物理内存</strong>基地址（设想一下如果它保存的是页目录表的虚拟内存基地址，那么我们进行地址转换的时候需要索引页目录表，但是要找到页目录表虚拟地址对应的物理地址在哪，就又得去索引页目录表….死循环了)</p>
+<p>在x86下，我们用到的是两级页表(一个页目录表，一个页表)，具体转化的过程如下(用了知乎上面的一张图，侵删)</p>
+<p><img src="C:\Users\YPJ\AppData\Roaming\Typora\typora-user-images\image-20230430175825867.png" alt="image-20230430175825867"></p>
+<p>首先根据高位的<code>DIRECTORY</code>部分，通过CR3寄存器存放的页目录表索引到页表基址(这个也是物理地址，与CR3原因同理)，然后再根据这个页表基址结合我们的中间的<code>TABLE</code>部分，找到页表项，与页偏移相结合得到了正确的物理地址。多级页表同理</p>
+<p>我们从ucore的实现中看一下页表基址的启动过程，主要的实现是在<code>kern/init/entry.S</code>中,在上一节<code>关于启动</code>中，当我们把内核读进去的时候就会通过<code>((void (*)(void))(ELFHDR-&gt;e_entry &amp; 0xFFFFFF))();</code>跳转到这里</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;mmu.h&gt;</span><br><span class="line">#include &lt;memlayout.h&gt;</span><br><span class="line"></span><br><span class="line">#define REALLOC(x) (x - KERNBASE)</span><br><span class="line"></span><br><span class="line">.text</span><br><span class="line">.globl kern_entry</span><br><span class="line">kern_entry:</span><br><span class="line">    # load pa of boot pgdir</span><br><span class="line">    movl $REALLOC(__boot_pgdir), %eax</span><br><span class="line">    movl %eax, %cr3</span><br><span class="line"></span><br><span class="line">    # enable paging</span><br><span class="line">    movl %cr0, %eax</span><br><span class="line">    orl $(CR0_PE | CR0_PG | CR0_AM | CR0_WP | CR0_NE | CR0_TS | CR0_EM | CR0_MP), %eax</span><br><span class="line">    andl $~(CR0_TS | CR0_EM), %eax</span><br><span class="line">    movl %eax, %cr0</span><br><span class="line"></span><br><span class="line">    # update eip</span><br><span class="line">    # now, eip &#x3D; 0x1.....</span><br><span class="line">    leal next, %eax</span><br><span class="line">    # set eip &#x3D; KERNBASE + 0x1.....</span><br><span class="line">    jmp *%eax</span><br><span class="line">next:</span><br><span class="line"></span><br><span class="line">    # unmap va 0 ~ 4M, it&#39;s temporary mapping</span><br><span class="line">    xorl %eax, %eax</span><br><span class="line">    movl %eax, __boot_pgdir</span><br><span class="line"></span><br><span class="line">    # set ebp, esp</span><br><span class="line">    movl $0x0, %ebp</span><br><span class="line">    # the kernel stack region is from bootstack -- bootstacktop,</span><br><span class="line">    # the kernel stack size is KSTACKSIZE (8KB)defined in memlayout.h</span><br><span class="line">    movl $bootstacktop, %esp</span><br><span class="line">    # now kernel stack is ready , call the first C function</span><br><span class="line">    call kern_init</span><br><span class="line"></span><br><span class="line"># should never get here</span><br><span class="line">spin:</span><br><span class="line">    jmp spin</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">.align PGSIZE</span><br><span class="line">    .globl bootstack</span><br><span class="line">bootstack:</span><br><span class="line">    .space KSTACKSIZE</span><br><span class="line">    .globl bootstacktop</span><br><span class="line">bootstacktop:</span><br><span class="line"></span><br><span class="line"># kernel builtin pgdir</span><br><span class="line"># an initial page directory (Page Directory Table, PDT)</span><br><span class="line"># These page directory table and page table can be reused!</span><br><span class="line">.section .data.pgdir</span><br><span class="line">.align PGSIZE</span><br><span class="line">__boot_pgdir:</span><br><span class="line">.globl __boot_pgdir</span><br><span class="line">    # map va 0 ~ 4M to pa 0 ~ 4M (temporary)</span><br><span class="line">    .long REALLOC(__boot_pt1) + (PTE_P | PTE_U | PTE_W)</span><br><span class="line">    .space (KERNBASE &gt;&gt; PGSHIFT &gt;&gt; 10 &lt;&lt; 2) - (. - __boot_pgdir) # pad to PDE of KERNBASE</span><br><span class="line">    # map va KERNBASE + (0 ~ 4M) to pa 0 ~ 4M</span><br><span class="line">    .long REALLOC(__boot_pt1) + (PTE_P | PTE_U | PTE_W)</span><br><span class="line">    .space PGSIZE - (. - __boot_pgdir) # pad to PGSIZE</span><br><span class="line"></span><br><span class="line">.set i, 0</span><br><span class="line">__boot_pt1:</span><br><span class="line">.rept 1024</span><br><span class="line">    .long i * PGSIZE + (PTE_P | PTE_W)</span><br><span class="line">    .set i, i + 1</span><br><span class="line">.endr</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="关于中断与异常"><a href="#关于中断与异常" class="headerlink" title="关于中断与异常"></a>关于中断与异常</h2><h2 id="关于特权级"><a href="#关于特权级" class="headerlink" title="关于特权级"></a>关于特权级</h2><h1 id="LAB"><a href="#LAB" class="headerlink" title="LAB"></a>LAB</h1><h2 id="LAB1"><a href="#LAB1" class="headerlink" title="LAB1"></a>LAB1</h2><h3 id="练习1"><a href="#练习1" class="headerlink" title="练习1"></a>练习1</h3><blockquote>
+<p>理解通过make生成执行文件的过程</p>
+</blockquote>
+<p>通过<code>make V=</code>可以观察出总的过程</p>
+<p>这里顺便整理一下makefile的编写原理</p>
+<h3 id="练习2"><a href="#练习2" class="headerlink" title="练习2"></a>练习2</h3><blockquote>
+<p> 使用qemu执行并调试lab1中的软件</p>
+</blockquote>
+<p>按理说是执行<code>make debug</code>就可以，但是我没起起来，似乎是因为在执行<code>make debug</code>的时候另起一个终端来执行我们的gdb</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TERMINAL        :=gnome-terminal</span><br><span class="line">$(V)$(TERMINAL) -e <span class="string">&quot;gdb -q -tui -x tools/gdbinit&quot;</span></span><br></pre></td></tr></table></figure>
+<p>而这个<code>gnome-terminal</code>我本地执行有点问题</p>
+<p>所以我就直接不带debug地<code>make</code>,然后在命令行下直接执行qemu</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-i386 -S -s -parallel stdio -hda bin/ucore.img -serial null</span><br></pre></td></tr></table></figure>
+<p>然后再起个终端执行gdb，类似调试内核那样直接运行<code>target remote:1234</code></p>
+<p>然后就可以gdb调试了</p>
+<p>需要注意的是，在调试BIOS的指令时我们必须手动地加上段寄存器的值才能看到真正执行的代码，就像下面一样。这是因为cs寄存器初始化非零，但是gdb默认只输出ip指向地址的代码。</p>
+<p><img src="C:\Users\YPJ\AppData\Roaming\Typora\typora-user-images\image-20230428145341002.png" alt="image-20230428145341002"></p>
+<h3 id="练习3"><a href="#练习3" class="headerlink" title="练习3"></a>练习3</h3><blockquote>
+<p>分析bootloader进入保护模式的过程</p>
+</blockquote>
+<h3 id="练习4"><a href="#练习4" class="headerlink" title="练习4"></a>练习4</h3><blockquote>
+<p>分析bootloader加载ELF格式的OS的过程</p>
+</blockquote>
+<h3 id="练习5"><a href="#练习5" class="headerlink" title="练习5"></a>练习5</h3><blockquote>
+<p>实现函数调用堆栈跟踪函数</p>
+</blockquote>
+<p>就根据32位下函数调用栈的结构，不断回溯并输出参数以及地址即可。熟悉32位下简单栈溢出的话应该很容易做</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">print_stackframe(<span class="keyword">void</span>) &#123;</span><br><span class="line">     <span class="comment">/* LAB1 YOUR CODE : STEP 1 */</span></span><br><span class="line">     <span class="comment">/* (1) call read_ebp() to get the value of ebp. the type is (uint32_t);</span></span><br><span class="line"><span class="comment">      * (2) call read_eip() to get the value of eip. the type is (uint32_t);</span></span><br><span class="line"><span class="comment">      * (3) from 0 .. STACKFRAME_DEPTH</span></span><br><span class="line"><span class="comment">      *    (3.1) printf value of ebp, eip</span></span><br><span class="line"><span class="comment">      *    (3.2) (uint32_t)calling arguments [0..4] = the contents in address (uint32_t)ebp +2 [0..4]</span></span><br><span class="line"><span class="comment">      *    (3.3) cprintf(&quot;\n&quot;);</span></span><br><span class="line"><span class="comment">      *    (3.4) call print_debuginfo(eip-1) to print the C calling function name and line number, etc.</span></span><br><span class="line"><span class="comment">      *    (3.5) popup a calling stackframe</span></span><br><span class="line"><span class="comment">      *           NOTICE: the calling funciton&#x27;s return addr eip  = ss:[ebp+4]</span></span><br><span class="line"><span class="comment">      *                   the calling funciton&#x27;s ebp = ss:[ebp]</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    <span class="keyword">uint32_t</span> ebp = read_ebp();</span><br><span class="line">    <span class="keyword">uint32_t</span> eip = read_eip();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;STACKFRAME_DEPTH&amp;&amp;ebp !=<span class="number">0</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cprintf(<span class="string">&quot;ebp = 0x%08x,eip = 0x%08x\n&quot;</span>,ebp,eip);</span><br><span class="line">        <span class="keyword">uint32_t</span>* args = (<span class="keyword">uint32_t</span>*)ebp + <span class="number">2</span>;</span><br><span class="line">        cprintf(<span class="string">&quot;args:&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">4</span>;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            cprintf(<span class="string">&quot;0x%08x &quot;</span>,args[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        cprintf(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        print_debuginfo(eip<span class="number">-1</span>);</span><br><span class="line">        eip = *((<span class="keyword">uint32_t</span>*)ebp+<span class="number">1</span>);</span><br><span class="line">        ebp = *(<span class="keyword">uint32_t</span>*)ebp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="练习6"><a href="#练习6" class="headerlink" title="练习6"></a>练习6</h3><blockquote>
+<p>完善中断初始化和处理</p>
+</blockquote>
+<h2 id="LAB2"><a href="#LAB2" class="headerlink" title="LAB2"></a>LAB2</h2><h1 id="REFERENCE"><a href="#REFERENCE" class="headerlink" title="REFERENCE"></a>REFERENCE</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/42309472">CPU的实模式和保护模式(一) - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wingsummer/p/15312627.html">保护模式篇——段描述符与段选择子 - 寂静的羽夏 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904110857125895">计算机系统是如何启动的？ - 掘金 (juejin.cn)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2023/04/17/ucore-lab/">http://phot0n.com/2023/04/17/ucore-lab/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/kernel/">kernel</a><a class="post-meta__tags" href="/tags/dev/">dev</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">CVE-2016-9793分析</div></div></a></div><div class="next-post pull-right"><a href="/2023/04/08/QEMU-RUN/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">QEMU逃逸入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-19</div><div class="title">CVE-2016-9793分析</div></div></a></div><div><a href="/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/" title="KernelPwn入门"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-17</div><div class="title">KernelPwn入门</div></div></a></div><div><a href="/2023/01/19/%E5%86%85%E6%A0%B8%E5%A0%86%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3/" title="内核堆利用相关"><img class="cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-19</div><div class="title">内核堆利用相关</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#BASIC-KNOWLEDGE"><span class="toc-number">1.</span> <span class="toc-text">BASIC-KNOWLEDGE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">关于实模式和保护模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%8F%8A%E5%85%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">实模式及其工作原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">保护模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%90%AF%E5%8A%A8"><span class="toc-number">1.3.</span> <span class="toc-text">关于启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BIOS"><span class="toc-number">1.3.1.</span> <span class="toc-text">BIOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MBR"><span class="toc-number">1.3.2.</span> <span class="toc-text">MBR</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE"><span class="toc-number">1.4.</span> <span class="toc-text">关于内存访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E4%B8%AD%E6%96%AD%E4%B8%8E%E5%BC%82%E5%B8%B8"><span class="toc-number">1.5.</span> <span class="toc-text">关于中断与异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%89%B9%E6%9D%83%E7%BA%A7"><span class="toc-number">1.6.</span> <span class="toc-text">关于特权级</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LAB"><span class="toc-number">2.</span> <span class="toc-text">LAB</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB1"><span class="toc-number">2.1.</span> <span class="toc-text">LAB1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A01"><span class="toc-number">2.1.1.</span> <span class="toc-text">练习1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A02"><span class="toc-number">2.1.2.</span> <span class="toc-text">练习2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A03"><span class="toc-number">2.1.3.</span> <span class="toc-text">练习3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A04"><span class="toc-number">2.1.4.</span> <span class="toc-text">练习4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A05"><span class="toc-number">2.1.5.</span> <span class="toc-text">练习5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%83%E4%B9%A06"><span class="toc-number">2.1.6.</span> <span class="toc-text">练习6</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LAB2"><span class="toc-number">2.2.</span> <span class="toc-text">LAB2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#REFERENCE"><span class="toc-number">3.</span> <span class="toc-text">REFERENCE</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

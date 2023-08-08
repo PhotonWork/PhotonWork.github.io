@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>群环域 | Photon’s Blog</title><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="马上考计组和网安数基了(然而我还是什么也不会….计组要背的好多好杂….网安数基好抽象，堪比孙吧老哥)，在此把之前的知识点整理以下吧，结合一下理解。感觉应该不会出太难的题，毕竟大学生的学习状况dddd  群群这里是重点，后面的环啊、域啊之类的其实可以看作是一种特殊的群，一些概念也很相似,所以群就稍微整理详细一些，后面的环和域都可以类比群 二元运算 定义1.1(二元运算) 设$A$为集合，一个映射$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="群环域">
+<meta property="og:url" content="http://phot0n.com/2021/12/19/%E7%BE%A4%E7%8E%AF%E5%9F%9F/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="马上考计组和网安数基了(然而我还是什么也不会….计组要背的好多好杂….网安数基好抽象，堪比孙吧老哥)，在此把之前的知识点整理以下吧，结合一下理解。感觉应该不会出太难的题，毕竟大学生的学习状况dddd  群群这里是重点，后面的环啊、域啊之类的其实可以看作是一种特殊的群，一些概念也很相似,所以群就稍微整理详细一些，后面的环和域都可以类比群 二元运算 定义1.1(二元运算) 设$A$为集合，一个映射$">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2021-12-19T15:01:15.000Z">
+<meta property="article:modified_time" content="2022-01-03T11:30:33.029Z">
+<meta property="article:author" content="Photon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2021/12/19/%E7%BE%A4%E7%8E%AF%E5%9F%9F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '群环域',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-03 19:30:33'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">群环域</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-12-19T15:01:15.000Z" title="Created 2021-12-19 23:01:15">2021-12-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-01-03T11:30:33.029Z" title="Updated 2022-01-03 19:30:33">2022-01-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">4.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>14min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>马上考计组和网安数基了(然而我还是什么也不会….计组要背的好多好杂….网安数基好抽象，堪比孙吧老哥)，在此把之前的知识点整理以下吧，结合一下理解。感觉应该不会出太难的题，毕竟大学生的学习状况dddd</p>
+</blockquote>
+<h1 id="群"><a href="#群" class="headerlink" title="群"></a>群</h1><p>群这里是重点，后面的环啊、域啊之类的其实可以看作是一种特殊的群，一些概念也很相似,所以群就稍微整理详细一些，后面的环和域都可以类比群<br></p>
+<h2 id="二元运算"><a href="#二元运算" class="headerlink" title="二元运算"></a>二元运算</h2><blockquote>
+<p>定义1.1(二元运算) 设$A$为集合，一个映射$f: A \times A \rightarrow A$称为集合$A$上的代数运算或者二元运算</p>
+</blockquote>
+<p>直观上理解就是一个集合里面任意两个元素作运算，其结果都在集合里面。同时由<code>映射的性质</code>我们可以知晓，二元运算有如下性质</p>
+<ul>
+<li>可运算性，$A$种任何两个元素都能进行这种运算</li>
+<li>单值性，$A$中任何两个元素的运算结果是唯一的</li>
+<li>封闭性,$A$中任何两个元素的运算结果都属于$A$<br>这三条具体对应哪些映射的性质就不展开了。</li>
+</ul>
+<blockquote>
+<p>定义1.2 (结合律) 设 “$\circ$”为$A$上的二元运算，如果对于$A$中的任意元素$a,b,c$都有$(a\circ b)\circ c = a\circ (b\circ c)$,则称”$\circ$”在集合$A$上满足<code>结合律</code></p>
+</blockquote>
+<p>同理我们可以定义交换律和分配律</p>
+<h2 id="群的概念"><a href="#群的概念" class="headerlink" title="群的概念"></a>群的概念</h2><p>不同于老师上课教的，这里多介绍几个概念来为群的概念铺垫，可能会好理解一些</p>
+<blockquote>
+<p>定义2.1  (半群) 集A连同其上给定的满足<code>结合律</code>的二元运算称为一个半群</p>
+</blockquote>
+<p>为什么要定义这样一个半群概念呢？还有便是，为什么半群要求的是满足结合律而不是交换律和分配律呢？<br><br>不加证明地，我们给出如下定理</p>
+<blockquote>
+<p>定理2.1 如果集合$X$上的二元关系是结合的，那么$X$中的$n$个元素作运算的结果和括号的位置无关</p>
+</blockquote>
+<p>举例来说，<script type="math/tex">(a_1\circ a_2 \circ a_3 \dots a_k)\circ(a_{k+1}\circ a_{k+2}\dots a_{m})\circ \dots \circ a _{n-1} \circ a_n = a_1\circ a_2 \circ \dots a_n</script></p>
+<p>对于我们定义的半群概念，它除了满足二元运算的那些性质之外，还满足结合律的此性质，也就是说只要我们确定作运算的元素以及其排列，我们就可以唯一的确定其结果，不必考虑括号问题，这种定义为我们以后的研究带来了一定的便利</p>
+<blockquote>
+<p>定义2.2 (幺半群) 带有单位元的半群称为幺半群</p>
+</blockquote>
+<p>单位元通常指这么一个元素$e$,满足$a \circ e = e \circ a = a$对于集合$A$上的任意元素$a$,如果不另外说明，我们默认符号$e$为单位元</p>
+<blockquote>
+<p>定义2.3 (群) 如果对于一个幺半群$G$中的每个元素$a$,有逆元$a^{-1}$,使得$a \circ a^{-1} = a^{-1} \circ a = e$,则该称$G$为一个群</p>
+</blockquote>
+<p>众所周知群有三个性质：满足</p>
+<ul>
+<li>结合律</li>
+<li>单位元</li>
+<li>逆元</li>
+</ul>
+<p>这三个性质其实是一个逐渐加强的过程，代表着半群到幺半群到群的一个逐步加强。<br>我们可以进一步加强，比如我们还想加一个交换律，然后就有了<code>阿贝尔群</code>,那如果我们还想要分配律呢？这就为之后环的概念作了铺垫。如果群中的元素无限？然后就有了<code>无限群</code>。如果群中元素有限就称为<code>有限群</code>。同时，有限群的元素个数显然也值得我们研究，于是就定义有限群元素个数称为群的<code>阶</code>，记为$|G|$</p>
+<p>有了群的概念之后我们不难得到群的一些基本性质</p>
+<ul>
+<li>单位元唯一</li>
+<li>逆元唯一</li>
+<li>消去律 (设$a,b,c$为群的三个元素，若$ab=ac$则$b=c$,若$ba=ca$则$b=c$)</li>
+<li>对于群$G$中的任意元素$a,b$,方程$ax=b$和$xa=b$在群$G$中有唯一解</li>
+<li>群$G$中的任意元素$a,b$,都有$(ab)^{-1} = b^{-1}a^{-1}$</li>
+</ul>
+<p>证明不难<br><br>如何判定一个群？我们有如下定理</p>
+<blockquote>
+<p>定理2.2 (群的判定定理) 设$G$为一非空集合，$G$上乘法封闭且满足结合律。若对于$G$中的任意元素$a,b $，方程$ax=b$和$xa=b$在$G$中有解，则$G$是群。</p>
+</blockquote>
+<p>证明的话只要再证明$G$满足单位元还有任意元素逆元就行了</p>
+<p>同时还有另外一种判定方法，适用于有限群</p>
+<blockquote>
+<p>定理2.3 一个有乘法的有限集合$G$，若其乘法在$G$中封闭，且满足结合律和消去律，则$G$是群。</p>
+</blockquote>
+<p>定理2.3的证明事实上用到了定理2.2，往上面靠就行了</p>
+<h2 id="子群"><a href="#子群" class="headerlink" title="子群"></a>子群</h2><p>一般而言我们研究一种代数结构的脉络就是从结构到子结构、商结构再到映射之间的过程。就比如我们定义了群的概念，我们想要知道群里面是否还会找出某些元素，也构成一个群。正如同以前研究图的时候一样，对于一个连通图我们试图找出其最小生成树(用prim算法之类的)，但是事实上树也属于图,所以我们也相当于在找一个特殊的子连通图。我们很容易给出子群的定义</p>
+<blockquote>
+<p>定义3.1(子群) 如果群$G$的非空子集合$H$对于$G$中的运算也构成一个群，那么$H$称为$G$的子群，记为 $H ≤ G$</p>
+</blockquote>
+<p>对于子群我们有如下判定定理</p>
+<blockquote>
+<p>定理3.2(子群判定定理) 群$G$的非空集合$H$是一子群的充要条件是：对于任意$a,b \in H$,有$ab^{-1}\in H$</p>
+</blockquote>
+<p>定理3.2的启发我个人感觉是来自于定理2.2。假设我们有一个非空子集合$H$,我们想要证明它构成一个群，那么我们要么从定义入手，要么从判定定理也就是定理2.2与2.3。但是子集合不一定是有限集合，而且定理2.2是比定理2.3要强的，所以我们考虑定理2.2。首先要求我们的非空集合$H$要是乘法封闭并满足结合律，而且对于子集合的任意元素$a,b$,我们想要证明$ax=b$和$xa=b$在$H$中有解,其实就相当于$x=a^{-1}b \in H$以及$x=ba^{-1} \in H$</p>
+<p>假设某一个集合并不能构成一个子群，所以我们想给它加几个元素使得它能构成一个子群，当然加的元素越少越好(有点类似图论里面研究最小覆盖之类的)，于是我们可以定义生成子群的概念</p>
+<blockquote>
+<p>定义3.2 设$G$是群，$S$是$G$的子集，$G$中包含$S$的最小子群称为由$S$生成的子群，记为$&lt;S&gt;$。如果群$G$自身是由$S$生成的，则称$S$是$G$的一组生成元。如果$G=&lt;S&gt;$，$S$是有限子集，则称群$G$是有限生成的。</p>
+</blockquote>
+<p>可以证明</p>
+<script type="math/tex; mode=display"><S> = \{ a_i\dots a_m|m \geq 0,a_i\in S \cup S^{-1} \}\\
+S^{-1} = \{ a^{-1} | a \in S\}</script><p>这个式子的构造我觉得是因为基于这样一个想法:首先我们有$S$，要把它扩充成为一个群$H$，显然$S$中所有元素的逆必须包含，这样扩充成为$S \cup S^{-1}$,要成为群首先是要乘法封闭以及满足结合律，而后者已经满足(是群的子集),所以$S \cup S^{-1}$里面任意两个元素的运算结果必须也塞进去，塞进去之后再进行一个把任意两个元素的运算结果塞进去的操作，这样无限次地进行下去，显然就得到了$ &lt;S &gt; = \{ a_i\dots a_m|m \geq 0,a_i\in S \cup S^{-1} \}$</p>
+<p>特别地，假如说这一个集合$S$只有一个元素，比如说$a$,那么它生成的群是什么样的呢？按照定理我们有<script type="math/tex"><a> = \{ a_i\dots a_m|m \geq 0,a_i\in \{ a,a^{-1}\} \}</script><br>我们知道$aa^{-1}=e$,那么进一步化简就能得到<script type="math/tex"><a> = \{a^i|i\in Z\}</script></p>
+<p>这也是一种特殊的群，称为循环群。假如说它是一个有限群，那么$a$进行许多次自乘之后肯定会回到原点也就是等于$e$。那么我们可以定义满足$a^k=e$的这个最小正整数$k$称为元素$a$的阶</p>
+<p>接下来一个比较重要的概念就是陪集。假设我们已经找到了群的一个非平凡子群，那么显然这个群就被分为了两个部分：属于子群和不属于子群的部分。对于一个属于子群的元素$a$和不属于子群的元素$g$作运算，显然运算结果不属于这个子群。假如所有子群元素和$g$作运算，构成的集合显然和子群没有交集，但是它的阶(如果有限的话)和子群的阶是一样的。直观上来想像，就好像子群作了一次平移，或者说群以子群为依据作了划分</p>
+<blockquote>
+<p>定义3.3(陪集) 设$H$是群$G$的一个子群设$H$是群$G$的一个子群。对于$G$中的任意元素$a$，称集合$\{ ah|h ∈H\}$为H的一个左陪集，简记为 $aH$。因为$H$中有单位元素，所以 $a ∈aH$ 。同样可以定义右陪集为$Ha=\{ha|h ∈H\}$</p>
+</blockquote>
+<p>正如同之前形象地说明，我们事实上可以证明是可以以子群为依据进行划分的</p>
+<blockquote>
+<p>定理3.3 设$H$是群$G$的一个子群。$H$的任意两个左陪集或者相等或者无公共元素。群$G$可以表示成$H$的若干个不相交的左陪集之并</p>
+</blockquote>
+<p>这样划分过后，显然我们可以想象出来，这个群的阶应该是子群的阶的整数倍，因为每个陪集的阶是相等的，都等于子群的阶，并且群可以划分成若干个左陪集之并，就像切蛋糕一样，切出来的蛋糕是一模一样大小的</p>
+<blockquote>
+<p>定义3.4 群$G$关于子群$H$的左陪集的个数称为$H$在$G$中的指数，记为$[G:H]$。</p>
+</blockquote>
+<p>并且我们有如下定理</p>
+<blockquote>
+<p>定理3.4 (拉格朗日定理)设群$G$是一个有限群，$H$是群$G$的一个子群，则$H$的阶$|H|$是群$G$的阶$|G| $的因子，而且$|G| = |H|[G:H]$</p>
+</blockquote>
+<h2 id="群关系"><a href="#群关系" class="headerlink" title="群关系"></a>群关系</h2><p>我们把其余的诸如正规子群的概念下放到群关系这里，我感觉和这一块的内容较为紧密</p>
+<p>首先是正规子群的概念，正规子群是一种特殊的子群。之前整理陪集的时候我们提到，陪集分为左陪集和右陪集两个，由于群满足的是结合律，分配律不强制要求，所以左陪集和右陪集一般来说不一样，但是也有特殊情况下是一样的，这种情况我们定义称为<code>正规子群</code></p>
+<blockquote>
+<p>定义4.1(正规子群) 若$H$是$G$的子群，且对于任意元素$a∈G$，均有$aH=Ha$，则称$H$是$G$的正规子群，记为 $H\lhd G$</p>
+</blockquote>
+<p>显然我们知道阿贝尔群的子群都是正规子群。另外这个也是一个正规子群:$N = \{ n|na = an, \forall a \in G \} $,称为群$G$的中心。利用子群和正规子群的定义很容易证明。先证明是子群，也就是$ \forall x,y \in N, xy^{-1} \in N$，再证明是正规的，利用定义。</p>
+<p>每次用定义证明雀食麻烦，有下列正规子群的判定定理以及性质</p>
+<blockquote>
+<p>定理4.1 设$H$是$G$的子群， $a∈G$。令$a^{-1}Ha = \{a^{-1}ha| h \in H\}$，则下列条件等价</p>
+<ul>
+<li>H是G的正规子群</li>
+<li>$\forall a \in G,h \in H$,有$a^{-1}ha \in H$</li>
+<li>$\forall a \in G$,$a^{-1}Ha \subseteq H$</li>
+<li>$\forall a \in G$,$a^{-1}Ha = H$</li>
+</ul>
+</blockquote>
+<p>要证明这四个等价，只要构成一个循环的证明环从$1\Rightarrow2\Rightarrow3\Rightarrow4\Rightarrow1$就行了。</p>
+<p>正规子群的定义是为了引出商结构的</p>
+<blockquote>
+<p>定义4.2(商群) 设H是G的正规子群，记 $G/H=\{aH|a ∈ G\}$，在集合$G/H$上定义运算：<br><br>$(aH) ·(bH)=(ab)H$<br><br>则上述定义的运算给出了$G/H$上的一个乘法，且$G/H$在这个乘法下构成群，称为$G$关于正规子群$H$的商群</p>
+</blockquote>
+<p>通俗的讲，利用陪集的概念对群进行切块之后构成的各个块(也就是集合)的集合就是一个群换句话说：群$G$的正规子群$H$的全体陪集关于陪集的乘法构成群,这个群就叫商群</p>
+<p>下面我们建立同态的概念</p>
+<blockquote>
+<p>定义4.3 设$G$(运算为$\circ$)和$G’$(运算为$\bullet$)是两个群。$f$是群$G$到群$G’$的一个映射。如果对于任意$a ∈ G$，映射$f$满足<br><br>$f(a\circ b) = f(a)\bullet f(b)$<br><br>则称$f$是群$G$到群$G’$的一个<code>同态映射</code></p>
+</blockquote>
+<p>特别的，如果映射是双射的话，则称$f$为群$G$到群$G’$的一个<code>同构映射</code>，记为$G\cong G’$。如果是满射的话称为是满同态。</p>
+<p>$G$到自身的同构称为自同构。我们有如下定理</p>
+<blockquote>
+<p>定理4.2 (自然同态)一个群$G$与它的每一个商群$G/H$同态</p>
+</blockquote>
+<p>构造$\varphi (a) = aH$即可,这个构造的映射$\varphi$称为为群$G$到它的商群的<code>自然同态映射</code></p>
+<p>对于同态中的映射有许多可以挖掘的，比如有哪些元素映射到某些特殊元素(例如单位元)，这种有什么有趣的性质等等。我们可以进一步定义</p>
+<blockquote>
+<p>定义4.4 设$f$是群$G$到群$G’$的一个同态映射，称 <br><br>$𝑓(𝐺)=\{𝑓(𝑎)|𝑎∈𝐺\}$<br>为同态$f$的象。<br><br>对于任意$a’\in G’$，集合：<br><br>$\{a \in G| f(a) = a’ \}$<br>称为元素a’的完全逆象，记为$f^{-1}(a’)$<br><br>单位元素$𝑒′∈𝐺′$的完全逆象$𝑓^{-1} (e’)$称为同态$f $的核，记为$ker(f)$。<br><br>$f(G)$是 $G’$ 的一个子群。自然同态的核为正规子群$H$</p>
+</blockquote>
+<p>我们引出最后一个重要的定理并加以证明作为结尾</p>
+<blockquote>
+<p>定理 4.3(群同态基本定理)设$f$是群$G$到群$G’$的一个满同态映射，$N$为$f$的核，则$N$是$G$的一个正规子群，且<script type="math/tex">G/N \cong G'</script></p>
+</blockquote>
+<p>证明:</p>
+<p>先证明$N$是$G$的一个正规子群,首先证明$N$为子群。</p>
+<script type="math/tex; mode=display">\forall x,y\in N,有f(xy^{-1}) = f(x)f(y)^{-1} = ee^{-1}=e</script><p>所以$xy^{-1} \in N$,$N$为子群。再证明是正规子群</p>
+<script type="math/tex; mode=display">\forall x \in N ,a\in G,有f(axa^{-1}) = f(a)f(x)f(a)^{-1} = e</script><p>所以$axa^{-1} \in N$,从而$N$为正规子群</p>
+<p>再证明$G/N \cong G’$,关键在于构造合理的映射。</p>
+<p>我们构造$\phi :G/N \rightarrow G’$为</p>
+<script type="math/tex; mode=display">\phi(aN) = f(a)</script><p>(其实这样构造的主要原因在于映射的合成,直觉上这样构造是比较显然的)下面的任务就是证明这个映射是双射，也就是要证明既要是满射又要是单射，当然在此之前先要证明是映射。</p>
+<p>对于$aN=bN$我们有$a^{-1}b \in N$,由于$N$是核，所以得到了$e’ = f(a^{-1}b) = f(a)^{-1}f(b)\Rightarrow f(a) = f(b)\Rightarrow \phi(aN)=\phi(bN)$</p>
+<p>也就是象唯一，所以构成映射</p>
+<p>$\forall a’ \in G’$由于是$f$是满同态映射，所以存在$a \in G$满足$f(a) = a’$,从而有$\varphi(aN) = f(a) = a’$</p>
+<p>所以对于任何一个$G’$中的元素，都有原象，所以是满射</p>
+<p>如果$aN \neq bN$,则$a^{-1}b \notin N$,得到$e’ \neq f(a^{-1}b) = f(a)^{-1}f(b) \Rightarrow f(a) \neq f(b)$</p>
+<p>从而证明是单射</p>
+<p>所以我们构造出来的映射是双射，下一步证明满足同构</p>
+<p>$\forall aN,bN \in G/N,\phi(aNbN)=\phi(abN)=f(ab)=f(a)f(b)=\phi(aN)\phi(bN)$</p>
+<p>综上，我们有$G/N \cong G’$</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2021/12/19/%E7%BE%A4%E7%8E%AF%E5%9F%9F/">http://phot0n.com/2021/12/19/%E7%BE%A4%E7%8E%AF%E5%9F%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/08/SCTF2021/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">SCTF2021</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/09/%E6%B1%87%E7%BC%96%E5%AE%9E%E9%AA%8C/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">汇编实验</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BE%A4"><span class="toc-number">1.</span> <span class="toc-text">群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97"><span class="toc-number">1.1.</span> <span class="toc-text">二元运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BE%A4%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.</span> <span class="toc-text">群的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E7%BE%A4"><span class="toc-number">1.3.</span> <span class="toc-text">子群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BE%A4%E5%85%B3%E7%B3%BB"><span class="toc-number">1.4.</span> <span class="toc-text">群关系</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

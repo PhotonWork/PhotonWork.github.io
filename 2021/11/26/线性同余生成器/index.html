@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>线性同余生成器 | Photon’s Blog</title><meta name="keywords" content="PRNG"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="整理一下LCG(linear congruential generator)相关内容  原理线性同余生成器(LCG)是一种比较常见的生成随机数的方法,其主要的原理如下 X_{n+1} &#x3D; aX_n+c \mod m并且特别的,$X_0$称为seeds或者start value。这种随机数生成器是有周期的，其最大周期为$m$,但是大部分情况都会小于$m$,要使得LCG达到最大周期，我们需要满足">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性同余生成器">
+<meta property="og:url" content="http://phot0n.com/2021/11/26/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E7%94%9F%E6%88%90%E5%99%A8/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="整理一下LCG(linear congruential generator)相关内容  原理线性同余生成器(LCG)是一种比较常见的生成随机数的方法,其主要的原理如下 X_{n+1} &#x3D; aX_n+c \mod m并且特别的,$X_0$称为seeds或者start value。这种随机数生成器是有周期的，其最大周期为$m$,但是大部分情况都会小于$m$,要使得LCG达到最大周期，我们需要满足">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2021-11-26T11:43:09.000Z">
+<meta property="article:modified_time" content="2021-11-26T13:14:37.970Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="PRNG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2021/11/26/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E7%94%9F%E6%88%90%E5%99%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '线性同余生成器',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-26 21:14:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">线性同余生成器</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-11-26T11:43:09.000Z" title="Created 2021-11-26 19:43:09">2021-11-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-11-26T13:14:37.970Z" title="Updated 2021-11-26 21:14:37">2021-11-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>4min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>整理一下LCG(linear congruential generator)相关内容</p>
+</blockquote>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>线性同余生成器(LCG)是一种比较常见的生成随机数的方法,其主要的原理如下</p>
+<script type="math/tex; mode=display">X_{n+1} = aX_n+c \mod m</script><p>并且特别的,$X_0$称为<code>seeds</code>或者<code>start value</code>。<br><br>这种随机数生成器是有周期的，其最大周期为$m$,但是大部分情况都会小于$m$,要使得LCG达到最大周期，我们需要满足</p>
+<ul>
+<li>$gcd(c,m)=1$</li>
+<li>$m$的所有质因子都能整除$a-1$</li>
+<li>若$m$是$4$的倍数，$a-1$也是</li>
+<li>$a,c,X_0$都比$m$小</li>
+<li>$a,c$为正整数</li>
+</ul>
+<p>(&lt;来自wiki百科&gt;)<br><br>不过显而易见的是这并不是一种非常安全的随机数生成方法，我们有许多的方法去攻击它</p>
+<h2 id="攻击方法"><a href="#攻击方法" class="headerlink" title="攻击方法"></a>攻击方法</h2><p>由易至难整理一下LCG的攻击方法,主要包括普通的解方程等，以及格的方法进行攻击,</p>
+<h3 id="知晓内部参数以及某个-X-i"><a href="#知晓内部参数以及某个-X-i" class="headerlink" title="知晓内部参数以及某个$X_i$"></a>知晓内部参数以及某个$X_i$</h3><blockquote>
+<p>已知:$a,c,m,X_i$</p>
+</blockquote>
+<p>假设我们知晓了内部的$a,c,m$参数，以及某个$X_i$，那么显然我们很容易推出$X_i$之前或之后的某个数值</p>
+<h3 id="增量未知"><a href="#增量未知" class="headerlink" title="增量未知"></a>增量未知</h3><blockquote>
+<p>已知:$a,m,X_{i},X_{i+1}$</p>
+</blockquote>
+<p>这种也是比较简单的,我们很容易可以求出$c \equiv X_{i+1}-aX_{i} \mod m$,然后就可以为所欲为了(bushi)<br><br>当然，要是知道$X$的不是相邻的,但是知道其相对位置也很容易求,这里就不赘述了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def crack_unknown_increment(states, modulus, multiplier): </span><br><span class="line">    increment &#x3D; (states[1] - states[0]*multiplier) % modulus </span><br><span class="line">    return modulus, multiplier, increment</span><br></pre></td></tr></table></figure><br>本文来源：码农网<br>本文链接：<a target="_blank" rel="noopener" href="https://www.codercto.com/a/35743.html```">https://www.codercto.com/a/35743.html```</a></p>
+<h3 id="增量和乘数都未知"><a href="#增量和乘数都未知" class="headerlink" title="增量和乘数都未知"></a>增量和乘数都未知</h3><blockquote>
+<p>已知$m,X_0,X_1,X_2$</p>
+</blockquote>
+<p>对于这种情况我们可以解出<script type="math/tex">a\equiv (X_2-X_1)\overline{(X_1-X_0)} \mod m</script></p>
+<p>然后就转化成了增量未知的情况,也是十分简单的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def crack_unknown_multiplier(states, modulus):    </span><br><span class="line">    multiplier &#x3D; (states[2] - states[1]) * modinv(states[1] - states[0], modulus) % modulus </span><br><span class="line">    return crack_unknown_increment(states, modulus, multiplier)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h3 id="增量，乘数和模数均未知"><a href="#增量，乘数和模数均未知" class="headerlink" title="增量，乘数和模数均未知"></a>增量，乘数和模数均未知</h3><blockquote>
+<p>已知$X_0,X_1,X_2,X_3,X_4,X_5,X_6$</p>
+</blockquote>
+<p>对于这种情况，我们不知道内部参数，但是我们有连续的几个随机数值。对于这种情况列方程解是不太可行的，我们需要用到初等数论中一条比较有用的结论</p>
+<blockquote>
+<p>如果有几个随机数分别乘以n，那么这几个数的最大公约数(gcd)就很可能等于n</p>
+</blockquote>
+<p>要用到这个结论的话我们需要进行做差,令</p>
+<script type="math/tex; mode=display">\begin{aligned}
+t_0 &\equiv (X_1-X_0) \mod m \\
+t_1 &\equiv (X_2-X_1) \equiv a(X_1-X_0)\equiv at_0 \mod m\\
+t_2 &\equiv (X_3-X_2) \equiv a(X_2-X_1)\equiv at_1 \mod m\\
+t_3 &\equiv (X_4-X_3) \equiv a(X_3-X_2)\equiv at_2 \mod m
+\end{aligned}</script><p>这样得到<script type="math/tex">t_2t_0-t_1^2 \equiv 0 \mod m</script><br>即$t_2t_0-t_1^2 = k_1m$，同理我们可以搞出很多的这种式子</p>
+<script type="math/tex; mode=display">\begin{aligned}
+t_2t_0-t_1^2 &= k_1m\\
+t_3t_1-t_2^2 &= k_2m\\
+t_4t_2-t_3^2 &= k_1m\\
+...
+\end{aligned}</script><p>我们对这些值求$gcd$就可以求出$m$,然后就转化成了增量、乘数均未知的情况，而后就很简单了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def crack_unknown_modulus(states): </span><br><span class="line">    diffs &#x3D; [s1 - s0 for s0, s1 in zip(states, states[1:])] </span><br><span class="line">    zeroes &#x3D; [t2*t0 - t1*t1 for t0, t1, t2 in zip(diffs, diffs[1:], diffs[2:])] </span><br><span class="line">    modulus &#x3D; abs(reduce(gcd, zeroes)) </span><br><span class="line">    return crack_unknown_multiplier(states, modulus)</span><br></pre></td></tr></table></figure></p>
+<h3 id="基于格的攻击"><a href="#基于格的攻击" class="headerlink" title="基于格的攻击"></a>基于格的攻击</h3><p>假设我们知道了连续若干LCG随机数的高位，我们也能够恢复出初始值(即seed)</p>
+<blockquote>
+<p>已知:$a,c,m$,连续$X_1,\dots X_{20}$的高位,求$X_0$</p>
+</blockquote>
+<p>我们假设每个$X$为128位的数，其高64位已知，<br>那么我们可以假设高位为$h$，低位为$l$，那么我们有</p>
+<script type="math/tex; mode=display">\begin{aligned}
+(h_2+l_2) &\equiv a(h_1+l_1)+c \mod m\\
+\rightarrow l_2 &\equiv al_1+c+ah_1-h_2 \mod m\\
+&\equiv A_1l_1+B_1 \mod m
+\end{aligned}</script><p>对于其他的低位$l$我们同理有</p>
+<script type="math/tex; mode=display">l_i \equiv A_{i-1}l_1+B_{i-1} \mod m\\
+\rightarrow l_i = A_{i-1}l_1+B_{i-1} +k_{i-1} m</script><p>那么我们可以构造如下的格子</p>
+<script type="math/tex; mode=display">\left(
+    \begin{array}{c}
+      k_1,k_2,\dots k_{19},l_1,1
+    \end{array}
+\right)
+\begin{pmatrix}
+
+m & 0 & 0& \cdots & 0&0\\
+
+0 & m & 0 & \cdots & 0 &0\\
+
+\vdots & \vdots & \ddots & \vdots \\
+
+0 & 0 & \dots & m &0 &0 \\
+A_1&A_2&\dots&A_{19} &1&0\\
+B_1&B_2&\dots &B_{19}&0&2^{64}
+
+\end{pmatrix}
+=\left(
+    \begin{array}{c}
+      l_2,l_3,\dots,l_{20},l_{1},2^{64}
+    \end{array}
+\right)</script><p>右边的即是我们要求的$SVP$，其大小大概为$2^{64}$,而由闵可夫斯基定理我们可以求出大概的界为<script type="math/tex">\approx (DetL)^{\frac{1}{n}}=(m^{19}*2^{64})^{\frac{1}{20}}>2^{64}</script><br>所以构造出的$SVP$是满足的，我们求出来相应的低位之后就很容易恢复出seeds了</p>
+<hr>
+<p>参考网站<a target="_blank" rel="noopener" href="https://www.codercto.com/a/35743.html">https://www.codercto.com/a/35743.html</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2021/11/26/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E7%94%9F%E6%88%90%E5%99%A8/">http://phot0n.com/2021/11/26/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E7%94%9F%E6%88%90%E5%99%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PRNG/">PRNG</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/12/01/raspberrypi-init/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">raspberrypi_init</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/26/CASPPLAB-BOMB/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">CASPPLAB:BOMB</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">29</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">攻击方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A5%E6%99%93%E5%86%85%E9%83%A8%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%9F%90%E4%B8%AA-X-i"><span class="toc-number">2.1.</span> <span class="toc-text">知晓内部参数以及某个$X_i$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E6%9C%AA%E7%9F%A5"><span class="toc-number">2.2.</span> <span class="toc-text">增量未知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%92%8C%E4%B9%98%E6%95%B0%E9%83%BD%E6%9C%AA%E7%9F%A5"><span class="toc-number">2.3.</span> <span class="toc-text">增量和乘数都未知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%EF%BC%8C%E4%B9%98%E6%95%B0%E5%92%8C%E6%A8%A1%E6%95%B0%E5%9D%87%E6%9C%AA%E7%9F%A5"><span class="toc-number">2.4.</span> <span class="toc-text">增量，乘数和模数均未知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%A0%BC%E7%9A%84%E6%94%BB%E5%87%BB"><span class="toc-number">2.5.</span> <span class="toc-text">基于格的攻击</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2016-9793分析"/></a><div class="content"><a class="title" href="/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/" title="CVE-2016-9793分析">CVE-2016-9793分析</a><time datetime="2023-04-19T08:27:13.000Z" title="Created 2023-04-19 16:27:13">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/17/ucore-lab/" title="ucore-lab"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ucore-lab"/></a><div class="content"><a class="title" href="/2023/04/17/ucore-lab/" title="ucore-lab">ucore-lab</a><time datetime="2023-04-17T07:04:17.000Z" title="Created 2023-04-17 15:04:17">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QEMU逃逸入门"/></a><div class="content"><a class="title" href="/2023/04/08/QEMU-RUN/" title="QEMU逃逸入门">QEMU逃逸入门</a><time datetime="2023-04-07T16:09:19.000Z" title="Created 2023-04-08 00:09:19">2023-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="libc的源码调试与分析"/></a><div class="content"><a class="title" href="/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/" title="libc的源码调试与分析">libc的源码调试与分析</a><time datetime="2023-03-31T08:37:53.000Z" title="Created 2023-03-31 16:37:53">2023-03-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="firmAE框架分析"/></a><div class="content"><a class="title" href="/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/" title="firmAE框架分析">firmAE框架分析</a><time datetime="2023-02-26T04:51:50.000Z" title="Created 2023-02-26 12:51:50">2023-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
