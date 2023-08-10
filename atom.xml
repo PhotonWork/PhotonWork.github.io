@@ -6,7 +6,7 @@
   <link href="http://phot0n.com/atom.xml" rel="self"/>
   
   <link href="http://phot0n.com/"/>
-  <updated>2023-08-08T16:48:35.820Z</updated>
+  <updated>2023-08-10T08:32:42.956Z</updated>
   <id>http://phot0n.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2023夏季之后计划表与忏悔录</title>
+    <link href="http://phot0n.com/2023/08/10/2023%E8%AE%A1%E5%88%92%E8%A1%A8/"/>
+    <id>http://phot0n.com/2023/08/10/2023%E8%AE%A1%E5%88%92%E8%A1%A8/</id>
+    <published>2023-08-10T08:14:28.000Z</published>
+    <updated>2023-08-10T08:32:42.956Z</updated>
+    
+    <content type="html"><![CDATA[<p>感觉自己这一个学期以来都太颓废了，很多想学的，想看的东西都鸽了，变成了无休止的睡眠。</p><p>自己不知道为何莫名其妙嗜睡(进大学以来好像就变成这样了)，也许是看室友没起床自己也不想起床（然后室友看我没起床也不像起床x）</p><p>最近忙完了夏令营，收获了保底offer，预推免再想办法冲一下吧（其实感觉不冲也无所谓了，我已经摆烂了）</p><p>感觉自己太菜了，本身起步就晚挺多的，还容易摆烂，每天学习时间感觉非常少，有效学习时间就更少了。所以想把自己想学的东西mark一下，每天有学的话就实时更新进展。同时为了克服自己爱睡懒觉的毛病(喜欢熬夜看漫画，然后一觉醒来就GG。从大一一直颓废到现在)，如果自己在8：30之后起床就在这里忏悔（有用吗？如有x），如果按时起床就也mark一下，鼓励自己</p><h3 id="主要计划"><a href="#主要计划" class="headerlink" title="主要计划"></a>主要计划</h3><ul><li>hybrid fuzz(研究生阶段想搞漏挖以及漏洞利用的活，但是现在在组里感觉也没啥产出，也没有方向更是不知道如何去干，一步步来吧)</li><li>逆向学习(主要是C++逆向吧)</li><li>跟着ucore和《操作系统真像还原》写一下OS，锻炼自己正向开发能力</li><li>C++ 开发与安卓开发，写个小项目，锻炼自己正向开发能力(目前想法是写一个漫画阅读器。寒假的时候把某漫画app的API逆出了但是只能达到离线下载的 程度。当时想patch一下拷贝漫画的安卓端app结果好像发现有一些校验之类的，也没找到patch的地方x。而且这玩意的广告挺逆天的。既然API已经有了那自己写一个阅读器然后获取资源查看就行了)</li></ul><h3 id="忏悔录"><a href="#忏悔录" class="headerlink" title="忏悔录"></a>忏悔录</h3><h3 id="进展"><a href="#进展" class="headerlink" title="进展"></a>进展</h3><ul><li></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;感觉自己这一个学期以来都太颓废了，很多想学的，想看的东西都鸽了，变成了无休止的睡眠。&lt;/p&gt;
+&lt;p&gt;自己不知道为何莫名其妙嗜睡(进大学以来好像就变成这样了)，也许是看室友没起床自己也不想起床（然后室友看我没起床也不像起床x）&lt;/p&gt;
+&lt;p&gt;最近忙完了夏令营，收获了保底off</summary>
+      
+    
+    
+    
+    
+    <category term="plan" scheme="http://phot0n.com/tags/plan/"/>
+    
+  </entry>
   
   <entry>
     <title>CVE-2016-9793分析</title>
@@ -489,31 +513,6 @@
     
     
     <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>栈迁移</title>
-    <link href="http://phot0n.com/2022/03/29/%E6%A0%88%E8%BF%81%E7%A7%BB/"/>
-    <id>http://phot0n.com/2022/03/29/%E6%A0%88%E8%BF%81%E7%A7%BB/</id>
-    <published>2022-03-29T12:19:47.000Z</published>
-    <updated>2022-07-04T14:33:27.599Z</updated>
-    
-    <content type="html"><![CDATA[<p>通过一个例子来学习一下栈迁移。栈迁移就是一种通过控制<code>esp</code>,<code>ebp</code>指针(32位系统中)，使得我们的栈迁移到一段自己定义的地方，从而getshell的方法。</p><h2 id="利用的gadget"><a href="#利用的gadget" class="headerlink" title="利用的gadget"></a>利用的gadget</h2><p>我们利用的<code>gadget</code>主要有两个:<code>leave</code>以及<code>ret</code>。</p><p><code>leave</code>等同于<code>mov esp,ebp|pop ebp</code>，也就是把<code>ebp</code>寄存器的值赋给<code>esp</code>，而后将栈上所指的值弹给<code>ebp</code>.而<code>ret</code>就是等同于<code>pop eip</code>,这是我们控制程序运行流程的重要手段</p><h2 id="ciscn-2019-es-2"><a href="#ciscn-2019-es-2" class="headerlink" title="ciscn_2019_es_2"></a>ciscn_2019_es_2</h2><p>首先我们用IDA反编译程序,很容易便发现一个溢出点</p><p><img src="https://s2.loli.net/2022/03/29/QHqgtYWlpv9EVSz.png" alt="screenShot.png"></p><p>但是这里的问题是溢出的量比较少,无法构造完整的ROP链.这里我们利用<code>s</code>数组来构造我们的payload.</p><p>我们知道,如果构造成功我们最后执行的结果应该是这个</p><p><img src="https://s2.loli.net/2022/03/29/OnDj49QLRUBgVWG.png" alt="screenShot.png"></p><p>同时我们的<code>eip</code>指向的指令应该为<code>ret</code>.为了达到这种情况,我们进行迁移,首先注意到<code>print</code>函数的参数字符串<code>%s</code>如果不遇到<code>\x00</code>进行截断将一直打印.所以第一次print的时候我们可以将<code>vul</code>函数的<code>ebp</code>存的值给泄露出来,这样我们就成功得到了栈的地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">payload&#x3D;b&#39;a&#39;*0x20+b&#39;b&#39;*8</span><br><span class="line">a.send(payload)</span><br><span class="line">a.recvuntil(&quot;bbbbbbbb&quot;)</span><br><span class="line">ebp&#x3D;u32(a.recv(4))</span><br></pre></td></tr></table></figure><br>泄露出来之后我们发现<code>ebp</code>存的值正好是<code>ebp+0x10</code>.所以我们可以进行这样的构造<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload2&#x3D;b&#39;a&#39;*4+p32(sys)+p32(0xdeadbeef)+p32(ebp-0x28)+b&quot;&#x2F;bin&#x2F;sh&quot;</span><br><span class="line">payload2&#x3D;payload2.ljust(0x28,b&#39;\x00&#39;)</span><br><span class="line">payload2+&#x3D;p32(ebp-0x38)+p32(leave_ret)</span><br></pre></td></tr></table></figure><br>下面来解释为何这样构造是正确的.当我们将<code>payload2</code>输入的时候,此时的栈结构是这样的<br><img src="https://s2.loli.net/2022/03/29/MYmgaeXAIZP5y1b.png" alt="screenShot.png"></p><p>此时执行了<code>leave</code>之后之后变成了这样(注意这里的leave是本身函数执行流里面就有的leave,我们输入的leave_ret还没有运行)</p><p><img src="https://s2.loli.net/2022/03/29/EaZSxq74yDuwrVi.png" alt="screenShot.png"></p><p>然后执行<code>ret</code>,所以<code>eip</code>寄存器里面的值被更换,下面进行的指令便是我们构造的<code>leave_ret</code>,在进行<code>leave</code>前半截,也就是<code>mov esp,ebq</code>之后,栈结构长这样</p><p><img src="https://s2.loli.net/2022/03/29/ZwUVxdHzRnhGyTr.png" alt="screenShot.png"></p><p>而后进行<code>pop ebq</code>,<code>aaaa</code>被赋给了<code>ebp</code>并且<code>esp</code>指针指向了<code>system</code>,而后<code>ret</code>调用system函数,并且参数为<code>ebp-0x28</code>也就是栈上我们设置的字符串<code>/bin/sh</code>的地址,我们成功getshell了</p><h2 id="dasctf-checkin"><a href="#dasctf-checkin" class="headerlink" title="dasctf -checkin"></a>dasctf -checkin</h2><p>这题也是一个栈迁移有关的题目,补一下</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;通过一个例子来学习一下栈迁移。栈迁移就是一种通过控制&lt;code&gt;esp&lt;/code&gt;,&lt;code&gt;ebp&lt;/code&gt;指针(32位系统中)，使得我们的栈迁移到一段自己定义的地方，从而getshell的方法。&lt;/p&gt;
-&lt;h2 id=&quot;利用的gadget&quot;&gt;&lt;a href=&quot;#</summary>
-      
-    
-    
-    
-    
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
-    
-    <category term="wp" scheme="http://phot0n.com/tags/wp/"/>
     
   </entry>
   
