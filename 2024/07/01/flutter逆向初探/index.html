@@ -1,0 +1,318 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>flutter逆向初探 | Photon’s Blog</title><meta name="keywords" content="逆向,Android"><meta name="author" content="Photon"><meta name="copyright" content="Photon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最近闲来无事，拾起了之前半学半摆所学的逆向方面内容。也没有系统地学，大部分情况都是为了某个目标（薅资源）所进行的。一直被某个APP的广告所困扰(这玩意的web版我之前逆过,还挺简单的)，而这玩意是用flutter写的，于是就想去分析一下，尝试⛏⛏，顺便熟悉一下flutter逆向。 在逆的过程中遇到了一些稀奇古怪的问题，代码逻辑倒是不难搞，没有加密混淆反调试之类的，也没有加壳，只有一个签名校验。主要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flutter逆向初探">
+<meta property="og:url" content="http://phot0n.com/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="Photon’s Blog">
+<meta property="og:description" content="最近闲来无事，拾起了之前半学半摆所学的逆向方面内容。也没有系统地学，大部分情况都是为了某个目标（薅资源）所进行的。一直被某个APP的广告所困扰(这玩意的web版我之前逆过,还挺简单的)，而这玩意是用flutter写的，于是就想去分析一下，尝试⛏⛏，顺便熟悉一下flutter逆向。 在逆的过程中遇到了一些稀奇古怪的问题，代码逻辑倒是不难搞，没有加密混淆反调试之类的，也没有加壳，只有一个签名校验。主要">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
+<meta property="article:published_time" content="2024-07-01T09:53:27.000Z">
+<meta property="article:modified_time" content="2024-07-04T09:25:26.485Z">
+<meta property="article:author" content="Photon">
+<meta property="article:tag" content="逆向">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg"><link rel="shortcut icon" href="/img/20170202211516_4B3nj.thumb.1000_0.jpeg"><link rel="canonical" href="http://phot0n.com/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'flutter逆向初探',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-04 17:25:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">62</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">41</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">flutter逆向初探</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-07-01T09:53:27.000Z" title="Created 2024-07-01 17:53:27">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-07-04T09:25:26.485Z" title="Updated 2024-07-04 17:25:26">2024-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>7min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近闲来无事，拾起了之前半学半摆所学的逆向方面内容。也没有系统地学，大部分情况都是为了某个目标（薅资源）所进行的。一直被某个APP的广告所困扰(这玩意的web版我之前逆过,还挺简单的)，而这玩意是用flutter写的，于是就想去分析一下，尝试⛏⛏，顺便熟悉一下flutter逆向。</p>
+<p>在逆的过程中遇到了一些稀奇古怪的问题，代码逻辑倒是不难搞，没有加密混淆反调试之类的，也没有加壳，只有一个签名校验。主要收获还是熟悉了一下整个流程，以及踩了一些坑解决了，所以记录一下。</p>
+<h1 id="flutter介绍"><a href="#flutter介绍" class="headerlink" title="flutter介绍"></a>flutter介绍</h1><p>简单来说，flutter就是一个安卓的软件开发工具包，可以快速在iOS和Android上构建高质量的原生用户界面。其使用Dart语言编写，采用dartVM进行拍摄快照。</p>
+<p>一般我们识别一个APP是否由flutter开发可以通过观察其lib目录是否存在libflutter.so,libapp.so，以及java层是否有flutter字样等</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702112234343.png" alt="image-20240702112234343"></p>
+<p>关于flutter的原理构成等之后有空再整理。</p>
+<p>在<a target="_blank" rel="noopener" href="https://blog.tst.sh/reverse-engineering-flutter-apps-part-1/">Reverse engineering Flutter apps (Part 1) (tst.sh)</a> 以及<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https%3A%2F%2Fmrale.ph%2Fdartvm%2F">https://mrale.ph/dartvm/</a> 里介绍得很详细了。之后有空再翻译整理一下(我超，我感觉我说了无数次这句话都🕊了)</p>
+<h1 id="逆向步骤"><a href="#逆向步骤" class="headerlink" title="逆向步骤"></a>逆向步骤</h1><h2 id="静态解析"><a href="#静态解析" class="headerlink" title="静态解析"></a>静态解析</h2><p>一般我们关注libapp.so,将其中的快照数据进行解析，从而获取业务代码信息。主要利用了<code>blutter</code>这个工具(随着DartSdk版本的更新，reflutter和flutter逆向助手已经停止更新)。</p>
+<p>按照<a target="_blank" rel="noopener" href="https://github.com/worawit/blutter">worawit/blutter: Flutter Mobile Application Reverse Engineering Tool (github.com)</a> 上的步骤直接安装运行就行。</p>
+<p>在安装过程中会遇到一些问题主要报错是git下载，挂个代理就可以了。</p>
+<p>运行之后可以输出这五个文件</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702112958432.png" alt="image-20240702112958432"></p>
+<p>在ida中解析libapp.so,运行ida_script/addNames.py可以恢复一部分符号</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702113130073.png" alt="image-20240702113130073"></p>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><h3 id="使用IDA进行动态调试so文件"><a href="#使用IDA进行动态调试so文件" class="headerlink" title="使用IDA进行动态调试so文件"></a>使用IDA进行动态调试so文件</h3><p>可以使用IDA或者gdb对安卓的native层的so文件进行调试。我之前用gdb调试二进制文件比较多，这里学一下使用IDA进行调试的方法</p>
+<p>首先需要打开应用的debug模式，通常是使用androidkiller在AndroidManifest.xml里面添加android:debuggable=”true”然后重签名。但是这个apk似乎会检测签名，所以这里采用magisk开启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">magisk resetprop ro.secure 0</span><br><span class="line">magisk resetprop ro.debuggable 1</span><br></pre></td></tr></table></figure>
+<p>找到IDA的dbg server</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702200308739.png" alt="image-20240702200308739"></p>
+<p>传送到机子上</p>
+<p>添加权限运行</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702200435968.png" alt="image-20240702200435968"></p>
+<p>下好断点之后选择进程进行attach</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702210602125.png" alt="image-20240702210602125"></p>
+<p>然后可以成功的attach上，在相应的地方断下来</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702212910005.png" alt="image-20240702212910005"></p>
+<p>过程中遇到了几个坑，其一是<code>got unknown signal #33</code> ，老会弹警告，很烦。</p>
+<p>解决方法是在<code>debugger options</code>中的<code>edit exceptions</code>弹出的Excepptions界面中直接右键<code>insert</code>一个33号signal的处理，选择啥也不干直接Slient即可</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704141045708.png" alt="image-20240704141045708"></p>
+<p>后面如果也不断地跳signal警告，而该警告我们不关心的话直接slient就行了</p>
+<p>但是事实上逆向的过程并没有怎么使用到IDA的调试，主要是因为不知道为什么调试起来巨慢，前几个step要好久才能响应。主要还是用的frida。</p>
+<h2 id="简要流程"><a href="#简要流程" class="headerlink" title="简要流程"></a>简要流程</h2><p>感觉主要靠猜，既然符号恢复了，那就更能大胆地猜了(bushi)。</p>
+<p>这里先记录一下签名校验的绕过，后记录一下广告的patch(但是实际上做的时候我是先找广告逻辑，之后再改签名校验的)</p>
+<h3 id="签名校验"><a href="#签名校验" class="headerlink" title="签名校验"></a>签名校验</h3><p>当我们修改一些内容，然后重打包自签名安装上的时候，尝试打开app之后我们会发现提示我们408网络异常</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704142745517.png" alt="image-20240704142745517"></p>
+<p>但是明眼人一看就知道这是扯淡，我进去的时候还有开屏广告呢</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704143024547.png" alt="image-20240704143024547"></p>
+<p>所以大概是APP里面作了签名校验，一般校验大概逻辑都是先获取签名信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PackageManager pm = context.getPackageManager();</span><br><span class="line">pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);</span><br><span class="line">Signature[] signatures = pi.signatures;</span><br></pre></td></tr></table></figure>
+<p>所以jadx里面全局搜索一下有没有诸如<code>signature</code>、<code>GET_SIGNATURES</code>、<code>PackageManager</code>等的信息</p>
+<p>确实能搜到</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704143821190.png" alt="image-20240704143821190"></p>
+<p>但是里面并没有发现比较的逻辑，应该是下放到native层进行比较。依次交叉引用可以理出如下逻辑</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704144014611.png" alt="image-20240704144014611"></p>
+<p>这里显然是flutter与java层调用的约定,其调用类似于网络调用。一般来说flutter与java层调用规则如下(详细可参见<a target="_blank" rel="noopener" href="https://juejin.cn/post/7055916161132822536">Flutter MethodChannel的使用及原理解析 - 掘金 (juejin.cn)</a> )</p>
+<p>简要来说就是，java端重写<code>configureFlutterEngine</code>方法，在实现上通过<code>MethodChannel</code>方法新建一个<code>methodChannel</code>,利用它的<code>setMethodCallHandler</code>注册一个类似回调函数的东西。</p>
+<p>然后在flutter端通过<code>MethodChannel(&#39;channelName&#39;);</code>指定一个channel，然后利用<code>platform.invokeMethod(&#39;MethodYouCall&#39;)</code>去指定调用某个方法。</p>
+<p>所以我们分析这个m47335b方法，其根据<code>MethodCall</code>的名字指定方法，然后将结果通过<code>Result</code>传回给了flutter端。</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704145330580.png" alt="image-20240704145330580"></p>
+<p>根据交叉引用，我们关注的是这个<code>getUmengString</code>所调用的<code>m47331f</code>,简单的分析不难发现其逻辑就是</p>
+<p>通过signatures获取签名，转换成字节数组，然后利用<code>m47330g</code>给MD5哈希(C2271bz.f3526a=”MD5”，这里获取了一个md5实例)转化成字符串，进而调用链往上将签名的md5结果字符串传给flutter端。</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704145511965.png" alt="image-20240704145511965"></p>
+<p>那很简单，我们直接利用frida把相关函数hook了看看正常发布的app的哈希值是多少，然后在修改版本直接硬编码返回就行了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&quot;INJECT~~~&quot;</span>);</span><br><span class="line">Java.perform(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;====INTO JAVA====&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> Activity = Java.use(<span class="string">&#x27;com.copymanga.app.MainActivity&#x27;</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;SUCCESS????&quot;</span>);</span><br><span class="line">    <span class="comment">// console.log(Mainact.)</span></span><br><span class="line">    Activity.g.implementation = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;obj = &quot;</span>,x);</span><br><span class="line">        <span class="keyword">const</span> ans = <span class="built_in">this</span>.g(x);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;ans = &quot;</span>,ans);</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>因为一般签名校验是启动阶段执行的，我们选择spawn启动而不是attach</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida -U -f com.copymanga.app -l test_java.js</span><br></pre></td></tr></table></figure>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704150746946.png" alt="image-20240704150746946"></p>
+<p>可以hook得到所处理的字符数组以及相应的哈希结果(<code>3af08590311032efe0660550a0563a53</code>) 我们可以直接patch掉这个函数直接返回硬编码哈希结果即可</p>
+<p>我们可以发现一个没用的函数<code>m47334c</code>返回的空字符串，我们借用他完成patch。在<code>getUmengString</code>分支中，调用的函数改成c。</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704163729911.png" alt="image-20240704163729911"></p>
+<p>然后修改c的实现，返回哈希值</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704163809297.png" alt="image-20240704163809297"></p>
+<p>顺便一提，具体完整的验证逻辑，在so层(libapp.so)似乎是MD5(MD5(signature))。</p>
+<h3 id="广告逻辑PATCH"><a href="#广告逻辑PATCH" class="headerlink" title="广告逻辑PATCH"></a>广告逻辑PATCH</h3><p>这里主要深入libapp.so,在使用blutter恢复符号之后，我们可以通过查找关键字符定位到一些关键函数。</p>
+<p>可以发现一些诸如myapp的字样，应该是实现的业务代码，而其他的dart_core应该就是类似库函数的东西，我们不用管</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704165600016.png" alt="image-20240704165600016"></p>
+<p>该APP在用户赞助，有VIP的时候会去除广告，所以我们尝试搜索一些关键字符，可以搜到VIP相关的函数，这个isVip应该就是检测是否是vip的函数</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704165911981.png" alt="image-20240704165911981"></p>
+<p>直接查交叉引用，能找到很多AD相关的函数</p>
+<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704170206933.png" alt="image-20240704170206933"></p>
+<p>依次往上交叉引用可以找到类似开屏初始化的东西，以及homepage的东西。都是业务代码不难看，半逆半猜即可搞定。</p>
+<h2 id="签名与重打包"><a href="#签名与重打包" class="headerlink" title="签名与重打包"></a>签名与重打包</h2><p>patch完打包用<code>apktool b</code>给build上即可。</p>
+<p>修改，打包，签名后的apk在我的测试机(安卓版本为10)上可以正常运行</p>
+<p>对于安卓版本大于等于11(Android &gt;= 11)或者SDK&gt;=30可能会出现如下问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failure [-124: Failed parse during installPackageLI: Targeting R+ (version 30 and above) requires the resources.arsc of installed APKs to be stored uncompressed and aligned on a 4-byte boundary]</span><br></pre></td></tr></table></figure>
+<p>查了一下好像是因为旧版本<code>jarsigner</code>对齐的原因(通过报错就能发现)，github上有人写了工具解决<a target="_blank" rel="noopener" href="https://github.com/mathieures/convert-apk/">mathieures/convert-apk: Convert .apk files to install them on Android &gt;= 11 (SDK &gt;= 30) (github.com)</a> ，但是我没跑起来，好像是啥东西没装，我也懒得配环境了。</p>
+<p>用zipalign对齐一下再签名就行了</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zipalign -p -f -v <span class="number">4</span> out.apk out_unsigned.apk</span><br><span class="line">apksigner sign --ks test.keystore --ks-key-alias testalias --out out_sign.apk out_unsigned.apk</span><br><span class="line">zipalign -c -v <span class="number">4</span> out_unsigned.apk</span><br></pre></td></tr></table></figure>
+<h2 id="后记与思考"><a href="#后记与思考" class="headerlink" title="后记与思考"></a>后记与思考</h2><p>这个app还算比较简单，因为没有加壳反调或是加密之类的一些东西，基本用frida即可搞定，就是libapp.so里面一些代码难看一些，但是有符号还算能搞。</p>
+<p>首先是签名校验，它虽然校验操作是在so层，但是获取签名的逻辑还是比较好判断。假如说开发人员在多处编写校验代码，或者搞上其他一些花活可能就比较难分析。一种好的解决办法是直接hook系统的接口来绕过(比如<code>getPackageInfo</code>等)，再结合动态代理。</p>
+<p>对于该app只是简单的去广告，但是下载次数限制，以及在最近版本新加的内容（花写真币买写真看 ,6)还没有认真去逆。包括如果我们想写爬虫的花，也没有逆它的API接口。在后面可能会继续逆它的逻辑，把app端的api接口逆出来。希望通过这一个apk尝试各种方法把安卓逆向之类的都过一遍。</p>
+<p>这个app还有一个可以玩的点就是它的轻小说界面是不允许截图的，会弹出弹框，并且切屏的时候也会变成黑屏，看不见内容(我之前想在切屏状态截图发现不可行)，可以研究研究。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Photon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://phot0n.com/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/">http://phot0n.com/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%80%86%E5%90%91/">逆向</a><a class="post-meta__tags" href="/tags/Android/">Android</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/04/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"><img class="prev-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">java动态代理</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/27/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A5%E9%97%A8/"><img class="next-cover" src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">安卓逆向相关配置与入门</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Photon</div><div class="author-info__description">光子</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">62</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">41</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/photonwork"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/photonwork" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flutter%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">flutter介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%86%E5%90%91%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">逆向步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%A7%A3%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">静态解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="toc-number">2.2.</span> <span class="toc-text">动态调试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8IDA%E8%BF%9B%E8%A1%8C%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95so%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.1.</span> <span class="toc-text">使用IDA进行动态调试so文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%A6%81%E6%B5%81%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">简要流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C"><span class="toc-number">2.3.1.</span> <span class="toc-text">签名校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BF%E5%91%8A%E9%80%BB%E8%BE%91PATCH"><span class="toc-number">2.3.2.</span> <span class="toc-text">广告逻辑PATCH</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%BE%E5%90%8D%E4%B8%8E%E9%87%8D%E6%89%93%E5%8C%85"><span class="toc-number">2.4.</span> <span class="toc-text">签名与重打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0%E4%B8%8E%E6%80%9D%E8%80%83"><span class="toc-number">2.5.</span> <span class="toc-text">后记与思考</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" title="算法学习"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算法学习"/></a><div class="content"><a class="title" href="/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" title="算法学习">算法学习</a><time datetime="2024-08-29T11:34:52.000Z" title="Created 2024-08-29 19:34:52">2024-08-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="深度学习记录"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深度学习记录"/></a><div class="content"><a class="title" href="/2024/07/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="深度学习记录">深度学习记录</a><time datetime="2024-07-31T06:57:07.000Z" title="Created 2024-07-31 14:57:07">2024-07-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/29/SICP%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" title="SICP读书笔记"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SICP读书笔记"/></a><div class="content"><a class="title" href="/2024/07/29/SICP%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" title="SICP读书笔记">SICP读书笔记</a><time datetime="2024-07-29T03:22:55.000Z" title="Created 2024-07-29 11:22:55">2024-07-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="wsl2与vscode下rust开发环境配置"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="wsl2与vscode下rust开发环境配置"/></a><div class="content"><a class="title" href="/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="wsl2与vscode下rust开发环境配置">wsl2与vscode下rust开发环境配置</a><time datetime="2024-07-06T06:56:26.000Z" title="Created 2024-07-06 14:56:26">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/04/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" title="java动态代理"><img src="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java动态代理"/></a><div class="content"><a class="title" href="/2024/07/04/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" title="java动态代理">java动态代理</a><time datetime="2024-07-04T10:32:27.000Z" title="Created 2024-07-04 18:32:27">2024-07-04</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Photon</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<img src="https://static.dy208.cn/o_1dfilp8ruo521thr1hvf18ji17soa.png">
+<a href="https://beian.miit.gov.cn/"  style="color:#f72b07" target="_blank">皖ICP备2022000759号</a></div><div class="footer_custom_text">欢迎来到光子的博客哟(●'◡'●)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'J3nDf4qkr8OdRFaP64k2k453-gzGzoHsz',
+      appKey: 'NXx6F7OYpwVWFbIQPVnw8HvN',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"live2d-widget-model-haruto"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
