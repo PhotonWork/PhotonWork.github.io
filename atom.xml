@@ -229,9 +229,9 @@
     
     <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
     
-    <category term="re" scheme="http://phot0n.com/tags/re/"/>
-    
     <category term="ctf" scheme="http://phot0n.com/tags/ctf/"/>
+    
+    <category term="re" scheme="http://phot0n.com/tags/re/"/>
     
   </entry>
   
@@ -280,9 +280,9 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
-    
     <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    
+    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
     
   </entry>
   
@@ -406,9 +406,9 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
-    
     <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    
+    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
     
   </entry>
   
@@ -483,9 +483,9 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
-    
     <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    
+    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
     
   </entry>
   
