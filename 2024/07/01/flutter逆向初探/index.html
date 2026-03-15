@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg">
 <meta property="article:published_time" content="2024-07-01T09:53:27.000Z">
-<meta property="article:modified_time" content="2024-07-04T09:25:26.485Z">
+<meta property="article:modified_time" content="2026-03-15T09:52:02.519Z">
 <meta property="article:author" content="Photon">
 <meta property="article:tag" content="逆向">
 <meta property="article:tag" content="Android">
@@ -59,7 +59,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-07-04 17:25:26'
+  postUpdate: '2026-03-15 17:52:02'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -149,76 +149,76 @@
     }
     detectApple()
     })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Photon’s Blog" type="application/atom+xml">
-</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">flutter逆向初探</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-07-01T09:53:27.000Z" title="Created 2024-07-01 17:53:27">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-07-04T09:25:26.485Z" title="Updated 2024-07-04 17:25:26">2024-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>7min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近闲来无事，拾起了之前半学半摆所学的逆向方面内容。也没有系统地学，大部分情况都是为了某个目标（薅资源）所进行的。一直被某个APP的广告所困扰(这玩意的web版我之前逆过,还挺简单的)，而这玩意是用flutter写的，于是就想去分析一下，尝试⛏⛏，顺便熟悉一下flutter逆向。</p>
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/19/K4TwFgDxsJ62tEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/14/GSfj5BxXTdRqg2o.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Photon’s Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">flutter逆向初探</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-07-01T09:53:27.000Z" title="Created 2024-07-01 17:53:27">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-03-15T09:52:02.519Z" title="Updated 2026-03-15 17:52:02">2026-03-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>7min</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近闲来无事，拾起了之前半学半摆所学的逆向方面内容。也没有系统地学，大部分情况都是为了某个目标（薅资源）所进行的。一直被某个APP的广告所困扰(这玩意的web版我之前逆过,还挺简单的)，而这玩意是用flutter写的，于是就想去分析一下，尝试⛏⛏，顺便熟悉一下flutter逆向。</p>
 <p>在逆的过程中遇到了一些稀奇古怪的问题，代码逻辑倒是不难搞，没有加密混淆反调试之类的，也没有加壳，只有一个签名校验。主要收获还是熟悉了一下整个流程，以及踩了一些坑解决了，所以记录一下。</p>
 <h1 id="flutter介绍"><a href="#flutter介绍" class="headerlink" title="flutter介绍"></a>flutter介绍</h1><p>简单来说，flutter就是一个安卓的软件开发工具包，可以快速在iOS和Android上构建高质量的原生用户界面。其使用Dart语言编写，采用dartVM进行拍摄快照。</p>
 <p>一般我们识别一个APP是否由flutter开发可以通过观察其lib目录是否存在libflutter.so,libapp.so，以及java层是否有flutter字样等</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702112234343.png" alt="image-20240702112234343"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/qF7z/image-20240702112234343.png" alt="image-20240702112234343"></p>
 <p>关于flutter的原理构成等之后有空再整理。</p>
 <p>在<a target="_blank" rel="noopener" href="https://blog.tst.sh/reverse-engineering-flutter-apps-part-1/">Reverse engineering Flutter apps (Part 1) (tst.sh)</a> 以及<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https%3A%2F%2Fmrale.ph%2Fdartvm%2F">https://mrale.ph/dartvm/</a> 里介绍得很详细了。之后有空再翻译整理一下(我超，我感觉我说了无数次这句话都🕊了)</p>
 <h1 id="逆向步骤"><a href="#逆向步骤" class="headerlink" title="逆向步骤"></a>逆向步骤</h1><h2 id="静态解析"><a href="#静态解析" class="headerlink" title="静态解析"></a>静态解析</h2><p>一般我们关注libapp.so,将其中的快照数据进行解析，从而获取业务代码信息。主要利用了<code>blutter</code>这个工具(随着DartSdk版本的更新，reflutter和flutter逆向助手已经停止更新)。</p>
 <p>按照<a target="_blank" rel="noopener" href="https://github.com/worawit/blutter">worawit/blutter: Flutter Mobile Application Reverse Engineering Tool (github.com)</a> 上的步骤直接安装运行就行。</p>
 <p>在安装过程中会遇到一些问题主要报错是git下载，挂个代理就可以了。</p>
 <p>运行之后可以输出这五个文件</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702112958432.png" alt="image-20240702112958432"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/ts9S/image-20240702112958432.png" alt="image-20240702112958432"></p>
 <p>在ida中解析libapp.so,运行ida_script/addNames.py可以恢复一部分符号</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702113130073.png" alt="image-20240702113130073"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/af8W/image-20240702113130073.png" alt="image-20240702113130073"></p>
 <h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><h3 id="使用IDA进行动态调试so文件"><a href="#使用IDA进行动态调试so文件" class="headerlink" title="使用IDA进行动态调试so文件"></a>使用IDA进行动态调试so文件</h3><p>可以使用IDA或者gdb对安卓的native层的so文件进行调试。我之前用gdb调试二进制文件比较多，这里学一下使用IDA进行调试的方法</p>
 <p>首先需要打开应用的debug模式，通常是使用androidkiller在AndroidManifest.xml里面添加android:debuggable=”true”然后重签名。但是这个apk似乎会检测签名，所以这里采用magisk开启</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">magisk resetprop ro.secure 0</span><br><span class="line">magisk resetprop ro.debuggable 1</span><br></pre></td></tr></table></figure>
 <p>找到IDA的dbg server</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702200308739.png" alt="image-20240702200308739"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/k1oX/image-20240702200308739.png" alt="image-20240702200308739"></p>
 <p>传送到机子上</p>
 <p>添加权限运行</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702200435968.png" alt="image-20240702200435968"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/bR0q/image-20240702200435968.png" alt="image-20240702200435968"></p>
 <p>下好断点之后选择进程进行attach</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702210602125.png" alt="image-20240702210602125"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/uQa9/image-20240702210602125.png" alt="image-20240702210602125"></p>
 <p>然后可以成功的attach上，在相应的地方断下来</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240702212910005.png" alt="image-20240702212910005"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/tTr5/image-20240702212910005.png" alt="image-20240702212910005"></p>
 <p>过程中遇到了几个坑，其一是<code>got unknown signal #33</code> ，老会弹警告，很烦。</p>
 <p>解决方法是在<code>debugger options</code>中的<code>edit exceptions</code>弹出的Excepptions界面中直接右键<code>insert</code>一个33号signal的处理，选择啥也不干直接Slient即可</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704141045708.png" alt="image-20240704141045708"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/to7Y/image-20240704141045708.png" alt="image-20240704141045708"></p>
 <p>后面如果也不断地跳signal警告，而该警告我们不关心的话直接slient就行了</p>
 <p>但是事实上逆向的过程并没有怎么使用到IDA的调试，主要是因为不知道为什么调试起来巨慢，前几个step要好久才能响应。主要还是用的frida。</p>
 <h2 id="简要流程"><a href="#简要流程" class="headerlink" title="简要流程"></a>简要流程</h2><p>感觉主要靠猜，既然符号恢复了，那就更能大胆地猜了(bushi)。</p>
 <p>这里先记录一下签名校验的绕过，后记录一下广告的patch(但是实际上做的时候我是先找广告逻辑，之后再改签名校验的)</p>
 <h3 id="签名校验"><a href="#签名校验" class="headerlink" title="签名校验"></a>签名校验</h3><p>当我们修改一些内容，然后重打包自签名安装上的时候，尝试打开app之后我们会发现提示我们408网络异常</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704142745517.png" alt="image-20240704142745517"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/tY8h/image-20240704142745517.png" alt="image-20240704142745517"></p>
 <p>但是明眼人一看就知道这是扯淡，我进去的时候还有开屏广告呢</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704143024547.png" alt="image-20240704143024547"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/3cLy/image-20240704143024547.png" alt="image-20240704143024547"></p>
 <p>所以大概是APP里面作了签名校验，一般校验大概逻辑都是先获取签名信息</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PackageManager pm = context.getPackageManager();</span><br><span class="line">pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);</span><br><span class="line">Signature[] signatures = pi.signatures;</span><br></pre></td></tr></table></figure>
 <p>所以jadx里面全局搜索一下有没有诸如<code>signature</code>、<code>GET_SIGNATURES</code>、<code>PackageManager</code>等的信息</p>
 <p>确实能搜到</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704143821190.png" alt="image-20240704143821190"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/Ms9g/image-20240704143821190.png" alt="image-20240704143821190"></p>
 <p>但是里面并没有发现比较的逻辑，应该是下放到native层进行比较。依次交叉引用可以理出如下逻辑</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704144014611.png" alt="image-20240704144014611"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/zo0S/image-20240704144014611.png" alt="image-20240704144014611"></p>
 <p>这里显然是flutter与java层调用的约定,其调用类似于网络调用。一般来说flutter与java层调用规则如下(详细可参见<a target="_blank" rel="noopener" href="https://juejin.cn/post/7055916161132822536">Flutter MethodChannel的使用及原理解析 - 掘金 (juejin.cn)</a> )</p>
 <p>简要来说就是，java端重写<code>configureFlutterEngine</code>方法，在实现上通过<code>MethodChannel</code>方法新建一个<code>methodChannel</code>,利用它的<code>setMethodCallHandler</code>注册一个类似回调函数的东西。</p>
 <p>然后在flutter端通过<code>MethodChannel(&#39;channelName&#39;);</code>指定一个channel，然后利用<code>platform.invokeMethod(&#39;MethodYouCall&#39;)</code>去指定调用某个方法。</p>
 <p>所以我们分析这个m47335b方法，其根据<code>MethodCall</code>的名字指定方法，然后将结果通过<code>Result</code>传回给了flutter端。</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704145330580.png" alt="image-20240704145330580"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/7knP/image-20240704145330580.png" alt="image-20240704145330580"></p>
 <p>根据交叉引用，我们关注的是这个<code>getUmengString</code>所调用的<code>m47331f</code>,简单的分析不难发现其逻辑就是</p>
 <p>通过signatures获取签名，转换成字节数组，然后利用<code>m47330g</code>给MD5哈希(C2271bz.f3526a=”MD5”，这里获取了一个md5实例)转化成字符串，进而调用链往上将签名的md5结果字符串传给flutter端。</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704145511965.png" alt="image-20240704145511965"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/j9Ax/image-20240704145511965.png" alt="image-20240704145511965"></p>
 <p>那很简单，我们直接利用frida把相关函数hook了看看正常发布的app的哈希值是多少，然后在修改版本直接硬编码返回就行了</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&quot;INJECT~~~&quot;</span>);</span><br><span class="line">Java.perform(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;====INTO JAVA====&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> Activity = Java.use(<span class="string">&#x27;com.copymanga.app.MainActivity&#x27;</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;SUCCESS????&quot;</span>);</span><br><span class="line">    <span class="comment">// console.log(Mainact.)</span></span><br><span class="line">    Activity.g.implementation = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;obj = &quot;</span>,x);</span><br><span class="line">        <span class="keyword">const</span> ans = <span class="built_in">this</span>.g(x);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;ans = &quot;</span>,ans);</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>因为一般签名校验是启动阶段执行的，我们选择spawn启动而不是attach</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida -U -f com.copymanga.app -l test_java.js</span><br></pre></td></tr></table></figure>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704150746946.png" alt="image-20240704150746946"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/v6pT/image-20240704150746946.png" alt="image-20240704150746946"></p>
 <p>可以hook得到所处理的字符数组以及相应的哈希结果(<code>3af08590311032efe0660550a0563a53</code>) 我们可以直接patch掉这个函数直接返回硬编码哈希结果即可</p>
 <p>我们可以发现一个没用的函数<code>m47334c</code>返回的空字符串，我们借用他完成patch。在<code>getUmengString</code>分支中，调用的函数改成c。</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704163729911.png" alt="image-20240704163729911"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/r4qG/image-20240704163729911.png" alt="image-20240704163729911"></p>
 <p>然后修改c的实现，返回哈希值</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704163809297.png" alt="image-20240704163809297"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/k0fF/image-20240704163809297.png" alt="image-20240704163809297"></p>
 <p>顺便一提，具体完整的验证逻辑，在so层(libapp.so)似乎是MD5(MD5(signature))。</p>
 <h3 id="广告逻辑PATCH"><a href="#广告逻辑PATCH" class="headerlink" title="广告逻辑PATCH"></a>广告逻辑PATCH</h3><p>这里主要深入libapp.so,在使用blutter恢复符号之后，我们可以通过查找关键字符定位到一些关键函数。</p>
 <p>可以发现一些诸如myapp的字样，应该是实现的业务代码，而其他的dart_core应该就是类似库函数的东西，我们不用管</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704165600016.png" alt="image-20240704165600016"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/cXi9/image-20240704165600016.png" alt="image-20240704165600016"></p>
 <p>该APP在用户赞助，有VIP的时候会去除广告，所以我们尝试搜索一些关键字符，可以搜到VIP相关的函数，这个isVip应该就是检测是否是vip的函数</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704165911981.png" alt="image-20240704165911981"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/0kSf/image-20240704165911981.png" alt="image-20240704165911981"></p>
 <p>直接查交叉引用，能找到很多AD相关的函数</p>
-<p><img src="D:\DeskTop\PhotonWork\source\_posts\flutter逆向初探.assets\image-20240704170206933.png" alt="image-20240704170206933"></p>
+<p><img src="https://files.seeusercontent.com/2026/03/15/2nbW/image-20240704170206933.png" alt="image-20240704170206933"></p>
 <p>依次往上交叉引用可以找到类似开屏初始化的东西，以及homepage的东西。都是业务代码不难看，半逆半猜即可搞定。</p>
 <h2 id="签名与重打包"><a href="#签名与重打包" class="headerlink" title="签名与重打包"></a>签名与重打包</h2><p>patch完打包用<code>apktool b</code>给build上即可。</p>
 <p>修改，打包，签名后的apk在我的测试机(安卓版本为10)上可以正常运行</p>
