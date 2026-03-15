@@ -3,11 +3,11 @@
   <title>Photon’s Blog</title>
   
   
-  <link href="http://phot0n.com/atom.xml" rel="self"/>
+  <link href="http://photonwork.github.io/atom.xml" rel="self"/>
   
-  <link href="http://phot0n.com/"/>
+  <link href="http://photonwork.github.io/"/>
   <updated>2024-08-29T11:39:17.096Z</updated>
-  <id>http://phot0n.com/</id>
+  <id>http://photonwork.github.io/</id>
   
   <author>
     <name>Photon</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>算法学习</title>
-    <link href="http://phot0n.com/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"/>
-    <id>http://phot0n.com/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/</id>
+    <link href="http://photonwork.github.io/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://photonwork.github.io/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/</id>
     <published>2024-08-29T11:34:52.000Z</published>
     <updated>2024-08-29T11:39:17.096Z</updated>
     
@@ -34,14 +34,14 @@
     
     
     
-    <category term="算法" scheme="http://phot0n.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="http://photonwork.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
   <entry>
     <title>深度学习记录</title>
-    <link href="http://phot0n.com/2024/07/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
-    <id>http://phot0n.com/2024/07/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</id>
+    <link href="http://photonwork.github.io/2024/07/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    <id>http://photonwork.github.io/2024/07/31/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</id>
     <published>2024-07-31T06:57:07.000Z</published>
     <updated>2024-09-18T10:57:57.336Z</updated>
     
@@ -58,14 +58,14 @@
     
     
     
-    <category term="AI" scheme="http://phot0n.com/tags/AI/"/>
+    <category term="AI" scheme="http://photonwork.github.io/tags/AI/"/>
     
   </entry>
   
   <entry>
     <title>wsl2与vscode下rust开发环境配置</title>
-    <link href="http://phot0n.com/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
-    <id>http://phot0n.com/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</id>
+    <link href="http://photonwork.github.io/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
+    <id>http://photonwork.github.io/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</id>
     <published>2024-07-06T06:56:26.000Z</published>
     <updated>2024-07-06T13:01:56.668Z</updated>
     
@@ -81,16 +81,16 @@
     
     
     
-    <category term="环境" scheme="http://phot0n.com/tags/%E7%8E%AF%E5%A2%83/"/>
+    <category term="环境" scheme="http://photonwork.github.io/tags/%E7%8E%AF%E5%A2%83/"/>
     
-    <category term="rust" scheme="http://phot0n.com/tags/rust/"/>
+    <category term="rust" scheme="http://photonwork.github.io/tags/rust/"/>
     
   </entry>
   
   <entry>
     <title>flutter逆向初探</title>
-    <link href="http://phot0n.com/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/"/>
-    <id>http://phot0n.com/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/</id>
+    <link href="http://photonwork.github.io/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/"/>
+    <id>http://photonwork.github.io/2024/07/01/flutter%E9%80%86%E5%90%91%E5%88%9D%E6%8E%A2/</id>
     <published>2024-07-01T09:53:27.000Z</published>
     <updated>2026-03-15T09:52:02.519Z</updated>
     
@@ -105,16 +105,16 @@
     
     
     
-    <category term="逆向" scheme="http://phot0n.com/tags/%E9%80%86%E5%90%91/"/>
+    <category term="逆向" scheme="http://photonwork.github.io/tags/%E9%80%86%E5%90%91/"/>
     
-    <category term="Android" scheme="http://phot0n.com/tags/Android/"/>
+    <category term="Android" scheme="http://photonwork.github.io/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向相关配置与入门</title>
-    <link href="http://phot0n.com/2023/10/27/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A5%E9%97%A8/"/>
-    <id>http://phot0n.com/2023/10/27/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A5%E9%97%A8/</id>
+    <link href="http://photonwork.github.io/2023/10/27/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A5%E9%97%A8/"/>
+    <id>http://photonwork.github.io/2023/10/27/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%85%A5%E9%97%A8/</id>
     <published>2023-10-27T02:49:57.000Z</published>
     <updated>2023-10-30T13:48:45.646Z</updated>
     
@@ -129,16 +129,16 @@
     
     
     
-    <category term="reverse" scheme="http://phot0n.com/tags/reverse/"/>
+    <category term="reverse" scheme="http://photonwork.github.io/tags/reverse/"/>
     
-    <category term="android" scheme="http://phot0n.com/tags/android/"/>
+    <category term="android" scheme="http://photonwork.github.io/tags/android/"/>
     
   </entry>
   
   <entry>
     <title>HITCONCTF-2023</title>
-    <link href="http://phot0n.com/2023/09/11/HITCONCTF-2023/"/>
-    <id>http://phot0n.com/2023/09/11/HITCONCTF-2023/</id>
+    <link href="http://photonwork.github.io/2023/09/11/HITCONCTF-2023/"/>
+    <id>http://photonwork.github.io/2023/09/11/HITCONCTF-2023/</id>
     <published>2023-09-11T04:39:49.000Z</published>
     <updated>2023-09-13T12:44:02.085Z</updated>
     
@@ -156,20 +156,20 @@
     
     
     
-    <category term="wp" scheme="http://phot0n.com/tags/wp/"/>
+    <category term="wp" scheme="http://photonwork.github.io/tags/wp/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
-    <category term="ctf" scheme="http://phot0n.com/tags/ctf/"/>
+    <category term="ctf" scheme="http://photonwork.github.io/tags/ctf/"/>
     
-    <category term="re" scheme="http://phot0n.com/tags/re/"/>
+    <category term="re" scheme="http://photonwork.github.io/tags/re/"/>
     
   </entry>
   
   <entry>
     <title>WriteUps for some problems in SekaiCTF-2023</title>
-    <link href="http://phot0n.com/2023/08/29/WriteUps-for-some-problems-in-SekaiCTF-2023/"/>
-    <id>http://phot0n.com/2023/08/29/WriteUps-for-some-problems-in-SekaiCTF-2023/</id>
+    <link href="http://photonwork.github.io/2023/08/29/WriteUps-for-some-problems-in-SekaiCTF-2023/"/>
+    <id>http://photonwork.github.io/2023/08/29/WriteUps-for-some-problems-in-SekaiCTF-2023/</id>
     <published>2023-08-29T03:54:14.000Z</published>
     <updated>2023-08-30T12:32:42.957Z</updated>
     
@@ -184,18 +184,18 @@
     
     
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
-    <category term="reverse" scheme="http://phot0n.com/tags/reverse/"/>
+    <category term="reverse" scheme="http://photonwork.github.io/tags/reverse/"/>
     
-    <category term="writeup" scheme="http://phot0n.com/tags/writeup/"/>
+    <category term="writeup" scheme="http://photonwork.github.io/tags/writeup/"/>
     
   </entry>
   
   <entry>
     <title>CVE-2016-9793分析</title>
-    <link href="http://phot0n.com/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/"/>
-    <id>http://phot0n.com/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/</id>
+    <link href="http://photonwork.github.io/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/"/>
+    <id>http://photonwork.github.io/2023/04/19/CVE-2016-9793%E5%88%86%E6%9E%90/</id>
     <published>2023-04-19T08:27:13.000Z</published>
     <updated>2023-08-08T16:48:35.820Z</updated>
     
@@ -211,16 +211,16 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
+    <category term="kernel" scheme="http://photonwork.github.io/tags/kernel/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
   </entry>
   
   <entry>
     <title>ucore-lab</title>
-    <link href="http://phot0n.com/2023/04/17/ucore-lab/"/>
-    <id>http://phot0n.com/2023/04/17/ucore-lab/</id>
+    <link href="http://photonwork.github.io/2023/04/17/ucore-lab/"/>
+    <id>http://photonwork.github.io/2023/04/17/ucore-lab/</id>
     <published>2023-04-17T07:04:17.000Z</published>
     <updated>2023-10-15T13:57:36.374Z</updated>
     
@@ -236,16 +236,16 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
+    <category term="kernel" scheme="http://photonwork.github.io/tags/kernel/"/>
     
-    <category term="dev" scheme="http://phot0n.com/tags/dev/"/>
+    <category term="dev" scheme="http://photonwork.github.io/tags/dev/"/>
     
   </entry>
   
   <entry>
     <title>QEMU逃逸入门</title>
-    <link href="http://phot0n.com/2023/04/08/QEMU-RUN/"/>
-    <id>http://phot0n.com/2023/04/08/QEMU-RUN/</id>
+    <link href="http://photonwork.github.io/2023/04/08/QEMU-RUN/"/>
+    <id>http://photonwork.github.io/2023/04/08/QEMU-RUN/</id>
     <published>2023-04-07T16:09:19.000Z</published>
     <updated>2023-08-08T16:55:53.694Z</updated>
     
@@ -263,16 +263,16 @@
     
     
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
-    <category term="qemu" scheme="http://phot0n.com/tags/qemu/"/>
+    <category term="qemu" scheme="http://photonwork.github.io/tags/qemu/"/>
     
   </entry>
   
   <entry>
     <title>libc的源码调试与分析</title>
-    <link href="http://phot0n.com/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"/>
-    <id>http://phot0n.com/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/</id>
+    <link href="http://photonwork.github.io/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"/>
+    <id>http://photonwork.github.io/2023/03/31/libc%E7%9A%84%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/</id>
     <published>2023-03-31T08:37:53.000Z</published>
     <updated>2023-04-06T16:57:00.373Z</updated>
     
@@ -287,20 +287,20 @@
     
     
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
-    <category term="heap" scheme="http://phot0n.com/tags/heap/"/>
+    <category term="heap" scheme="http://photonwork.github.io/tags/heap/"/>
     
-    <category term="IO_FILE" scheme="http://phot0n.com/tags/IO-FILE/"/>
+    <category term="IO_FILE" scheme="http://photonwork.github.io/tags/IO-FILE/"/>
     
-    <category term="libc" scheme="http://phot0n.com/tags/libc/"/>
+    <category term="libc" scheme="http://photonwork.github.io/tags/libc/"/>
     
   </entry>
   
   <entry>
     <title>firmAE框架分析</title>
-    <link href="http://phot0n.com/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/"/>
-    <id>http://phot0n.com/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/</id>
+    <link href="http://photonwork.github.io/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/"/>
+    <id>http://photonwork.github.io/2023/02/26/firmAE%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/</id>
     <published>2023-02-26T04:51:50.000Z</published>
     <updated>2023-03-31T08:37:07.071Z</updated>
     
@@ -320,8 +320,8 @@
   
   <entry>
     <title>内核堆利用相关</title>
-    <link href="http://phot0n.com/2023/01/19/%E5%86%85%E6%A0%B8%E5%A0%86%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3/"/>
-    <id>http://phot0n.com/2023/01/19/%E5%86%85%E6%A0%B8%E5%A0%86%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3/</id>
+    <link href="http://photonwork.github.io/2023/01/19/%E5%86%85%E6%A0%B8%E5%A0%86%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3/"/>
+    <id>http://photonwork.github.io/2023/01/19/%E5%86%85%E6%A0%B8%E5%A0%86%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3/</id>
     <published>2023-01-19T11:31:29.000Z</published>
     <updated>2023-02-07T06:32:53.890Z</updated>
     
@@ -337,16 +337,16 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
+    <category term="kernel" scheme="http://photonwork.github.io/tags/kernel/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
   </entry>
   
   <entry>
     <title>CatCTF2022</title>
-    <link href="http://phot0n.com/2023/01/02/CatCTF2022/"/>
-    <id>http://phot0n.com/2023/01/02/CatCTF2022/</id>
+    <link href="http://photonwork.github.io/2023/01/02/CatCTF2022/"/>
+    <id>http://photonwork.github.io/2023/01/02/CatCTF2022/</id>
     <published>2023-01-02T08:02:03.000Z</published>
     <updated>2023-02-15T13:40:26.780Z</updated>
     
@@ -362,18 +362,18 @@
     
     
     
-    <category term="crypto" scheme="http://phot0n.com/tags/crypto/"/>
+    <category term="crypto" scheme="http://photonwork.github.io/tags/crypto/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
-    <category term="ctf" scheme="http://phot0n.com/tags/ctf/"/>
+    <category term="ctf" scheme="http://photonwork.github.io/tags/ctf/"/>
     
   </entry>
   
   <entry>
     <title>强网拟态2022</title>
-    <link href="http://phot0n.com/2022/11/19/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%812022/"/>
-    <id>http://phot0n.com/2022/11/19/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%812022/</id>
+    <link href="http://photonwork.github.io/2022/11/19/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%812022/"/>
+    <id>http://photonwork.github.io/2022/11/19/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%812022/</id>
     <published>2022-11-19T14:32:17.000Z</published>
     <updated>2022-11-20T07:20:39.992Z</updated>
     
@@ -389,16 +389,16 @@
     
     
     
-    <category term="crypto" scheme="http://phot0n.com/tags/crypto/"/>
+    <category term="crypto" scheme="http://photonwork.github.io/tags/crypto/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
   </entry>
   
   <entry>
     <title>KernelPwn入门</title>
-    <link href="http://phot0n.com/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/"/>
-    <id>http://phot0n.com/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/</id>
+    <link href="http://photonwork.github.io/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/"/>
+    <id>http://photonwork.github.io/2022/11/17/KernelPwn%E5%85%A5%E9%97%A8/</id>
     <published>2022-11-17T05:04:12.000Z</published>
     <updated>2022-11-18T09:20:31.576Z</updated>
     
@@ -414,16 +414,16 @@
     
     
     
-    <category term="kernel" scheme="http://phot0n.com/tags/kernel/"/>
+    <category term="kernel" scheme="http://photonwork.github.io/tags/kernel/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
   </entry>
   
   <entry>
     <title>fastbin reverse into tcache</title>
-    <link href="http://phot0n.com/2022/11/14/fastbin-reverse-into-tcache/"/>
-    <id>http://phot0n.com/2022/11/14/fastbin-reverse-into-tcache/</id>
+    <link href="http://photonwork.github.io/2022/11/14/fastbin-reverse-into-tcache/"/>
+    <id>http://photonwork.github.io/2022/11/14/fastbin-reverse-into-tcache/</id>
     <published>2022-11-14T06:36:55.000Z</published>
     <updated>2022-11-14T09:53:02.068Z</updated>
     
@@ -438,16 +438,16 @@
     
     
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
-    <category term="heap" scheme="http://phot0n.com/tags/heap/"/>
+    <category term="heap" scheme="http://photonwork.github.io/tags/heap/"/>
     
   </entry>
   
   <entry>
     <title>large_bin_attack</title>
-    <link href="http://phot0n.com/2022/11/11/large-bin-attack/"/>
-    <id>http://phot0n.com/2022/11/11/large-bin-attack/</id>
+    <link href="http://photonwork.github.io/2022/11/11/large-bin-attack/"/>
+    <id>http://photonwork.github.io/2022/11/11/large-bin-attack/</id>
     <published>2022-11-11T14:06:02.000Z</published>
     <updated>2022-11-11T16:22:02.763Z</updated>
     
@@ -463,14 +463,14 @@
     
     
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
   </entry>
   
   <entry>
     <title>祥云杯2022wp</title>
-    <link href="http://phot0n.com/2022/11/07/%E7%A5%A5%E4%BA%91%E6%9D%AF2022wp/"/>
-    <id>http://phot0n.com/2022/11/07/%E7%A5%A5%E4%BA%91%E6%9D%AF2022wp/</id>
+    <link href="http://photonwork.github.io/2022/11/07/%E7%A5%A5%E4%BA%91%E6%9D%AF2022wp/"/>
+    <id>http://photonwork.github.io/2022/11/07/%E7%A5%A5%E4%BA%91%E6%9D%AF2022wp/</id>
     <published>2022-11-07T05:06:06.000Z</published>
     <updated>2022-11-11T11:50:48.198Z</updated>
     
@@ -485,16 +485,16 @@
     
     
     
-    <category term="crypto" scheme="http://phot0n.com/tags/crypto/"/>
+    <category term="crypto" scheme="http://photonwork.github.io/tags/crypto/"/>
     
-    <category term="pwn" scheme="http://phot0n.com/tags/pwn/"/>
+    <category term="pwn" scheme="http://photonwork.github.io/tags/pwn/"/>
     
   </entry>
   
   <entry>
     <title>近期比赛WP</title>
-    <link href="http://phot0n.com/2022/09/26/%E8%BF%91%E6%9C%9F%E6%AF%94%E8%B5%9BWP/"/>
-    <id>http://phot0n.com/2022/09/26/%E8%BF%91%E6%9C%9F%E6%AF%94%E8%B5%9BWP/</id>
+    <link href="http://photonwork.github.io/2022/09/26/%E8%BF%91%E6%9C%9F%E6%AF%94%E8%B5%9BWP/"/>
+    <id>http://photonwork.github.io/2022/09/26/%E8%BF%91%E6%9C%9F%E6%AF%94%E8%B5%9BWP/</id>
     <published>2022-09-26T02:30:36.000Z</published>
     <updated>2022-10-07T13:55:38.367Z</updated>
     
@@ -511,9 +511,9 @@
     
     
     
-    <category term="crypto" scheme="http://phot0n.com/tags/crypto/"/>
+    <category term="crypto" scheme="http://photonwork.github.io/tags/crypto/"/>
     
-    <category term="ctf" scheme="http://phot0n.com/tags/ctf/"/>
+    <category term="ctf" scheme="http://photonwork.github.io/tags/ctf/"/>
     
   </entry>
   
