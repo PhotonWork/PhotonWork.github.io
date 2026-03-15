@@ -30,13 +30,6 @@
   </url>
   
   <url>
-    <loc>http://photonwork.github.io/2024/08/29/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://photonwork.github.io/2024/07/06/wsl2%E4%B8%8Evscode%E4%B8%8Brust%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2024-07-06</lastmod>
@@ -677,13 +670,6 @@
   
   <url>
     <loc>http://photonwork.github.io/tags/unlink/</loc>
-    <lastmod>2026-03-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://photonwork.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2026-03-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
